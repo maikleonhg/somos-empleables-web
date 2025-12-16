@@ -2,29 +2,70 @@
 import "../styles/global.css";
 
 interface Props {
-	title: string;
-	description?: string;
+    title: string;
+    description?: string;
 }
 
-const { title, description = "Somos Empleables - Potencia tu carrera profesional" } = Astro.props;
+const {
+    title,
+    description = "Somos Empleables - Potencia tu carrera profesional",
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<title>{title}</title>
-		
-		<!-- Google Fonts: Inter -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-	</head>
-	<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
-		<slot />
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <meta name="description" content={description} />
+        <title>{title}</title>
+
+        <!-- Google Fonts: Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://somosempleables.com/" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta
+            property="og:image"
+            content="https://somosempleables.com/og-image.jpg"
+        />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://somosempleables.com/" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta
+            property="twitter:image"
+            content="https://somosempleables.com/og-image.jpg"
+        />
+
+        <!-- AOS CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    </head>
+    <body
+        class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white overflow-x-hidden"
+    >
+        <slot />
+
+        <!-- AOS Script -->
+        <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script is:inline>
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: "ease-out-cubic",
+            });
+        </script>
+    </body>
 </html>

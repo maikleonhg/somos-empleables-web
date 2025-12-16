@@ -1,0 +1,125 @@
+---
+
+---
+
+<div
+    id="preloader"
+    class="fixed inset-0 z-100 flex items-center justify-center bg-white transition-opacity duration-700"
+>
+    <!-- OPTION 1: Redefine -> Tu Trayectoria (Commented Out) -->
+    <!--
+    <div class="relative flex items-center justify-center">
+        <h1 id="word-1" class="text-5xl md:text-7xl font-bold text-slate-900 absolute opacity-0 scale-90 transition-all duration-500 ease-out">
+            Redefine
+        </h1>
+        
+        <h1 id="word-2" class="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-purple-600 absolute opacity-0 scale-90 transition-all duration-500 ease-out whitespace-nowrap">
+            Tu Trayectoria
+        </h1>
+    </div>
+    -->
+
+    <!-- OPTION 2: El Plan Comienza Ahora (Typewriter) -->
+    <div class="relative z-10 text-center">
+        <h1
+            id="typewriter-text"
+            class="text-4xl md:text-6xl font-bold text-slate-900 font-mono tracking-tight min-h-[1.5em] flex items-center justify-center gap-2"
+        >
+            <!-- Text injected by JS -->
+        </h1>
+    </div>
+</div>
+
+<script>
+    const preloader = document.getElementById("preloader");
+    const textContainer = document.getElementById("typewriter-text");
+
+    if (preloader && textContainer) {
+        // Check navigation type to detect Refresh
+        const navEntries = performance.getEntriesByType("navigation");
+        let isReload = false;
+        if (navEntries.length > 0) {
+            const nav = navEntries[0];
+            // @ts-ignore
+            isReload = nav.type === "reload";
+        }
+
+        // Check if preloader has already run in this session
+        const hasRun = sessionStorage.getItem("preloader_shown");
+
+        // Logic: Show if it's a Reload OR if it hasn't run yet. Hide otherwise (internal navigation).
+        if (!isReload && hasRun) {
+            // Already run and NOT a reload -> Hide immediately
+            preloader.style.display = "none";
+            preloader.remove();
+        } else {
+            // Run Animation (First visit OR Reload)
+            document.body.style.overflow = "hidden";
+
+            const textPart1 = "El Plan Comienza ";
+            const textPart2 = "Ahora";
+
+            const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+            const runTypewriter = async () => {
+                // Create container for Part 1
+                const span1 = document.createElement("span");
+                textContainer.appendChild(span1);
+
+                await wait(500); // Initial delay
+
+                // Type Part 1
+                for (let i = 0; i < textPart1.length; i++) {
+                    span1.textContent += textPart1[i];
+                    await wait(50); // Typing speed
+                }
+
+                // Create container for Part 2 ("Ahora")
+                const span2 = document.createElement("span");
+                span2.className =
+                    "inline-block transition-all duration-200 transform origin-center";
+                textContainer.appendChild(span2);
+
+                // Type Part 2 (Ahora)
+                for (let i = 0; i < textPart2.length; i++) {
+                    span2.textContent += textPart2[i];
+                    await wait(50);
+                }
+
+                // Flash Effect on "Ahora"
+                await wait(100);
+
+                // Flash ON (Orange + Scale + Glow effect)
+                span2.classList.add(
+                    "text-orange-500",
+                    "scale-110",
+                    "drop-shadow-lg",
+                );
+
+                await wait(300); // Duration of flash
+
+                // Flash OFF
+                span2.classList.remove(
+                    "text-orange-500",
+                    "scale-110",
+                    "drop-shadow-lg",
+                );
+
+                // Hold before exit
+                await wait(1000);
+
+                // Exit
+                preloader.classList.add("opacity-0", "pointer-events-none");
+                document.body.style.overflow = "";
+
+                setTimeout(() => {
+                    preloader.remove();
+                    // Mark as shown in session storage
+                    sessionStorage.setItem("preloader_shown", "true");
+                }, 700);
+            };
+
+            runTypewriter();
+        }
+    }
+</script>
