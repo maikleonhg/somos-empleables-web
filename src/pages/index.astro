@@ -1,0 +1,350 @@
+---
+import Layout from "../layouts/Layout.astro";
+import About from "../components/About.astro";
+import Services from "../components/Services.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CTA from "../components/CTA.astro";
+const instagramUrl = "https://www.instagram.com/somosempleables/";
+const currentYear = new Date().getFullYear();
+---
+
+<Layout
+	title="Somos Empleables | Tu Estrategia Definitiva para el Éxito Laboral"
+>
+	<main class="relative w-full min-h-screen">
+		<!-- Navigation -->
+		<nav
+			class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all"
+		>
+			<div
+				class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto"
+			>
+				<a
+					href="/"
+					class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2"
+				>
+					<span
+						>Somos<span class="text-blue-600">Empleables</span
+						></span
+					>
+				</a>
+				<div class="hidden md:flex gap-8">
+					<a
+						href="#sobre-nosotros"
+						class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+						>Nosotros</a
+					>
+					<a
+						href="#servicios"
+						class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+						>Servicios</a
+					>
+					<a
+						href="#testimonios"
+						class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+						>Testimonios</a
+					>
+					<a
+						href="/blog"
+						class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+						>Blog</a
+					>
+				</div>
+				<a
+					href={instagramUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-colors cursor-pointer shadow-lg shadow-slate-900/10"
+				>
+					Empezar Ahora
+				</a>
+			</div>
+		</nav>
+
+		<!-- Hero Section -->
+		<section
+			class="max-w-7xl mx-auto px-6 pt-32 pb-20 md:pt-48 md:pb-32 flex flex-col items-center text-center relative"
+		>
+			<!-- Background Gradients -->
+			<div
+				class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none"
+			>
+				<div
+					class="absolute top-20 left-1/4 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[100px] mix-blend-multiply opacity-70 animate-blob"
+				>
+				</div>
+				<div
+					class="absolute top-20 right-1/4 w-[500px] h-[500px] bg-purple-100/50 rounded-full blur-[100px] mix-blend-multiply opacity-70 animate-blob animation-delay-2000"
+				>
+				</div>
+			</div>
+
+			<span
+				class="inline-flex items-center gap-2 text-blue-700 font-semibold tracking-wide uppercase text-[10px] md:text-xs border border-blue-200 bg-blue-50 px-3 py-1.5 rounded-full mb-8 shadow-sm"
+			>
+				<span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"
+				></span>
+				Más que una agencia, tu socio estratégico
+			</span>
+
+			<h1
+				class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 max-w-5xl leading-[1.1]"
+			>
+				¿Cansado de enviar CVs <br class="hidden md:block" /> sin obtener
+				respuesta?
+			</h1>
+
+			<p
+				class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed mx-auto"
+			>
+				Transforma tu frustración en acción. Obtén la <strong
+					>Estrategia que te Conduce al Empleo Ideal</strong
+				> con recursos exclusivos, mentoría experta y una comunidad que te
+				respalda.
+			</p>
+
+			<div
+				class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center"
+			>
+				<a
+					href={instagramUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="w-full sm:w-auto bg-blue-600 text-white px-8 py-4 rounded-full text-base font-bold hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/20 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+				>
+					Quiero mi Estrategia
+				</a>
+				<a
+					href="#servicios"
+					class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-full text-base font-medium hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 cursor-pointer"
+				>
+					<span>Descubrir cómo funciona</span>
+				</a>
+			</div>
+
+			<!-- Mini Social Proof Hero -->
+			<div class="mt-12 flex items-center gap-4 text-sm text-slate-500">
+				<div class="flex -space-x-3">
+					<div
+						class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"
+					>
+					</div>
+					<div
+						class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white"
+					>
+					</div>
+					<div
+						class="w-8 h-8 rounded-full bg-slate-400 border-2 border-white"
+					>
+					</div>
+					<div
+						class="w-8 h-8 rounded-full bg-slate-500 border-2 border-white flex items-center justify-center text-xs text-white font-bold"
+					>
+						+500
+					</div>
+				</div>
+				<p>Profesionales confían en nosotros</p>
+			</div>
+		</section>
+
+		<About />
+		<Services />
+		<Testimonials />
+		<CTA />
+
+		<!-- Footer -->
+		<footer
+			class="bg-slate-900 text-slate-400 py-16 px-6 border-t border-slate-800"
+		>
+			<div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+				<div class="col-span-1 md:col-span-2">
+					<span class="text-2xl font-bold text-white block mb-6"
+						>Somos<span class="text-blue-500">Empleables</span
+						></span
+					>
+					<p class="max-w-xs mb-8 text-slate-400 leading-relaxed">
+						Tu aliado estratégico para navegar el mercado laboral
+						moderno con confianza, tecnología y resultados reales.
+					</p>
+
+					<!-- Social Links -->
+					<div class="flex gap-4">
+						<a
+							href={instagramUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-white"
+						>
+							<span class="sr-only">Instagram</span>
+							<svg
+								class="w-5 h-5"
+								fill="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+								><path
+									fill-rule="evenodd"
+									d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772 4.902 4.902 0 011.772-1.153c.636-.247 1.363-.416 2.427-.465 1.067-.047 1.409-.06 3.809-.06a4.424 4.424 0 012.095.068zm2.093 11.949a2.956 2.956 0 10-2.093 2.093l2.093-2.093zm-5.63-2.093a2.956 2.956 0 102.093-2.093l-2.093 2.093zm7.04-5.46a.965.965 0 11-.965.965.965.965 0 01.965-.965z"
+									clip-rule="evenodd"></path></svg
+							>
+						</a>
+						<a
+							href="https://www.linkedin.com/company/somosempleables/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-white"
+						>
+							<span class="sr-only">LinkedIn Company</span>
+							<svg
+								class="w-5 h-5"
+								fill="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+								><path
+									fill-rule="evenodd"
+									d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+									clip-rule="evenodd"></path></svg
+							>
+						</a>
+						<a
+							href="https://www.linkedin.com/in/stefano-andreani/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-white"
+						>
+							<span class="sr-only">LinkedIn Stefano</span>
+							<svg
+								class="w-5 h-5"
+								fill="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+								><path
+									d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+								></path></svg
+							>
+						</a>
+						<a
+							href="https://www.facebook.com/somosempleables"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-white"
+						>
+							<span class="sr-only">Facebook</span>
+							<svg
+								class="w-5 h-5"
+								fill="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+								><path
+									fill-rule="evenodd"
+									d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+									clip-rule="evenodd"></path></svg
+							>
+						</a>
+						<a
+							href="mailto:stefano@somosempleables.com"
+							class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all text-white"
+						>
+							<span class="sr-only">Email</span>
+							<svg
+								class="w-5 h-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+								></path></svg
+							>
+						</a>
+					</div>
+				</div>
+
+				<div>
+					<h4 class="text-white font-bold mb-6">Explora</h4>
+					<ul class="space-y-3 text-sm">
+						<li>
+							<a
+								href="/"
+								class="hover:text-blue-400 transition-colors flex items-center gap-2"
+								><span class="w-1 h-1 bg-blue-500 rounded-full"
+								></span>Inicio</a>
+						</li>
+						<li>
+							<a
+								href="/#servicios"
+								class="hover:text-blue-400 transition-colors flex items-center gap-2"
+								><span class="w-1 h-1 bg-slate-600 rounded-full"
+								></span>Servicios</a>
+						</li>
+						<li>
+							<a
+								href="/blog"
+								class="hover:text-blue-400 transition-colors flex items-center gap-2"
+								><span class="w-1 h-1 bg-slate-600 rounded-full"
+								></span>Blog</a>
+						</li>
+						<li>
+							<a
+								href="/#testimonios"
+								class="hover:text-blue-400 transition-colors flex items-center gap-2"
+								><span class="w-1 h-1 bg-slate-600 rounded-full"
+								></span>Casos de Éxito</a>
+						</li>
+					</ul>
+				</div>
+
+				<div>
+					<h4 class="text-white font-bold mb-6">Legal</h4>
+					<ul class="space-y-3 text-sm">
+						<li>
+							<a
+								href="#"
+								class="hover:text-blue-400 transition-colors"
+								>Política de Privacidad</a>
+						</li>
+						<li>
+							<a
+								href="#"
+								class="hover:text-blue-400 transition-colors"
+								>Términos y Condiciones</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div
+				class="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500"
+			>
+				<p>
+					&copy; {currentYear} Somos Empleables. Todos los derechos reservados.
+				</p>
+			</div>
+		</footer>
+	</main>
+</Layout>
+
+<style>
+	/* Custom animation for 'blob' background effects */
+	@keyframes blob {
+		0% {
+			transform: translate(0px, 0px) scale(1);
+		}
+		33% {
+			transform: translate(30px, -50px) scale(1.1);
+		}
+		66% {
+			transform: translate(-20px, 20px) scale(0.9);
+		}
+		100% {
+			transform: translate(0px, 0px) scale(1);
+		}
+	}
+	.animate-blob {
+		animation: blob 7s infinite;
+	}
+	.animation-delay-2000 {
+		animation-delay: 2s;
+	}
+</style>
