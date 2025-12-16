@@ -23,7 +23,7 @@
     <div class="relative z-10 text-center">
         <h1
             id="typewriter-text"
-            class="text-4xl md:text-6xl font-bold text-slate-900 font-mono tracking-tight min-h-[1.5em] flex items-center justify-center gap-2"
+            class="text-4xl md:text-6xl font-bold text-slate-900 font-mono tracking-tight min-h-[1.5em] flex flex-col items-center justify-center gap-2"
         >
             <!-- Text injected by JS -->
         </h1>
@@ -56,8 +56,8 @@
             // Run Animation (First visit OR Reload)
             document.body.style.overflow = "hidden";
 
-            const textPart1 = "El Plan Comienza ";
-            const textPart2 = "Ahora";
+            const textPart1 = "El Plan Comienza";
+            const textPart2 = "Ahora ✈️";
 
             const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -89,9 +89,9 @@
                 // Flash Effect on "Ahora"
                 await wait(100);
 
-                // Flash ON (Orange + Scale + Glow effect)
+                // Flash ON (Green + Scale + Glow effect)
                 span2.classList.add(
-                    "text-orange-500",
+                    "text-green-600",
                     "scale-110",
                     "drop-shadow-lg",
                 );
