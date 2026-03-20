@@ -1,10 +1,13 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
 const reports = await getCollection("reports");
 // Ordenar por fecha descending
-reports.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+reports.sort(
+    (a: CollectionEntry<"reports">, b: CollectionEntry<"reports">) =>
+        b.data.date.getTime() - a.data.date.getTime(),
+);
 ---
 
 <Layout

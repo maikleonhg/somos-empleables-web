@@ -1,13 +1,17 @@
 ---
-import { getCollection, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-	const reports = await getCollection('reports');
-	return reports.map((entry) => ({
+	const reports = await getCollection("reports");
+	return reports.map((entry: CollectionEntry<"reports">) => ({
 		params: { slug: entry.slug },
 		props: { entry },
 	}));
+}
+
+interface Props {
+	entry: CollectionEntry<"reports">;
 }
 
 const { entry } = Astro.props;
@@ -17,43 +21,71 @@ const { Content } = await render(entry);
 <Layout title={entry.data.title} description={entry.data.description}>
 	<main class="max-w-4xl mx-auto px-6 py-24 sm:py-32">
 		<!-- Cabecera del Reporte -->
-		<header class="mb-12 border-b border-slate-200 pb-8" data-aos="fade-down">
+		<header
+			class="mb-12 border-b border-slate-200 pb-8"
+			data-aos="fade-down"
+		>
 			<div class="flex items-center gap-2 mb-4">
-				<span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+				<span
+					class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+				>
 					Reporte
 				</span>
-				<span class="text-slate-500 text-sm">{entry.data.date.toLocaleDateString('es-ES')}</span>
+				<span class="text-slate-500 text-sm"
+					>{entry.data.date.toLocaleDateString("es-ES")}</span
+				>
 			</div>
-			<h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl mb-4 leading-tight">
+			<h1
+				class="text-4xl font-extrabold text-slate-900 sm:text-5xl mb-4 leading-tight"
+			>
 				{entry.data.title}
 			</h1>
 			<p class="text-lg text-slate-600 mb-6">
 				{entry.data.description}
 			</p>
-			
+
 			<div class="flex items-center gap-4">
 				<div class="flex flex-col">
-					<span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Cliente</span>
-					<span class="text-slate-700 font-medium">{entry.data.client || 'General'}</span>
+					<span
+						class="text-xs text-slate-400 uppercase tracking-wider font-bold"
+						>Cliente</span
+					>
+					<span class="text-slate-700 font-medium"
+						>{entry.data.client || "General"}</span
+					>
 				</div>
 				<div class="w-px h-8 bg-slate-200"></div>
 				<div class="flex flex-col">
-					<span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Autor</span>
-					<span class="text-slate-700 font-medium">{entry.data.author}</span>
+					<span
+						class="text-xs text-slate-400 uppercase tracking-wider font-bold"
+						>Autor</span
+					>
+					<span class="text-slate-700 font-medium"
+						>{entry.data.author}</span
+					>
 				</div>
 			</div>
 		</header>
 
 		<!-- Contenido Propiamente Dicho -->
-		<article class="prose prose-slate prose-lg max-w-none md:prose-xl selection:bg-blue-100" data-aos="fade-up">
+		<article
+			class="prose prose-slate prose-lg max-w-none md:prose-xl selection:bg-blue-100"
+			data-aos="fade-up"
+		>
 			<Content />
 		</article>
 
 		<!-- Footer del Reporte -->
-		<footer class="mt-20 pt-8 border-t border-slate-200 flex flex-wrap gap-2">
-			{entry.data.tags.map(tag => (
-				<span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full">{tag}</span>
-			))}
+		<footer
+			class="mt-20 pt-8 border-t border-slate-200 flex flex-wrap gap-2"
+		>
+			{
+				entry.data.tags.map((tag) => (
+					<span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full">
+						{tag}
+					</span>
+				))
+			}
 		</footer>
 	</main>
 </Layout>
