@@ -1,0 +1,78 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const reports = await getCollection('reports');
+	return reports.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+	<main class="max-w-4xl mx-auto px-6 py-24 sm:py-32">
+		<!-- Cabecera del Reporte -->
+		<header class="mb-12 border-b border-slate-200 pb-8" data-aos="fade-down">
+			<div class="flex items-center gap-2 mb-4">
+				<span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+					Reporte
+				</span>
+				<span class="text-slate-500 text-sm">{entry.data.date.toLocaleDateString('es-ES')}</span>
+			</div>
+			<h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl mb-4 leading-tight">
+				{entry.data.title}
+			</h1>
+			<p class="text-lg text-slate-600 mb-6">
+				{entry.data.description}
+			</p>
+			
+			<div class="flex items-center gap-4">
+				<div class="flex flex-col">
+					<span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Cliente</span>
+					<span class="text-slate-700 font-medium">{entry.data.client || 'General'}</span>
+				</div>
+				<div class="w-px h-8 bg-slate-200"></div>
+				<div class="flex flex-col">
+					<span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Autor</span>
+					<span class="text-slate-700 font-medium">{entry.data.author}</span>
+				</div>
+			</div>
+		</header>
+
+		<!-- Contenido Propiamente Dicho -->
+		<article class="prose prose-slate prose-lg max-w-none md:prose-xl selection:bg-blue-100" data-aos="fade-up">
+			<Content />
+		</article>
+
+		<!-- Footer del Reporte -->
+		<footer class="mt-20 pt-8 border-t border-slate-200 flex flex-wrap gap-2">
+			{entry.data.tags.map(tag => (
+				<span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full">{tag}</span>
+			))}
+		</footer>
+	</main>
+</Layout>
+
+<style is:global>
+	/* Estilos adicionales para mejorar la legibilidad del reporte */
+	.prose h2 {
+		@apply mt-16 mb-8 text-3xl font-bold text-slate-900 border-l-4 border-blue-600 pl-4;
+	}
+	.prose h3 {
+		@apply mt-10 mb-4 text-2xl font-semibold text-slate-800;
+	}
+	.prose p {
+		@apply leading-relaxed mb-6;
+	}
+	.prose ul {
+		@apply list-disc list-outside mb-8 pl-6 space-y-2;
+	}
+	.prose blockquote {
+		@apply italic border-l-4 border-slate-300 pl-6 py-2 bg-slate-50 my-10;
+	}
+</style>
