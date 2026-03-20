@@ -5,8 +5,8 @@ const reports = defineCollection({
     schema: z.object({
         title: z.string(),
         description: z.string(),
-        client: z.string().optional(),
-        date: z.coerce.date(),
+        client: z.string().default('General'),
+        date: z.coerce.string(),
         author: z.string().default('Felipe'),
         tags: z.array(z.string()).default(['Reporte']),
     }),

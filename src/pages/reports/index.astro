@@ -6,7 +6,7 @@ const reports = await getCollection("reports");
 // Ordenar por fecha descending
 reports.sort(
     (a: CollectionEntry<"reports">, b: CollectionEntry<"reports">) =>
-        b.data.date.getTime() - a.data.date.getTime(),
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 ---
 
@@ -41,10 +41,13 @@ reports.sort(
 
                         <div class="flex items-center gap-2 mb-6 pointer-events-none">
                             <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">
-                                {report.data.client || "General"}
+                                {report.data.client}
                             </span>
                             <span class="text-slate-400 text-xs">
-                                {report.data.date.toLocaleDateString("es-ES")}
+                                {report.data.date
+                                    .split("-")
+                                    .reverse()
+                                    .join("/")}
                             </span>
                         </div>
 

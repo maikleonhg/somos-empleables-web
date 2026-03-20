@@ -32,7 +32,7 @@ const { Content } = await render(entry);
 					Reporte
 				</span>
 				<span class="text-slate-500 text-sm"
-					>{entry.data.date.toLocaleDateString("es-ES")}</span
+					>{entry.data.date.split("-").reverse().join("/")}</span
 				>
 			</div>
 			<h1
@@ -51,7 +51,7 @@ const { Content } = await render(entry);
 						>Cliente</span
 					>
 					<span class="text-slate-700 font-medium"
-						>{entry.data.client || "General"}</span
+						>{entry.data.client}</span
 					>
 				</div>
 				<div class="w-px h-8 bg-slate-200"></div>

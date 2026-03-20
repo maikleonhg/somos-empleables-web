@@ -47,4 +47,4 @@ Felipe tiene acceso directo a las bases de datos de Notion a través de un **MCP
     - **Generar:** Usar esa información para autocompletar el archivo `.md` del reporte en `src/content/reports/`.
     - **Refinar:** Asegurarse de que el tono sea profesional y el diseño premium, basándose en los datos reales obtenidos.
 
-**¡Listo Felipe! Tu Agente ya sabe qué hacer. Solo pídele: "Busca a [Cliente] en Notion y crea su reporte" y él se encargará de todo.**
+**¡Listo, Felipe! Tu Agente ya sabe qué hacer. Solo pídele: "Busca a [Cliente] en Notion y crea su reporte" y él se encargará de todo.**
