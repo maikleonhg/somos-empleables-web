@@ -32,10 +32,19 @@ Felipe quiere que sus reportes se vean profesionales. El Agente debe:
 1.  Realizar `git add .` -> `git commit -m "nuevo reporte: [cliente]"` -> `git push origin felipe-reports`.
 2.  **Pull Request:** Al igual que Stefano, cuando Felipe termine un conjunto de reportes, el Agente debe ayudarle a abrir un PR hacia `main`.
 
-## ⚠️ Instrucciones para el Agente (Detalles Técnicos)
-- Los reportes se renderizan dinámicamente mediante `src/pages/reports/[slug].astro`.
-- Si necesitas añadir un nuevo componente visual para los reportes, hazlo en `src/components/reports/`.
-- No toques el `Layout.astro` principal sin una buena razón; úsalo para envolver los reportes.
-
 ---
-**¡Listo Felipe! Tu Agente ya sabe qué hacer. Solo pídele: "Crea un reporte para..." y él se encargará del resto.**
+## 🔌 Paso 5: Integración con Notion (MCP)
+Felipe tiene acceso directo a las bases de datos de Notion a través de un **MCP Server**. El Agente debe usar estas herramientas para extraer datos reales antes de crear cualquier reporte:
+
+1.  **Bases de Datos Disponibles:**
+    - **`🛫 Seguimiento Ingresados`**: Información detallada de clientes actuales (Perfil, Profesión, Coach, Situación Laboral).
+    - **`🏁 Seguimiento Leads`**: Datos de prospectos (Estado del lead, Setter, Acciones).
+    - **`🧾 Bitácora Consolidada`**: Historias de orgullo, logros y competencias (ideal para enriquecer el contenido del reporte).
+
+2.  **Flujo "Data-Driven" para el Agente:**
+    - **Consultar:** "Busca en Notion la información de [Nombre de Cliente]".
+    - **Analizar:** Extraer el "Perfil - Contexto" y las "Historias de Orgullo".
+    - **Generar:** Usar esa información para autocompletar el archivo `.md` del reporte en `src/content/reports/`.
+    - **Refinar:** Asegurarse de que el tono sea profesional y el diseño premium, basándose en los datos reales obtenidos.
+
+**¡Listo Felipe! Tu Agente ya sabe qué hacer. Solo pídele: "Busca a [Cliente] en Notion y crea su reporte" y él se encargará de todo.**
