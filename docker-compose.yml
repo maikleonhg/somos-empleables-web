@@ -1,0 +1,9 @@
+name: se-web
+
+services:
+  se-web:
+    image: maikleonhg/se-web:latest
+    container_name: se-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
