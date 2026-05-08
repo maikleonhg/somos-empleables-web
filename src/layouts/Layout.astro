@@ -52,6 +52,31 @@ const {
 
         <!-- AOS CSS -->
         <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+        <!-- Google Analytics 4 -->
+        <script
+            is:inline
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-4TES4Z620T"></script>
+        <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            // Allowlist de hostnames donde el código sirve tráfico real (prod).
+            // Cualquier otro hostname (localhost, deploy previews de Netlify,
+            // futuros subdominios) se marca como internal y queda excluido
+            // por el data filter "Internal Traffic" de GA4.
+            const PROD_HOSTNAMES = [
+                "somosempleables.com",
+                "www.somosempleables.com",
+            ];
+            if (!PROD_HOSTNAMES.includes(window.location.hostname)) {
+                gtag("set", { traffic_type: "internal" });
+            }
+            gtag("config", "G-4TES4Z620T");
+        </script>
     </head>
     <body
         class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white overflow-x-hidden"
