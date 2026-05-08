@@ -52,6 +52,31 @@ const {
 
         <!-- AOS CSS -->
         <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+        <!-- Google Analytics 4 -->
+        <script is:inline>
+            // Tráfico que NO sea desde el dominio público de prod se marca
+            // como interno y queda excluido por el data filter "Internal Traffic".
+            // Cubre localhost (dev) y deploy previews de Netlify.
+            window.dataLayer = window.dataLayer || [];
+            if (window.location.hostname !== "somosempleables.com") {
+                window.dataLayer.push([
+                    "set",
+                    { traffic_type: "internal" },
+                ]);
+            }
+        </script>
+        <script
+            is:inline
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-4TES4Z620T"></script>
+        <script is:inline>
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-4TES4Z620T");
+        </script>
     </head>
     <body
         class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white overflow-x-hidden"
