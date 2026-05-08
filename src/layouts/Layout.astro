@@ -64,10 +64,15 @@ const {
                 dataLayer.push(arguments);
             }
             gtag("js", new Date());
-            // Tráfico que NO sea desde el dominio público de prod se marca
-            // como interno y queda excluido por el data filter "Internal Traffic".
-            // Cubre localhost, deploy previews de Netlify, y futuros subdominios.
-            if (window.location.hostname !== "somosempleables.com") {
+            // Allowlist de hostnames donde el código sirve tráfico real (prod).
+            // Cualquier otro hostname (localhost, deploy previews de Netlify,
+            // futuros subdominios) se marca como internal y queda excluido
+            // por el data filter "Internal Traffic" de GA4.
+            const PROD_HOSTNAMES = [
+                "somosempleables.com",
+                "www.somosempleables.com",
+            ];
+            if (!PROD_HOSTNAMES.includes(window.location.hostname)) {
                 gtag("set", { traffic_type: "internal" });
             }
             gtag("config", "G-4TES4Z620T");
