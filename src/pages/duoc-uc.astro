@@ -1,0 +1,3349 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const etapas = [
+    {
+        num: "01",
+        id: "etapa-1",
+        title: "El Cimiento de la Empleabilidad",
+        subtitle: "Autoconocimiento y Mentalidad",
+    },
+    {
+        num: "02",
+        id: "etapa-2",
+        title: "Creación de un buen CV",
+        subtitle: "El CV es un anuncio, no autobiografía",
+    },
+    {
+        num: "03",
+        id: "etapa-3",
+        title: "La Entrevista",
+        subtitle: "Preparación que diferencia",
+    },
+    {
+        num: "04",
+        id: "etapa-4",
+        title: "Red de Contactos",
+        subtitle: "LinkedIn como tu mejor aliado",
+    },
+];
+
+// Titular profesional — ejemplos (Etapa 4)
+const titularEjemplos = [
+    { perfil: "Ingeniero Comercial", debil: "Ingeniero Comercial", fuerte: "Ingeniero Comercial · Estrategia Comercial y Análisis de Mercado · Crecimiento basado en datos" },
+    { perfil: "Analista Financiero", debil: "Analista Financiero en [empresa]", fuerte: "Analista Financiero · Control de Gestión, FP&A y Reporting · Excel avanzado, Power BI y SAP" },
+    { perfil: "Ingeniero Civil", debil: "Ingeniero Civil", fuerte: "Ingeniero Civil · Diseño y supervisión de proyectos de infraestructura sostenible" },
+    { perfil: "Abogado", debil: "Abogado", fuerte: "Abogado Corporativo · Negociación y resolución de conflictos empresariales · M&A" },
+    { perfil: "En transición laboral", debil: "Open to work", fuerte: "En búsqueda activa como Analista Financiero · Control de gestión y análisis de datos · Disponibilidad inmediata" },
+];
+
+// Aptitudes — ejemplos (Etapa 4)
+const aptitudesEjemplos = [
+    { perfil: "Analista de datos", tecnicas: "SQL, Power BI, Excel avanzado, Tableau, Análisis predictivo", blandas: "Pensamiento analítico, Comunicación efectiva, Resolución de problemas, Trabajo en equipo, Atención al detalle" },
+    { perfil: "Ingeniero comercial / KAM", tecnicas: "Negociación B2B, Gestión de cuentas clave, Forecast comercial, CRM (Salesforce), Análisis de mercado", blandas: "Liderazgo, Comunicación persuasiva, Orientación a resultados, Manejo de stakeholders, Adaptabilidad" },
+    { perfil: "Ingeniero civil", tecnicas: "AutoCAD, Revit, Gestión de proyectos, Planificación de obras, Lean Construction", blandas: "Liderazgo de equipos, Resolución de problemas, Toma de decisiones bajo presión, Coordinación multidisciplinaria, Comunicación técnica" },
+];
+
+// Checklist final LinkedIn (Etapa 4)
+const linkedinChecklist = [
+    { n: 1, check: "Foto de perfil profesional, fondo neutro, sonrisa leve", q: "¿Pasa el filtro de 2 segundos?" },
+    { n: 2, check: "Banner personalizado con propuesta de valor", q: "¿Refuerza mi marca o está vacío?" },
+    { n: 3, check: "Titular con cargo + palabra clave + valor agregado", q: "¿Aparezco si buscan mi cargo objetivo?" },
+    { n: 4, check: "\"Acerca de\" en 3 bloques con 1-2 logros cuantificados", q: "¿En 30 seg de lectura queda claro qué vendo?" },
+    { n: 5, check: "Cada experiencia tiene 3-5 logros MAR con números", q: "¿Hay logros o solo lista de funciones?" },
+    { n: 6, check: "Top 10 aptitudes alineadas al cargo objetivo", q: "¿Las 3 destacadas son las más importantes?" },
+    { n: 7, check: "Al menos 3-5 recomendaciones de fuentes diversas", q: "¿Tengo jefe, par, cliente representados?" },
+    { n: 8, check: "URL personalizada limpia", q: "¿La puedo poner en mi CV sin vergüenza?" },
+    { n: 9, check: "LinkedIn dice lo mismo que el CV (sin contradicciones)", q: "¿Pasa el cruce de verificación?" },
+    { n: 10, check: "Actividad mínima semanal (1 comentario / 1 post / 3 conexiones)", q: "¿Mi perfil está vivo o dormido?" },
+];
+
+// 10 preguntas que siempre caen (Etapa 3)
+const preguntasFrecuentes = [
+    "Háblame de ti / Preséntate.",
+    "¿Por qué te interesa este cargo y esta empresa?",
+    "Cuéntame de un proyecto que hayas liderado (objetivo, acción, resultado).",
+    "Cuéntame de un conflicto o desacuerdo con un colega.",
+    "¿Cuál es tu mayor fortaleza? (con ejemplo)",
+    "¿Cuál es tu debilidad o área de mejora? (con plan de acción)",
+    "¿Por qué saliste / quieres salir de tu trabajo actual?",
+    "¿Cómo te ves en 2-3 años? / ¿Cuáles serían tus primeros 90 días?",
+    "¿Cuál es tu expectativa de renta?",
+    "¿Tienes preguntas para nosotros?",
+];
+
+// Checklist final CV (Etapa 2)
+const cvChecklist = [
+    { n: 1, check: "Formato 1 columna, sin foto, PDF", q: "¿Pasa un ATS?" },
+    { n: 2, check: "Primera página con perfil + último cargo desarrollado", q: "¿Si solo lee la página 1, queda claro qué vendo?" },
+    { n: 3, check: "Perfil profesional ≤ 4 renglones con número y palabras clave", q: "¿Vendo en 6 segundos?" },
+    { n: 4, check: "Cada cargo tiene 3–5 viñetas en formato MAR con números", q: "¿Hay logros o solo funciones?" },
+    { n: 5, check: "Verifiqué con Ctrl+F todas las keywords de la oferta", q: "¿El ATS encuentra lo que busca?" },
+    { n: 6, check: "Herramientas con nivel y contexto", q: "¿\"Excel avanzado\" o solo \"Excel\"?" },
+    { n: 7, check: "LinkedIn dice lo mismo que el CV", q: "¿La verificación cruzada me ayuda o me hunde?" },
+    { n: 8, check: "Versión angulada al cargo específico (no genérica)", q: "¿Este CV fue hecho para esta oferta?" },
+    { n: 9, check: "Revisé manualmente que no se hayan inventado ni borrado logros cuantificados", q: "¿Los números siguen siendo los reales?" },
+];
+
+// Tipos de entrevista (Etapa 3)
+const tiposEntrevista = [
+    { tipo: "Screening telefónico", quien: "Reclutador junior / atracción de talento", evalua: "Disponibilidad, renta, experiencia mínima, motivación básica. Filtro inicial.", prep: "Tono energético, respuestas cortas y firmes. Tener renta y fecha de inicio listas." },
+    { tipo: "Entrevista por competencias", quien: "Reclutador / psicólogo organizacional", evalua: "Competencias blandas con método STAR, coherencia, autoconocimiento.", prep: "Banco de ejemplos MAR/STAR listo. Practicar conflicto, error y trabajo en equipo." },
+    { tipo: "Entrevista técnica", quien: "Hiring manager / par técnico", evalua: "Dominio real del oficio, herramientas, decisiones técnicas, trade-offs.", prep: "Repasar herramientas con ejemplos concretos. Preparar 1-2 casos de decisiones técnicas." },
+    { tipo: "Entrevista psicolaboral", quien: "Psicólogo externo", evalua: "Coherencia narrativa, manejo emocional, fit cultural, debilidades reales.", prep: "Historia de vida consistente. Errores reales. NO decir \"soy perfeccionista\"." },
+    { tipo: "Entrevista final con gerencia", quien: "Gerente / Director", evalua: "Visión, motivación de largo plazo, fit estratégico, negociación.", prep: "Investigar a fondo. Preguntas inteligentes sobre el negocio. Proyección a 2-3 años." },
+];
+
+// Checklist 24 horas antes (Etapa 3, sección 7)
+const entrevistaChecklist24h = [
+    { n: 1, check: "Investigué la empresa (5 datos concretos) y al entrevistador (LinkedIn)" },
+    { n: 2, check: "Identifiqué si es reclutador o hiring manager y ajusté el enfoque" },
+    { n: 3, check: "Tengo lista mi versión de \"Háblame de ti\" en 90-120 seg (Pasado-Presente-Futuro)" },
+    { n: 4, check: "Tengo 3 a 5 historias MAR/STAR diferentes, una por competencia" },
+    { n: 5, check: "Tengo mi narrativa de salida del trabajo anterior en una versión simple" },
+    { n: 6, check: "Tengo mi rango de renta listo, sin preámbulos" },
+    { n: 7, check: "Tengo 3 preguntas preparadas para el entrevistador" },
+    { n: 8, check: "Probé cámara, micrófono, fondo y luz" },
+    { n: 9, check: "CV abierto en otra pestaña y vaso de agua a mano" },
+    { n: 10, check: "Practiqué en voz alta con cronómetro al menos 1 vez" },
+];
+
+// Innegociables del CV (Etapa 2)
+const cvInnegociables = [
+    { titulo: "Formato ATS-friendly", body: "Una sola columna, vertical, sin foto, sin barras laterales ni íconos decorativos. PDF limpio, sin tablas anidadas. Como regla general, <strong>2 páginas</strong> (o 1 si tienes menos de 2 años de experiencia)." },
+    { titulo: "Perfil Profesional fuerte en los primeros 4 renglones", body: "Años de experiencia + área, 2–3 fortalezas validadas externamente, 1 logro destacado cuantificado y las palabras clave del cargo objetivo. Es <strong>lo único garantizado</strong> que va a leer el reclutador." },
+    { titulo: "Logros cuantificados (formato MAR) bajo cada experiencia", body: "No funciones, <strong>logros</strong>. Los números son el principal diferenciador. Si una versión del CV pierde los números (porque la IA los borró al regenerar), pierde toda su fuerza y hay que recuperarlos manualmente." },
+    { titulo: "La oferta es tu spoiler: adapta los CVs a lo que aparece en ella", body: "Leer la descripción del cargo función por función, subrayar las palabras clave (ej. <em>\"riesgo operacional\", \"KRI\", \"SLA\", \"stakeholders\", \"Lean\", \"SAP\", \"Power BI\"</em>) y verificar una por una que aparezcan en el CV, idealmente en la primera página. La IA y el reclutador buscan <strong>coincidencias exactas</strong>, no infieren." },
+    { titulo: "Herramientas con nivel y contexto", body: "En lugar de listar <em>\"Excel, SQL, Power BI\"</em>, escribir <em>\"Excel avanzado (tablas dinámicas, Power Query), SQL intermedio, Power BI (modelado DAX y dashboards ejecutivos)\"</em>." },
+    { titulo: "No un solo CV — sí 1 maestro + 2 a 3 versiones anguladas", body: "Postular con un único CV genérico es la causa #1 del síndrome <em>\"postulo y nadie me llama\"</em>. Las versiones adaptadas comparten ~80% del contenido; cambian el perfil profesional, el orden de los logros y las palabras clave según el cargo." },
+];
+
+// Errores comunes (Etapa 3)
+const erroresEntrevista = [
+    { error: "Respuestas largas (5+ minutos)", duele: "El reclutador se desconecta y queda con la impresión de poca síntesis.", antidoto: "Cronómetro al practicar. Máximo 2 min por respuesta, 3 para \"háblame de ti\"." },
+    { error: "Repetir el mismo ejemplo 4-5 veces", duele: "Da la impresión de que solo tienes una experiencia válida.", antidoto: "Tener 3 a 5 historias MAR distintas, una por tipo de competencia." },
+    { error: "Bloquearse con preguntas simples (\"¿con quién vives?\")", duele: "Un psicólogo lee inseguridad u ocultamiento.", antidoto: "Practicar 5 respuestas personales cortas y naturales." },
+    { error: "Justificar antes de afirmar", duele: "Cada palabra previa al número/respuesta lo debilita.", antidoto: "Afirmar primero, complementar solo si preguntan." },
+    { error: "Sobreexplicar lo técnico", duele: "Si el reclutador no es técnico, se pierde. Si lo es, ya lo sabe.", antidoto: "Resultado primero, detalle técnico solo si lo piden." },
+    { error: "Hablar mal de la empresa anterior", duele: "Bandera roja universal: si hablas mal de ellos hoy, hablarás mal de nosotros mañana.", antidoto: "Hablar de \"hacia dónde voy\", no de \"de qué huyo\"." },
+    { error: "Caer en \"soy perfeccionista\" como debilidad", duele: "Cliché que destruye credibilidad y autoconocimiento.", antidoto: "Debilidad real + plan de gestión actual." },
+    { error: "Tono plano / poca energía", duele: "Especialmente en screening telefónico: te interpretan como desmotivado.", antidoto: "Sonreír mientras hablas (se escucha). Subir 10% la energía habitual." },
+    { error: "No investigar la empresa", duele: "Si el entrevistador lleva años ahí, lo detecta al instante.", antidoto: "5 datos concretos antes de entrar: modelo, clientes, noticias, valores, equipo." },
+    { error: "No tener preguntas al final", duele: "Se interpreta como falta de interés genuino.", antidoto: "Llegar con 3 preguntas escritas. Hacer mínimo 2." },
+];
+---
+
+<Layout
+    title="Cómo construir tu empleabilidad | Material Duoc UC | Somos Empleables"
+    description="Material complementario a la charla de Stefano Andreani en Duoc UC. Las 4 etapas para construir tu empleabilidad: autoconocimiento, herramientas, búsqueda y entrevistas."
+>
+    <main class="relative w-full pt-32 pb-24 bg-slate-50">
+        <!-- Hero Section -->
+        <section
+            class="max-w-5xl mx-auto px-6 mb-20 text-center relative"
+        >
+            <!-- Background Gradients -->
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none overflow-hidden"
+            >
+                <div
+                    class="absolute top-0 left-0 md:left-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-blue-100/40 rounded-full blur-[60px] md:blur-[100px] opacity-70"
+                >
+                </div>
+                <div
+                    class="absolute top-0 right-0 md:right-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-purple-100/40 rounded-full blur-[60px] md:blur-[100px] opacity-70"
+                >
+                </div>
+            </div>
+
+            <span
+                class="inline-flex items-center gap-2 text-blue-700 font-semibold tracking-wide uppercase text-[10px] md:text-xs border border-blue-200 bg-blue-50 px-3 py-1.5 rounded-full mb-8 shadow-sm"
+            >
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"
+                ></span>
+                Material de la charla — Duoc UC
+            </span>
+
+            <h1
+                class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]"
+            >
+                Cómo construir <br class="hidden md:block" />
+                tu <span class="text-blue-600">empleabilidad</span>
+            </h1>
+
+            <p
+                class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+            >
+                Material complementario a la charla de <strong
+                    class="text-slate-900">Stefano Andreani</strong
+                >. Las 4 etapas para llevar tu carrera al siguiente nivel.
+            </p>
+        </section>
+
+        <!-- TOC + Content -->
+        <section class="relative max-w-7xl mx-auto px-6">
+            <!-- Sticky TOC (absolute, left edge of section, only on xl+) -->
+            <aside
+                class="hidden xl:block absolute left-6 top-0 h-full pointer-events-none"
+            >
+                <nav
+                    class="sticky top-32 w-52 space-y-1 pointer-events-auto"
+                >
+                    <p
+                        class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-3"
+                    >
+                        Contenido
+                    </p>
+                    {
+                        etapas.map((e) => (
+                            <a
+                                href={`#${e.id}`}
+                                data-toc-link={e.id}
+                                class="toc-link block px-3 py-3 rounded-lg text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-colors group"
+                            >
+                                <div class="flex items-baseline gap-3">
+                                    <span class="text-xs font-bold text-slate-400 group-hover:text-blue-500 font-mono">
+                                        {e.num}
+                                    </span>
+                                    <div class="flex-1">
+                                        <span class="block text-sm font-semibold leading-snug">
+                                            {e.title}
+                                        </span>
+                                        <span class="block text-xs text-slate-400 mt-0.5">
+                                            {e.subtitle}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        ))
+                    }
+                </nav>
+            </aside>
+
+            <!-- Centered Article -->
+            <article class="max-w-3xl mx-auto">
+                    <!-- ============== ETAPA 1 ============== -->
+                    <section id="etapa-1" class="scroll-mt-28">
+                        <div
+                            class="mb-10 pb-8 border-b border-slate-200"
+                        >
+                            <span
+                                class="inline-block bg-blue-600 text-white text-xs font-bold tracking-wider uppercase px-3 py-1.5 rounded-full mb-4"
+                            >
+                                Etapa 01
+                            </span>
+                            <h2
+                                class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-3"
+                            >
+                                El Cimiento de la Empleabilidad
+                            </h2>
+                            <p class="text-xl text-slate-500 font-light">
+                                Autoconocimiento y Mentalidad
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-xl text-slate-800 font-medium mb-6 leading-relaxed"
+                        >
+                            Esta etapa suele ser la más ignorada, pero es la más
+                            crítica. Antes de escribir una sola palabra en un
+                            currículum o sentarse frente a un reclutador, el
+                            profesional debe realizar una <strong
+                                >auditoría profunda de su perfil</strong
+                            >.
+                        </p>
+
+                        <p
+                            class="text-base text-slate-600 leading-relaxed mb-6"
+                        >
+                            Un candidato que no comprende su propio valor es
+                            incapaz de proyectarlo. Esta fase se divide en dos
+                            grandes ejes: el <strong class="text-slate-900"
+                                >análisis técnico</strong
+                            > y el <strong class="text-slate-900"
+                                >análisis psicológico</strong
+                            >.
+                        </p>
+
+                        <!-- 1. El Análisis del Perfil -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >01.</span
+                            >
+                            El Análisis del Perfil Profesional
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            No se trata solo de recordar dónde trabajaste, sino
+                            de convertirte en un <strong class="text-slate-900"
+                                >experto de tu propia trayectoria</strong
+                            >. Debes desglosar meticulosamente cada etapa de tu
+                            carrera bajo los siguientes puntos:
+                        </p>
+                        <ul class="space-y-4 mb-6">
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-1.5"
+                                >
+                                    Dominio de la Experiencia
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Debes tener total claridad sobre las
+                                    responsabilidades que asumiste, las
+                                    herramientas técnicas que dominas y las
+                                    metodologías que aplicaste en el día a día.
+                                    Es fundamental entender con qué áreas
+                                    interactuabas y, sobre todo, qué problema
+                                    específico venía a resolver tu cargo dentro
+                                    de la organización.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-1.5"
+                                >
+                                    Competencias con Respaldo
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Las habilidades blandas no pueden ser solo
+                                    etiquetas. Si afirmas tener "Liderazgo" o
+                                    "Capacidad Analítica", debes tener preparado
+                                    un ejemplo concreto de tu pasado laboral que
+                                    funcione como <strong class="text-slate-900"
+                                        >evidencia irrefutable</strong
+                                    > de esa capacidad.
+                                </p>
+                            </li>
+                        </ul>
+
+                        <!-- 2. Método MAR -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >02.</span
+                            >
+                            La Extracción de Logros: El Método MAR
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            Los logros son el <strong class="text-slate-900"
+                                >lenguaje universal de la empleabilidad</strong
+                            >; son lo que te permite destacar entre perfiles
+                            similares. Para que un logro sea contundente, debe
+                            estructurarse de forma que el impacto sea evidente.
+                            Usamos el método <strong class="text-slate-900"
+                                >MAR (Momento, Acción, Resultado)</strong
+                            >:
+                        </p>
+
+                        <!-- MAR Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div
+                                class="relative bg-linear-to-br from-blue-50 to-white p-6 rounded-2xl border border-blue-100 shadow-sm"
+                            >
+                                <span
+                                    class="block text-6xl font-extrabold text-blue-200 leading-none mb-3 select-none"
+                                    >M</span
+                                >
+                                <p
+                                    class="text-xs text-blue-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    El Contexto
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-3"
+                                >
+                                    Momento
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    El escenario o problema inicial. <em
+                                        >Ej:</em
+                                    > una base de datos de clientes con 25% de duplicidad
+                                    que genera errores en campañas y pérdidas económicas.
+                                </p>
+                            </div>
+                            <div
+                                class="relative bg-linear-to-br from-purple-50 to-white p-6 rounded-2xl border border-purple-100 shadow-sm"
+                            >
+                                <span
+                                    class="block text-6xl font-extrabold text-purple-200 leading-none mb-3 select-none"
+                                    >A</span
+                                >
+                                <p
+                                    class="text-xs text-purple-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    La Ejecución
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-3"
+                                >
+                                    Acción
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    Los pasos técnicos y estratégicos que
+                                    tomaste. Herramientas (SQL, Python),
+                                    coordinación con equipos y la metodología
+                                    para sanear y normalizar la información.
+                                </p>
+                            </div>
+                            <div
+                                class="relative bg-linear-to-br from-green-50 to-white p-6 rounded-2xl border border-green-100 shadow-sm"
+                            >
+                                <span
+                                    class="block text-6xl font-extrabold text-green-200 leading-none mb-3 select-none"
+                                    >R</span
+                                >
+                                <p
+                                    class="text-xs text-green-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    El Impacto
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-3"
+                                >
+                                    Resultado
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    La consecuencia directa, idealmente en
+                                    números. <em>Ej:</em> 98% de limpieza, 15% menos
+                                    en costos de envío y miles de duplicados eliminados.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 3. Diagnóstico Psicológico -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >03.</span
+                            >
+                            El Diagnóstico Psicológico
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Entender tu identidad profesional implica conocer
+                            tanto tus <strong class="text-slate-900"
+                                >luces como tus sombras</strong
+                            > para presentarlas de forma estratégica.
+                        </p>
+                        <ul class="space-y-4 mb-6">
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-1.5"
+                                >
+                                    Fortalezas con Evidencia
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Cada fortaleza debe ir acompañada de una <em
+                                        >"prueba de concepto"</em
+                                    >. No basta con decir que eres autodidacta;
+                                    debes demostrarlo contando, por ejemplo,
+                                    cómo aprendiste a automatizar procesos por
+                                    tu cuenta para reducir tareas <strong
+                                        class="text-slate-900"
+                                        >de dos días a solo diez minutos</strong
+                                    >.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-1.5"
+                                >
+                                    Debilidades con Plan de Acción
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Una debilidad bien manejada demuestra
+                                    madurez. Preséntala junto a su <strong
+                                        class="text-slate-900"
+                                        >método de gestión</strong
+                                    >. Si tu debilidad es la dificultad para
+                                    delegar por perfeccionismo, explica cómo hoy
+                                    usas sistemas de revisión por hitos y puntos
+                                    de control para asegurar la calidad mientras
+                                    empoderas a tu equipo.
+                                </p>
+                            </li>
+                        </ul>
+
+                        <!-- DISC Callout -->
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-6 my-10 rounded-r-lg"
+                        >
+                            <p
+                                class="font-bold text-blue-900 m-0 flex items-center gap-2 mb-2"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                                    ></path>
+                                </svg>
+                                Sugerencia Práctica
+                            </p>
+                            <p class="text-blue-800 m-0 leading-relaxed">
+                                Realiza un test de personalidad como el <strong
+                                    >DISC</strong
+                                >. Esta herramienta gratuita permite identificar
+                                rasgos de comportamiento predominantes,
+                                ayudándote a ponerle nombre a tus fortalezas
+                                naturales y a entender mejor tus áreas de
+                                mejora.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- ============== ETAPA 2 ============== -->
+                    <section
+                        id="etapa-2"
+                        class="scroll-mt-28 mt-24 pt-16 border-t border-slate-200"
+                    >
+                        <div
+                            class="mb-10 pb-8 border-b border-slate-200"
+                        >
+                            <span
+                                class="inline-block bg-blue-600 text-white text-xs font-bold tracking-wider uppercase px-3 py-1.5 rounded-full mb-4"
+                            >
+                                Etapa 02
+                            </span>
+                            <h2
+                                class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-3"
+                            >
+                                Creación de un buen CV
+                            </h2>
+                            <p class="text-xl text-slate-500 font-light">
+                                El CV es un anuncio, no autobiografía
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-xl text-slate-800 font-medium mb-6 leading-relaxed"
+                        >
+                            La premisa que cambia todo el enfoque es simple: <strong
+                                >el CV no es una autobiografía, es un anuncio</strong
+                            >.
+                        </p>
+
+                        <p
+                            class="text-base text-slate-600 leading-relaxed mb-8"
+                        >
+                            Un reclutador lo escanea en <strong
+                                class="text-slate-900">6 segundos</strong
+                            >, y antes de él lo filtra un <strong
+                                class="text-slate-900"
+                                >ATS (Applicant Tracking System)</strong
+                            > por palabras clave. La pelea es ganar esos 6 segundos
+                            y pasar el filtro automático.
+                        </p>
+
+                        <!-- 2 reglas en cards lado a lado -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                            <div
+                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-3 select-none"
+                                    >01</span
+                                >
+                                <h4 class="font-bold text-slate-900 mb-2">
+                                    La primera página es la más importante
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    El reclutador rara vez baja a la segunda.
+                                    Todo lo importante debe estar arriba.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-3 select-none"
+                                    >02</span
+                                >
+                                <h4 class="font-bold text-slate-900 mb-2">
+                                    Los últimos dos cargos son los que más pesan
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    Ahí deben concentrarse las palabras clave,
+                                    herramientas y logros más fuertes.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 1. Estructura Canónica -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >01.</span
+                            >
+                            La Estructura Canónica
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Las <strong class="text-slate-900"
+                                >6 secciones</strong
+                            > que sí o sí van en cualquier CV bien armado, en formato
+                            Harvard:
+                        </p>
+
+                        <ol class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 list-none">
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >1</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Encabezado
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        Nombre, cargo objetivo, ciudad,
+                                        teléfono, email y LinkedIn.
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >2</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Perfil Profesional
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        4-6 líneas máximo. Es el "anuncio" que
+                                        decide si el reclutador sigue leyendo.
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >3</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Experiencia Laboral
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        Orden cronológico inverso, con bullets de
+                                        logros cuantificados, funciones clave y
+                                        herramientas.
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >4</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Educación
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        Título, institución y año.
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >5</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Herramientas / Competencias Técnicas
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        Siempre con nivel ("Excel avanzado", no
+                                        "Excel").
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >6</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Idiomas / Certificaciones / Cursos
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        Solo los relevantes para el cargo
+                                        objetivo.
+                                    </p>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <!-- 2. Los Innegociables -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >02.</span
+                            >
+                            Los Innegociables del CV
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            Si alguno de estos elementos falla, el CV se rompe
+                            o queda invisible al ATS.
+                        </p>
+
+                        <div
+                            class="border-y border-slate-200 divide-y divide-slate-200 mb-10"
+                        >
+                            {
+                                cvInnegociables.map((item, i) => (
+                                    <div class="flex gap-5 py-6">
+                                        <div class="shrink-0 w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center font-extrabold text-base font-mono shadow-sm">
+                                            {String(i + 1).padStart(2, "0")}
+                                        </div>
+                                        <div class="flex-1 pt-1">
+                                            <h4 class="font-bold text-slate-900 text-base md:text-lg mb-2">
+                                                {item.titulo}
+                                            </h4>
+                                            <p
+                                                class="text-sm md:text-base text-slate-600 leading-relaxed"
+                                                set:html={item.body}
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <!-- 3. Ejemplos concretos -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >03.</span
+                            >
+                            Ejemplos concretos
+                        </h3>
+
+                        <!-- Perfil Profesional: antes → después en una sola card -->
+                        <h4
+                            class="text-lg font-bold text-slate-900 mt-8 mb-4"
+                        >
+                            Perfil Profesional
+                        </h4>
+                        <div
+                            class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-8 shadow-sm"
+                        >
+                            <div
+                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50/60"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-600 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Antes
+                                </span>
+                                <p
+                                    class="text-slate-500 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Profesional proactivo, responsable y
+                                    orientado a resultados, con ganas de
+                                    aportar a una empresa innovadora."
+                                </p>
+                            </div>
+                            <div
+                                class="p-5 md:p-6 bg-green-50/40 relative"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Después
+                                </span>
+                                <p
+                                    class="text-slate-800 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Profesional con 6+ años en logística y
+                                    transporte, especializado en planificación
+                                    operativa, gestión de couriers y atención
+                                    a cliente interno/externo. Lideré la
+                                    implementación de tableros de Excel para
+                                    KPIs operacionales <strong
+                                        class="not-italic"
+                                        >reduciendo tiempos de reporte en 40%</strong
+                                    >. Manejo avanzado de Excel, Power BI y
+                                    SAP."
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Función de experiencia laboral (MAR): antes → después + alternativa -->
+                        <h4
+                            class="text-lg font-bold text-slate-900 mt-8 mb-4"
+                        >
+                            Función de experiencia laboral (formato MAR)
+                        </h4>
+                        <div
+                            class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-4 shadow-sm"
+                        >
+                            <div
+                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50/60"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-600 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Antes
+                                </span>
+                                <p
+                                    class="text-slate-500 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Encargado de gestionar la fuerza de
+                                    ventas."
+                                </p>
+                            </div>
+                            <div
+                                class="p-5 md:p-6 bg-green-50/40"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Después
+                                </span>
+                                <p
+                                    class="text-slate-800 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Lideré campaña comercial con equipo de 3
+                                    ejecutivos para incorporación de comercios
+                                    al servicio de recargas Tarjeta BIP,
+                                    alcanzando <strong class="not-italic"
+                                        >32 ventas mensuales promedio (66% de
+                                        la meta)</strong
+                                    > y reportando KPIs diarios a gerencia."
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-green-50/40 border border-green-200 p-5 md:p-6 rounded-2xl mb-8 shadow-sm"
+                        >
+                            <span
+                                class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                            >
+                                <span class="text-base leading-none">✓</span>
+                                Alternativa · analista de riesgo
+                            </span>
+                            <p
+                                class="text-slate-800 italic text-sm md:text-base leading-relaxed"
+                            >
+                                "Procesé <strong class="not-italic"
+                                    >33 casos diarios</strong
+                                > de riesgo operacional aplicando KRIs y normas
+                                vigentes, mejorando el cumplimiento del <strong
+                                    class="not-italic">SLA en 8 pp</strong
+                                >."
+                            </p>
+                        </div>
+
+                        <!-- 4. Checklist final -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >04.</span
+                            >
+                            Checklist final antes de postular
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Antes de hacer click en "postular", repasa cada
+                            punto:
+                        </p>
+
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700 w-12"
+                                            >#</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Check</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Pregunta clave</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        cvChecklist.map((row) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-blue-600 align-top">
+                                                    {row.n}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-700 align-top">
+                                                    {row.check}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-500 italic align-top">
+                                                    {row.q}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- ============== ETAPA 3 ============== -->
+                    <section
+                        id="etapa-3"
+                        class="scroll-mt-28 mt-24 pt-16 border-t border-slate-200"
+                    >
+                        <div
+                            class="mb-10 pb-8 border-b border-slate-200"
+                        >
+                            <span
+                                class="inline-block bg-blue-600 text-white text-xs font-bold tracking-wider uppercase px-3 py-1.5 rounded-full mb-4"
+                            >
+                                Etapa 03
+                            </span>
+                            <h2
+                                class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-3"
+                            >
+                                La Entrevista
+                            </h2>
+                            <p class="text-xl text-slate-500 font-light">
+                                Preparación que diferencia
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-xl text-slate-800 font-medium mb-6 leading-relaxed"
+                        >
+                            Una entrevista no se gana con suerte ni con
+                            carisma: se gana con preparación.
+                        </p>
+
+                        <p
+                            class="text-base text-slate-600 leading-relaxed mb-8"
+                        >
+                            La premisa que se repite en cada Sesión 4 es: <strong
+                                class="text-slate-900"
+                                >el entrevistador no contrata al mejor
+                                candidato, contrata al mejor entrevistado</strong
+                            >. Y eso es entrenable.
+                        </p>
+
+                        <!-- 1. Antes de la entrevista -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >01.</span
+                            >
+                            Antes de la entrevista
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            El <strong class="text-slate-900">80%</strong> del
+                            resultado se juega antes de conectarse. Estos son
+                            los innegociables previos:
+                        </p>
+
+                        <ul class="space-y-4 mb-8">
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Investigar la empresa
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Modelo de negocio, productos/servicios,
+                                    clientes públicos, noticias recientes,
+                                    valores. No basta con "vi su web": tienes
+                                    que poder explicar en una frase qué hace la
+                                    empresa y por qué te interesa
+                                    específicamente.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Investigar al entrevistador
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Buscar su LinkedIn: cuánto lleva en la
+                                    empresa, dónde estuvo antes, qué formación
+                                    tiene. Esto define el tipo de preguntas que
+                                    va a hacer y te permite generar conexión
+                                    genuina (<em
+                                        >"vi que llevas 6 años acá, ¿qué te ha
+                                        mantenido?"</em
+                                    >).
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Identificar el tipo de entrevistador
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base mb-3"
+                                >
+                                    Define todo el enfoque de tus respuestas:
+                                </p>
+                                <ul
+                                    class="space-y-2 text-sm text-slate-600 pl-4 border-l-2 border-slate-100"
+                                >
+                                    <li>
+                                        <strong class="text-slate-900"
+                                            >Reclutador / Psicólogo
+                                            organizacional</strong
+                                        > → entrevista por competencias, método MAR,
+                                        foco en blandas, coherencia personal-profesional,
+                                        manejo de conflicto.
+                                    </li>
+                                    <li>
+                                        <strong class="text-slate-900"
+                                            >Hiring Manager (jefe directo o del
+                                            área)</strong
+                                        > → compatibilidad técnica, motivación específica,
+                                        fit cultural, cómo resolverías problemas concretos
+                                        del cargo.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Releer el aviso y subrayar las palabras
+                                    clave
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Esas mismas palabras tienen que aparecer en
+                                    tus respuestas (igual que aparecieron en tu
+                                    CV).
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Tener listas 3 a 5 logros MAR diferentes
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Una sola historia repetida en cada pregunta
+                                    da la impresión de poca trayectoria. Cada
+                                    historia debe servir para una competencia
+                                    distinta: liderazgo, conflicto, innovación,
+                                    error, trabajo en equipo.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Preparar las 10 preguntas que siempre caen
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    (Ver sección más abajo). No improvisar.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p class="font-bold text-slate-900 mb-1.5">
+                                    Logística del día
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Probar cámara, micrófono, fondo y luz <strong
+                                        class="text-slate-900"
+                                        >30 minutos antes</strong
+                                    >. Llegar 5 minutos antes. Vaso de agua a
+                                    mano. CV abierto en otra pestaña.
+                                </p>
+                            </li>
+                        </ul>
+
+                        <!-- 2. Tipos de entrevista -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >02.</span
+                            >
+                            Los tipos de entrevista
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Conocer el tipo te permite preparar la respuesta
+                            correcta:
+                        </p>
+
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm min-w-[640px]">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Tipo</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Quién la hace</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Qué evalúa</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Cómo prepararla</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        tiposEntrevista.map((t) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-slate-900 align-top">
+                                                    {t.tipo}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {t.quien}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {t.evalua}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {t.prep}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 3. Las 10 preguntas -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >03.</span
+                            >
+                            Las 10 preguntas que SIEMPRE caen
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Después de decenas de simulaciones, hay 10
+                            preguntas que aparecen en prácticamente todos los
+                            procesos. Tener estas respuestas listas y
+                            practicadas <strong class="text-slate-900"
+                                >en voz alta</strong
+                            > es la diferencia entre fluir y bloquearse.
+                        </p>
+
+                        <ol class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 list-none">
+                            {
+                                preguntasFrecuentes.map((p, i) => (
+                                    <li class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start hover:border-blue-200 hover:shadow-sm transition-all">
+                                        <span class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8">
+                                            {String(i + 1).padStart(2, "0")}
+                                        </span>
+                                        <p class="text-sm text-slate-700 leading-relaxed pt-0.5">
+                                            {p}
+                                        </p>
+                                    </li>
+                                ))
+                            }
+                        </ol>
+
+                        <!-- 4. Cómo responder bien -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >04.</span
+                            >
+                            Cómo responder bien
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            Las técnicas que funcionan, probadas en cientos de
+                            simulaciones:
+                        </p>
+
+                        <!-- a) Háblame de ti -->
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-6 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2"
+                            >
+                                La más importante de todas
+                            </p>
+                            <h4
+                                class="text-xl font-bold text-blue-900 mb-3"
+                            >
+                                a) "Háblame de ti" — estructura Pasado · Presente · Futuro
+                            </h4>
+                            <p
+                                class="text-blue-900 leading-relaxed mb-4"
+                            >
+                                La pregunta más fácil de arruinar. El 70% del
+                                éxito se lo juegan aquí: con una mala
+                                presentación están prácticamente descartados.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p
+                                        class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1"
+                                    >
+                                        Pasado
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Nombre + profesión + universidad + 1
+                                        línea de qué te marcó al inicio de tu
+                                        carrera.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p
+                                        class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1"
+                                    >
+                                        Presente
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Dónde estás hoy + 1 o 2 logros
+                                        cuantificados de tu último cargo.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p
+                                        class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1"
+                                    >
+                                        Futuro
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Qué buscas + cómo este cargo específico
+                                        calza con eso.
+                                    </p>
+                                </div>
+                            </div>
+                            <p
+                                class="text-sm text-blue-800 m-0"
+                            >
+                                <strong>Duración objetivo:</strong> 90 a 120
+                                segundos. No más. Si quieren profundizar,
+                                preguntarán.
+                            </p>
+                        </div>
+
+                        <!-- b) Técnica del gancho -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            b) Técnica del "gancho" — dar el logro, no el manual
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            En vez de explicar paso a paso un proyecto entero,
+                            suelta el resultado como anzuelo y deja que el
+                            reclutador pida más.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 text-sm md:text-base leading-relaxed"
+                                >
+                                    Explicar 5 minutos cómo implementaste un
+                                    modelo predictivo desde cero.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Implementé un sistema de seguimiento con
+                                    modelos predictivos, lo que <strong
+                                        class="not-italic"
+                                        >redujo los gastos operativos en 12%</strong
+                                    >."
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 italic mb-4">
+                            El reclutador preguntará el cómo, y ahí entras en
+                            detalle. La entrevista es un intercambio, no un
+                            monólogo.
+                        </p>
+
+                        <!-- c) STAR / MAR -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            c) Método STAR / MAR para preguntas por
+                            competencias
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            Toda pregunta que empiece con <em
+                                >"Cuéntame de una vez que…"</em
+                            > o <em>"Dame un ejemplo de…"</em> se responde con esta
+                            estructura:
+                        </p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
+                                    >S</span
+                                >
+                                <p
+                                    class="text-xs font-bold text-slate-900 mb-1"
+                                >
+                                    Situación
+                                </p>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Contexto breve: empresa, equipo, problema.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
+                                    >T</span
+                                >
+                                <p
+                                    class="text-xs font-bold text-slate-900 mb-1"
+                                >
+                                    Tarea
+                                </p>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Cuál era tu responsabilidad específica.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
+                                    >A</span
+                                >
+                                <p
+                                    class="text-xs font-bold text-slate-900 mb-1"
+                                >
+                                    Acción
+                                </p>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Qué hiciste TÚ (no el equipo). Primera
+                                    persona.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
+                                    >R</span
+                                >
+                                <p
+                                    class="text-xs font-bold text-slate-900 mb-1"
+                                >
+                                    Resultado
+                                </p>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Impacto medible. Números siempre que se
+                                    pueda.
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 italic mb-4">
+                            <strong>Duración objetivo por respuesta STAR:</strong
+                            > entre 90 segundos y 2 minutos.
+                        </p>
+
+                        <!-- d) Fortalezas y debilidades -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            d) Fortalezas con evidencia, debilidades con plan
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-2"
+                                >
+                                    Fortaleza
+                                </p>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Una frase + un <strong class="text-slate-900"
+                                        >ejemplo concreto</strong
+                                    > donde se manifestó. No listar 5 fortalezas
+                                    genéricas; elegir UNA potente.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-2"
+                                >
+                                    Debilidad
+                                </p>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Una real (no clichés como "soy
+                                    perfeccionista") + cómo la estás <strong
+                                        class="text-slate-900"
+                                        >gestionando hoy</strong
+                                    >. La debilidad sin plan es solo una
+                                    debilidad.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- e) Salida del trabajo anterior -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            e) Salida del trabajo anterior — versión simple y
+                            honesta
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            La narrativa de salida es donde más candidatos se
+                            enredan. Regla: <strong class="text-slate-900"
+                                >una sola versión, simple, sin capas</strong
+                            >. Los reclutadores con experiencia detectan en
+                            segundos cuando la historia cambia con cada
+                            repregunta.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Fue un proyecto, después se transformó en
+                                    otra cosa, después hubo una
+                                    reestructuración, después yo decidí…"
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Fue un contrato a plazo fijo. Cumplido el
+                                    plazo, terminó el proyecto. Me llevo X
+                                    aprendizaje."
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 italic mb-4">
+                            Y siempre: hablar de <strong class="text-slate-700"
+                                >"hacia dónde voy"</strong
+                            >, no de "de qué huyo". Nunca hablar mal del jefe
+                            o de la empresa anterior.
+                        </p>
+
+                        <!-- f) Renta -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            f) Expectativa de renta — un número, sin preámbulo
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            El que justifica, se complica. <strong
+                                class="text-slate-900"
+                                >No expliques por qué vales</strong
+                            > lo que vales antes de decir el número: solo entrega
+                            el rango.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Bueno, considerando mi experiencia, todas
+                                    mis habilidades, lo que aporto… yo creo que
+                                    valgo entre 1.7 y 2.1 millones."
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Mi expectativa está entre <strong
+                                        class="not-italic"
+                                        >1.700.000 y 2.100.000 líquidos</strong
+                                    >."
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 italic mb-4">
+                            Si piden más contexto, ahí complementas.
+                        </p>
+
+                        <!-- g) Preguntas al entrevistador -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            g) Preguntas al entrevistador — 2 a 3 inteligentes
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            No decir "no tengo preguntas". Eso se interpreta
+                            como falta de interés. Tres tipos que siempre
+                            funcionan:
+                        </p>
+                        <ol class="space-y-3 mb-4 list-none">
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >1</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Sobre el cargo
+                                    </p>
+                                    <p class="text-sm text-slate-600 italic leading-relaxed">
+                                        "¿Cómo se mide el éxito en este rol los
+                                        primeros 6 meses? ¿Qué KPIs van a
+                                        mirar?"
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >2</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Sobre el entrevistador (genera conexión)
+                                    </p>
+                                    <p class="text-sm text-slate-600 italic leading-relaxed">
+                                        "Vi que llevas X años acá, ¿qué te ha
+                                        mantenido?"
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none"
+                                    >3</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Sobre el proceso
+                                    </p>
+                                    <p class="text-sm text-slate-600 italic leading-relaxed">
+                                        "¿Cuáles son las próximas etapas y la
+                                        fecha estimada de incorporación?"
+                                    </p>
+                                </div>
+                            </li>
+                        </ol>
+                        <p class="text-sm text-slate-500 italic mb-4">
+                            <strong>Reglas:</strong> NO preguntar por sueldo,
+                            vacaciones o beneficios en esta instancia. NO
+                            inventar preguntas para rellenar.
+                        </p>
+
+                        <!-- 5. Errores que matan una entrevista -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >05.</span
+                            >
+                            Los errores que matan una entrevista
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Los más repetidos en las simulaciones — y cómo
+                            evitarlos:
+                        </p>
+
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm min-w-[640px]">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Error</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Por qué duele</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Antídoto</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        erroresEntrevista.map((e) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-slate-900 align-top">
+                                                    {e.error}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {e.duele}
+                                                </td>
+                                                <td class="px-4 py-3 text-green-700 align-top">
+                                                    {e.antidoto}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 6. Lo que el entrevistador realmente evalúa -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >06.</span
+                            >
+                            Lo que el entrevistador realmente evalúa
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Ninguna entrevista evalúa solo lo que dices. Estos
+                            son los <strong class="text-slate-900"
+                                >5 ejes silenciosos</strong
+                            >:
+                        </p>
+
+                        <ol class="space-y-3 mb-8 list-none">
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >01</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 mb-1"
+                                    >
+                                        Coherencia narrativa
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        ¿Tu historia profesional tiene un hilo
+                                        conductor o es un collage de saltos sin
+                                        sentido?
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >02</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 mb-1"
+                                    >
+                                        Autoconocimiento
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        ¿Sabes cuáles son tus fortalezas reales
+                                        y tus áreas de mejora, o repites
+                                        clichés?
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >03</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 mb-1"
+                                    >
+                                        Manejo emocional
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        ¿Cómo reaccionas ante una pregunta
+                                        incómoda? ¿Te bloqueas, te defiendes o
+                                        respondes con calma?
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >04</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 mb-1"
+                                    >
+                                        Madurez profesional
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        ¿Asumes responsabilidad por errores
+                                        pasados o culpas al
+                                        contexto/jefe/equipo?
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >05</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 mb-1"
+                                    >
+                                        Fit cultural
+                                    </p>
+                                    <p class="text-sm text-slate-600 leading-relaxed">
+                                        ¿Encajas con la forma de trabajar de la
+                                        empresa? Se evalúa en cómo hablas de
+                                        equipos anteriores y cómo proyectas el
+                                        rol.
+                                    </p>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <!-- 7. Checklist 24h antes -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >07.</span
+                            >
+                            Checklist final 24 horas antes
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Las 24 horas previas son para <strong
+                                class="text-slate-900">repasar</strong
+                            >, no para aprender cosas nuevas. Pasa por esta
+                            lista una vez:
+                        </p>
+
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700 w-12"
+                                            >#</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Check</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        entrevistaChecklist24h.map((row) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-blue-600 align-top">
+                                                    {row.n}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-700 align-top">
+                                                    {row.check}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- ============== ETAPA 4 ============== -->
+                    <section
+                        id="etapa-4"
+                        class="scroll-mt-28 mt-24 pt-16 border-t border-slate-200"
+                    >
+                        <div
+                            class="mb-10 pb-8 border-b border-slate-200"
+                        >
+                            <span
+                                class="inline-block bg-blue-600 text-white text-xs font-bold tracking-wider uppercase px-3 py-1.5 rounded-full mb-4"
+                            >
+                                Etapa 04
+                            </span>
+                            <h2
+                                class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-3"
+                            >
+                                Red de Contactos
+                            </h2>
+                            <p class="text-xl text-slate-500 font-light">
+                                LinkedIn como tu mejor aliado
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-xl text-slate-800 font-medium mb-6 leading-relaxed"
+                        >
+                            Si la Etapa 2 fue el CV y la Etapa 3 fue la
+                            entrevista, esta etapa es la que define <strong
+                                >si te llaman o no</strong
+                            >.
+                        </p>
+
+                        <p
+                            class="text-base text-slate-600 leading-relaxed mb-8"
+                        >
+                            Hoy más del <strong class="text-slate-900"
+                                >80% de los reclutadores</strong
+                            > usan LinkedIn como primera fuente de búsqueda. Tu
+                            LinkedIn no es un CV digital: es tu <strong
+                                class="text-slate-900"
+                                >vitrina abierta 24/7</strong
+                            >, donde la mayoría de las oportunidades te
+                            encuentran a ti antes de que tú las encuentres a
+                            ellas. Un perfil optimizado no se trata de estar
+                            presente — se trata de <strong class="text-slate-900"
+                                >destacar</strong
+                            >.
+                        </p>
+
+                        <!-- 1. Foto de perfil -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >01.</span
+                            >
+                            Foto de perfil — los primeros 2 segundos
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            La foto es lo primero que ve cualquier reclutador.
+                            Transmite profesionalismo y confianza <strong
+                                class="text-slate-900"
+                                >antes de que leas una sola palabra</strong
+                            >.
+                        </p>
+
+                        <ul class="space-y-3 mb-6">
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 text-sm md:text-base text-slate-600 leading-relaxed"
+                            >
+                                <strong class="text-slate-900"
+                                    >Calidad alta:</strong
+                                > sin pixelado ni desenfoque. Mínimo 400×400 px.
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 text-sm md:text-base text-slate-600 leading-relaxed"
+                            >
+                                <strong class="text-slate-900"
+                                    >Expresión:</strong
+                                > sonrisa leve, mirada directa a cámara. Proyecta
+                                accesibilidad.
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 text-sm md:text-base text-slate-600 leading-relaxed"
+                            >
+                                <strong class="text-slate-900"
+                                    >Iluminación:</strong
+                                > luz natural o suave, sin sombras duras en el rostro.
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 text-sm md:text-base text-slate-600 leading-relaxed"
+                            >
+                                <strong class="text-slate-900"
+                                    >Vestimenta acorde al rubro:</strong
+                                > si vas a banca o consultora, camisa o blusa formal.
+                                Si vas a tecnología o diseño, casual prolijo funciona.
+                            </li>
+                            <li
+                                class="bg-white p-4 rounded-xl border border-slate-100 text-sm md:text-base text-slate-600 leading-relaxed"
+                            >
+                                <strong class="text-slate-900"
+                                    >Fondo neutro o relacionado con tu
+                                    industria.</strong
+                                > Evita fondos con gente, autos, fiestas o paisajes
+                                turísticos.
+                            </li>
+                        </ul>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 text-sm md:text-base leading-relaxed"
+                                >
+                                    Foto de matrimonio recortada, lentes de
+                                    sol, fondo de playa con tragos.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 text-sm md:text-base leading-relaxed"
+                                >
+                                    Retrato de medio cuerpo, camisa lisa, fondo
+                                    blanco u oficina desenfocada, sonrisa leve.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 2. Banner -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >02.</span
+                            >
+                            Banner — tu cartel publicitario gratis
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            El banner (la imagen horizontal detrás de tu foto)
+                            es el <strong class="text-slate-900"
+                                >espacio más desaprovechado de LinkedIn</strong
+                            >. La mayoría lo deja vacío o con el fondo azul por
+                            defecto. Eso es desperdiciar tu mejor pieza visual
+                            gratis.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 mb-6">
+                            <p class="font-bold text-slate-900 mb-3">
+                                Qué debe tener
+                            </p>
+                            <ul class="space-y-2 text-sm md:text-base text-slate-600 leading-relaxed list-disc pl-5">
+                                <li>
+                                    Tu propuesta de valor en 1 frase (lo mismo
+                                    que dice tu titular, en versión visual).
+                                </li>
+                                <li>
+                                    Ícono o gráfico relacionado con tu
+                                    industria.
+                                </li>
+                                <li>
+                                    Paleta de colores sobria (azul, gris,
+                                    blanco funcionan para casi todo rubro).
+                                </li>
+                            </ul>
+                            <p class="text-sm text-slate-500 italic mt-4">
+                                <strong>Cómo hacerlo:</strong> usar Canva (tiene
+                                plantillas gratis de "LinkedIn Banner") o
+                                Figma. 15 minutos de trabajo.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                            <div
+                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Analista financiero
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm leading-relaxed"
+                                >
+                                    Fondo gris claro + gráfico de barras sutil
+                                    + frase <em>"Transformando datos en decisiones estratégicas"</em>.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Ingeniero comercial
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm leading-relaxed"
+                                >
+                                    Fondo azul + frase <em>"Estrategia comercial y crecimiento basado en datos"</em>.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Abogado corporativo
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm leading-relaxed"
+                                >
+                                    Fondo blanco/azul oscuro + frase <em>"Derecho corporativo · M&A · Negociación"</em>.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-red-50 border border-red-100 p-4 rounded-xl mb-8"
+                        >
+                            <span
+                                class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-2"
+                            >
+                                <span class="text-base leading-none">✕</span>
+                                Mal
+                            </span>
+                            <p
+                                class="text-slate-700 text-sm leading-relaxed"
+                            >
+                                Paisaje de montañas random, foto de tu mascota,
+                                banner vacío.
+                            </p>
+                        </div>
+
+                        <!-- 3. Titular profesional -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >03.</span
+                            >
+                            Titular profesional — tu frase de 220 caracteres
+                            más importante
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            El titular es la línea que aparece junto a tu
+                            nombre <strong class="text-slate-900"
+                                >en cada búsqueda, en cada solicitud de
+                                conexión, en cada comentario que dejas</strong
+                            >. Es lo que decide si el reclutador hace clic en tu
+                            perfil o sigue scrolleando.
+                        </p>
+
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
+                            >
+                                Fórmula básica
+                            </p>
+                            <p class="text-blue-900 font-semibold">
+                                Cargo actual + Palabra clave del rubro + Valor
+                                agregado
+                            </p>
+                        </div>
+
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-6"
+                        >
+                            <table class="w-full text-sm min-w-[640px]">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Perfil</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-red-700"
+                                            >✕ Titular débil</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-green-700"
+                                            >✓ Titular fuerte</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        titularEjemplos.map((t) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-slate-900 align-top">
+                                                    {t.perfil}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-500 italic align-top">
+                                                    "{t.debil}"
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-700 align-top">
+                                                    "{t.fuerte}"
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
+                            >
+                                Regla de oro
+                            </p>
+                            <p class="text-blue-900 leading-relaxed">
+                                Mete las <strong
+                                    >palabras clave del cargo al que postulas</strong
+                                >, no solo del que tienes hoy. LinkedIn es un
+                                buscador: si la oferta dice "FP&A" y tu titular
+                                no lo menciona, no apareces.
+                            </p>
+                        </div>
+
+                        <!-- 4. Acerca de -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >04.</span
+                            >
+                            Resumen "Acerca de" — la estructura en 3 partes
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            La sección "Acerca de" es la que <strong class="text-slate-900"
+                                >mejor convierte visita en mensaje</strong
+                            >, pero la mayoría la deja vacía o la rellena con
+                            clichés. La estructura ganadora tiene 3 bloques
+                            cortos:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+                            <div
+                                class="bg-white p-5 rounded-2xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 select-none"
+                                    >1</span
+                                >
+                                <p
+                                    class="text-xs text-blue-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    2-3 líneas
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-2"
+                                >
+                                    Quién eres
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    Profesión, años de experiencia, foco
+                                    principal.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-2xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 select-none"
+                                    >2</span
+                                >
+                                <p
+                                    class="text-xs text-blue-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    3-4 líneas
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-2"
+                                >
+                                    Qué haces
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    1 o 2 logros cuantificados que demuestren tu
+                                    valor.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-2xl border border-slate-100"
+                            >
+                                <span
+                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 select-none"
+                                    >3</span
+                                >
+                                <p
+                                    class="text-xs text-blue-600 uppercase tracking-wider font-bold mb-1"
+                                >
+                                    2 líneas
+                                </p>
+                                <h4
+                                    class="text-lg font-bold text-slate-900 mb-2"
+                                >
+                                    Cómo puedes ayudar
+                                </h4>
+                                <p
+                                    class="text-sm text-slate-600 leading-relaxed"
+                                >
+                                    Qué buscas y a quién le sirves + invitación
+                                    a conectar.
+                                </p>
+                            </div>
+                        </div>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            Ejemplo completo · Analista Senior de Control de
+                            Gestión
+                        </p>
+                        <div
+                            class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm mb-8"
+                        >
+                            <p class="text-slate-700 leading-relaxed mb-4">
+                                Soy Ingeniera Comercial con 6 años de
+                                experiencia en control de gestión y
+                                planificación financiera en empresas de retail
+                                y banca. Mi foco es traducir datos complejos en
+                                decisiones de negocio claras para gerencias
+                                comerciales y de finanzas. 📊
+                            </p>
+                            <p class="text-slate-700 leading-relaxed mb-4">
+                                En mi rol actual en Falabella Retail lideré la <strong
+                                    class="text-slate-900"
+                                    >automatización del cierre mensual</strong
+                                > migrando el proceso a Power BI con conexión directa
+                                a SAP HANA, reduciendo el cierre de 5 a 1,5 días
+                                y liberando 60 horas mensuales del equipo para análisis.
+                                Además, rediseñé el <strong class="text-slate-900"
+                                    >reporte de margen por SKU</strong
+                                > que hoy revisa el Comité Comercial, permitiendo
+                                detectar 18 SKUs con margen negativo y recuperar
+                                cerca de <strong class="text-slate-900"
+                                    >$120M anuales</strong
+                                >. 🚀
+                            </p>
+                            <p class="text-slate-700 leading-relaxed">
+                                Manejo Excel avanzado, Power BI (DAX), SQL
+                                intermedio y SAP S/4HANA. Hoy busco un rol de
+                                Jefatura de Control de Gestión donde pueda
+                                liderar equipo y entrar antes en la toma de
+                                decisiones. Si estás armando equipo en áreas de
+                                FP&A o Control de Gestión, escríbeme — me
+                                encantaría conversar.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <p
+                                    class="font-bold text-green-900 mb-3 text-sm uppercase tracking-wider"
+                                >
+                                    Tips de redacción
+                                </p>
+                                <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5">
+                                    <li>
+                                        Párrafos cortos (máximo 4 líneas cada
+                                        uno). Se lee desde el celular.
+                                    </li>
+                                    <li>
+                                        Tono en primera persona y profesional,
+                                        no acartonado.
+                                    </li>
+                                    <li>
+                                        1 o 2 emojis estratégicos en puntos
+                                        clave (no decorar todo).
+                                    </li>
+                                    <li>
+                                        Siempre cerrar con <strong
+                                            >invitación a conectar</strong
+                                        >.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <p
+                                    class="font-bold text-red-900 mb-3 text-sm uppercase tracking-wider"
+                                >
+                                    Errores típicos
+                                </p>
+                                <ul class="space-y-2 text-sm text-slate-700 leading-relaxed list-disc pl-5">
+                                    <li>
+                                        <em>"Soy proactivo, responsable y
+                                        orientado a resultados"</em> → no dice
+                                        nada.
+                                    </li>
+                                    <li>
+                                        Repetir el titular sin agregar
+                                        información nueva.
+                                    </li>
+                                    <li>
+                                        Escribir en tercera persona ("Juan es
+                                        un profesional…") → suena frío y
+                                        antiguo.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 5. Experiencia -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >05.</span
+                            >
+                            Experiencia — logros, no funciones
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            La sección de experiencia funciona igual que en el
+                            CV (Etapa 2): <strong class="text-slate-900"
+                                >logros cuantificados en formato MAR</strong
+                            >, no listado de funciones. La única diferencia es
+                            que en LinkedIn puedes ser un poco más extenso y
+                            adjuntar multimedia.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 mb-8">
+                            <p class="font-bold text-slate-900 mb-3">
+                                Formato recomendado por cargo
+                            </p>
+                            <ol class="space-y-2 text-sm md:text-base text-slate-600 leading-relaxed list-decimal pl-5">
+                                <li>
+                                    <strong class="text-slate-900"
+                                        >2-3 líneas de contexto:</strong
+                                    > qué hacías en una frase, magnitud del scope
+                                    (equipo, presupuesto, clientes).
+                                </li>
+                                <li>
+                                    <strong class="text-slate-900"
+                                        >3-5 viñetas de logros</strong
+                                    > en formato Logro + Acción + Impacto (con números).
+                                </li>
+                                <li>
+                                    <strong class="text-slate-900"
+                                        >Multimedia:</strong
+                                    > PDF de una presentación, link a un proyecto,
+                                    captura de un dashboard.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            Ejemplos comparados
+                        </p>
+
+                        <div class="space-y-6 mb-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✕</span
+                                        >
+                                        Débil
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Responsable de supervisar el equipo de
+                                        ventas."
+                                    </p>
+                                </div>
+                                <div
+                                    class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✓</span
+                                        >
+                                        Fuerte
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Lideré un equipo de <strong
+                                            class="not-italic">8 ejecutivos</strong
+                                        > comerciales en zona sur, gestionando una
+                                        cartera de <strong class="not-italic"
+                                            >12 cadenas regionales</strong
+                                        > y entregando proyectos dentro de presupuesto
+                                        en el <strong class="not-italic"
+                                            >90% de los casos</strong
+                                        >."
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✕</span
+                                        >
+                                        Débil
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Encargado de reportes financieros."
+                                    </p>
+                                </div>
+                                <div
+                                    class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✓</span
+                                        >
+                                        Fuerte
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Diseñé e implementé un nuevo sistema
+                                        de reporting de margen en Power BI
+                                        conectado a SAP HANA, reduciendo el
+                                        tiempo de cierre mensual de <strong
+                                            class="not-italic">5 a 1,5 días</strong
+                                        > y liberando <strong class="not-italic"
+                                            >60 horas al mes</strong
+                                        > para análisis."
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✕</span
+                                        >
+                                        Débil
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Manejo de campañas de marketing
+                                        digital."
+                                    </p>
+                                </div>
+                                <div
+                                    class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                                >
+                                    <span
+                                        class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                    >
+                                        <span class="text-base leading-none"
+                                            >✓</span
+                                        >
+                                        Fuerte
+                                    </span>
+                                    <p
+                                        class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                    >
+                                        "Lideré una campaña de redes sociales
+                                        para clientes B2B que aumentó las
+                                        conversiones en <strong
+                                            class="not-italic">35%</strong
+                                        > y redujo el costo por adquisición en <strong
+                                            class="not-italic">25%</strong
+                                        > en un periodo de 6 meses."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
+                            >
+                                Tip clave
+                            </p>
+                            <p class="text-blue-900 leading-relaxed">
+                                Las <strong>palabras clave de la oferta</strong>
+                                (por ejemplo "FP&A", "riesgo operacional",
+                                "Power BI", "stakeholders") tienen que aparecer
+                                literalmente en la descripción de tus
+                                experiencias. LinkedIn es un buscador, no
+                                infiere.
+                            </p>
+                        </div>
+
+                        <!-- 6. Aptitudes y endosos -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >06.</span
+                            >
+                            Aptitudes y endosos — selección estratégica
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            LinkedIn permite listar hasta 50 aptitudes, pero <strong
+                                class="text-slate-900">menos es más</strong
+                            >. Elige las 10 más relevantes para tu cargo objetivo
+                            y ordénalas para que las <strong
+                                class="text-slate-900">3 principales</strong
+                            > (las que aparecen destacadas) sean las que más te interesa
+                            que un reclutador vea.
+                        </p>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 mb-6">
+                            <p class="font-bold text-slate-900 mb-3">
+                                Cómo elegirlas
+                            </p>
+                            <ol class="space-y-2 text-sm md:text-base text-slate-600 leading-relaxed list-decimal pl-5">
+                                <li>
+                                    Mira 5 a 10 avisos del cargo al que postulas
+                                    y anota las habilidades que más se repiten.
+                                </li>
+                                <li>
+                                    Cruza esa lista con tus aptitudes reales y
+                                    elige las 10 que mejor calcen.
+                                </li>
+                                <li>
+                                    Mezcla <strong class="text-slate-900"
+                                        >técnicas</strong
+                                    > (específicas de tu oficio) con <strong
+                                        class="text-slate-900">blandas</strong
+                                    > (universales).
+                                </li>
+                            </ol>
+                        </div>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            Ejemplos por perfil
+                        </p>
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm min-w-[640px]">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Perfil</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Técnicas (top 5)</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Blandas (top 5)</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        aptitudesEjemplos.map((a) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-slate-900 align-top">
+                                                    {a.perfil}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {a.tecnicas}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-600 align-top">
+                                                    {a.blandas}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 mb-8">
+                            <p class="font-bold text-slate-900 mb-3">
+                                Cómo conseguir endosos (sin sentirte incómodo)
+                            </p>
+                            <ol class="space-y-3 text-sm md:text-base text-slate-600 leading-relaxed list-decimal pl-5">
+                                <li>
+                                    <strong class="text-slate-900"
+                                        >Endosa primero.</strong
+                                    > El 60% de las personas te devuelve el endoso
+                                    sin que lo pidas.
+                                </li>
+                                <li>
+                                    <strong class="text-slate-900"
+                                        >Pide directo a 5-10 personas con las
+                                        que trabajaste de cerca.</strong
+                                    >
+                                </li>
+                            </ol>
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-4 rounded-lg mt-4"
+                            >
+                                <p
+                                    class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"
+                                >
+                                    Plantilla
+                                </p>
+                                <p
+                                    class="text-slate-700 italic leading-relaxed text-sm"
+                                >
+                                    "Hola [Nombre], estoy actualizando mi
+                                    LinkedIn y me encantaría que me respaldaras
+                                    en [habilidad 1] y [habilidad 2], que sabes
+                                    bien cómo las trabajé cuando estuvimos en
+                                    [proyecto/empresa]. Si quieres, te devuelvo
+                                    el favor en lo que prefieras. ¡Gracias!"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 7. Recomendaciones -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >07.</span
+                            >
+                            Recomendaciones — las "reseñas" de tu perfil
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Las recomendaciones son testimonios escritos por
+                            colegas, jefes o clientes. Son lo más próximo a una <strong
+                                class="text-slate-900"
+                                >referencia laboral verificable</strong
+                            >, y un perfil con 3-5 recomendaciones buenas
+                            genera <strong class="text-slate-900"
+                                >más confianza que 50 endosos</strong
+                            >.
+                        </p>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            A quién pedir (busca diversidad)
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >01</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Jefe directo
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Valida tu desempeño.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >02</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Par / colega
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Valida cómo trabajas en equipo.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >03</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Reporte directo
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Valida tu liderazgo.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 items-start"
+                            >
+                                <span
+                                    class="text-2xl font-extrabold text-blue-200 leading-none shrink-0 select-none font-mono w-8"
+                                    >04</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-bold text-slate-900 text-sm mb-1"
+                                    >
+                                        Cliente / proveedor
+                                    </p>
+                                    <p
+                                        class="text-sm text-slate-600 leading-relaxed"
+                                    >
+                                        Valida tu impacto externo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl mb-8">
+                            <p
+                                class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"
+                            >
+                                Plantilla para pedirla
+                            </p>
+                            <p
+                                class="text-slate-700 italic leading-relaxed text-sm md:text-base"
+                            >
+                                "Hola [Nombre], espero que estés muy bien.
+                                Estoy fortaleciendo mi perfil de LinkedIn y me
+                                encantaría que me escribieras una recomendación
+                                sobre nuestro trabajo juntos en
+                                [proyecto/empresa]. Si te ayuda, te dejo 2-3
+                                puntos que podrías mencionar: [logro 1], [logro
+                                2], [habilidad clave]. Por supuesto, encantado
+                                de devolverte el favor cuando lo necesites.
+                                ¡Gracias!"
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            Ejemplo de buena recomendación vs genérica
+                        </p>
+                        <div class="space-y-3 mb-8">
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Trabajé con Laura durante 2 años en
+                                    Falabella, donde fue fundamental para
+                                    implementar el nuevo sistema de reporting
+                                    de margen. Su capacidad de traducir
+                                    requerimientos del negocio a soluciones
+                                    técnicas en Power BI nos permitió <strong
+                                        class="not-italic"
+                                        >reducir el cierre mensual de 5 a 1,5
+                                        días</strong
+                                    >. Además, su actitud colaborativa y
+                                    disposición a enseñar marcaron al equipo.
+                                    La recomiendo sin reservas para roles de
+                                    liderazgo en control de gestión."
+                                </p>
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal (genérico)
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Laura es una excelente profesional, muy
+                                    responsable y proactiva." <span
+                                        class="not-italic text-red-700 font-semibold not-italic"
+                                        >— no dice nada útil.</span
+                                    >
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 8. URL personalizada -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >08.</span
+                            >
+                            URL personalizada — 5 minutos, alto retorno
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Por defecto LinkedIn asigna una URL con números
+                            aleatorios. Cambiarla a una versión limpia:
+                        </p>
+                        <ul class="space-y-2 text-sm md:text-base text-slate-600 leading-relaxed list-disc pl-5 mb-6">
+                            <li>
+                                Te hace <strong class="text-slate-900"
+                                    >más fácil de encontrar en Google</strong
+                                >.
+                            </li>
+                            <li>
+                                Te permite ponerla en el CV y firma de email.
+                            </li>
+                            <li>Proyecta profesionalismo.</li>
+                        </ul>
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
+                            >
+                                Cómo
+                            </p>
+                            <p class="text-blue-900 leading-relaxed">
+                                Perfil → "Editar perfil público y URL" (arriba
+                                a la derecha) → editar URL.
+                            </p>
+                        </div>
+
+                        <p
+                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
+                        >
+                            Formatos recomendados
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                            <div
+                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <code
+                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
+                                    >linkedin.com/in/maximiliano-zuniga</code
+                                >
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien (si nombre está ocupado)
+                                </span>
+                                <code
+                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
+                                    >linkedin.com/in/maximiliano-zuniga-finanzas</code
+                                >
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <code
+                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
+                                    >linkedin.com/in/max1234xyz</code
+                                >
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-4 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-2"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <code
+                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
+                                    >linkedin.com/in/maxitothebest</code
+                                >
+                            </div>
+                        </div>
+
+                        <!-- 9. Networking activo -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >09.</span
+                            >
+                            Networking activo — lo que pasa después del perfil
+                        </h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">
+                            Un perfil optimizado sin actividad es como <strong
+                                class="text-slate-900"
+                                >un local impecable que nunca abre</strong
+                            >. Tres movimientos que mueven la aguja:
+                        </p>
+
+                        <!-- a) Solicitudes con mensaje -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            a) Solicitudes de conexión con mensaje personalizado
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            Nunca envíes una solicitud en blanco. La tasa de
+                            aceptación sube de <strong class="text-slate-900"
+                                >≈25% a ≈70%</strong
+                            > con un mensaje corto.
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Hola [Nombre], vi que trabajas en
+                                    [empresa] como [cargo]. Me interesa mucho
+                                    el rubro de [industria] y me encantaría
+                                    sumar tu perfil a mi red. ¡Saludos!"
+                                </p>
+                            </div>
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Hola [Nombre], te escribo porque estoy
+                                    explorando oportunidades en [área] y vi que
+                                    tienes experiencia justamente en eso. Me
+                                    gustaría conectar para seguir aprendiendo
+                                    de tu camino. Saludos."
+                                </p>
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 text-sm md:text-base leading-relaxed"
+                                >
+                                    Solicitud en blanco sin mensaje.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- b) Comentar publicaciones -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            b) Comentar publicaciones relevantes
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            <strong class="text-slate-900"
+                                >2-3 comentarios reflexivos por semana</strong
+                            > en posts de líderes de tu industria genera más visibilidad
+                            que 10 publicaciones propias. Aporta valor, no halagues.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div
+                                class="bg-green-50 border border-green-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✓</span
+                                    >
+                                    Bien
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "Coincido con el punto 2. En mi experiencia
+                                    liderando reportes de margen, lo que más
+                                    aceleró la adopción fue [aporte concreto].
+                                    Gran post."
+                                </p>
+                            </div>
+                            <div
+                                class="bg-red-50 border border-red-100 p-5 rounded-xl"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-3"
+                                >
+                                    <span class="text-base leading-none">✕</span
+                                    >
+                                    Mal
+                                </span>
+                                <p
+                                    class="text-slate-700 italic text-sm md:text-base leading-relaxed"
+                                >
+                                    "¡Excelente! 👏👏👏"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- c) Publicar contenido propio -->
+                        <h4
+                            class="text-xl font-bold text-slate-900 mt-10 mb-3"
+                        >
+                            c) Publicar contenido propio (1 vez por semana basta)
+                        </h4>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            No hace falta ser influencer. Una publicación
+                            semanal con una reflexión breve, un aprendizaje de
+                            tu trabajo o un caso real te posiciona como alguien
+                            activo en tu rubro.
+                        </p>
+                        <div
+                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
+                        >
+                            <p
+                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
+                            >
+                                Formato simple
+                            </p>
+                            <p class="text-blue-900 font-semibold">
+                                Gancho → Contexto → Aprendizaje → Pregunta
+                                abierta
+                            </p>
+                        </div>
+
+                        <!-- 10. Checklist final -->
+                        <h3
+                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
+                        >
+                            <span class="text-blue-600 text-base font-mono"
+                                >10.</span
+                            >
+                            Checklist final de tu LinkedIn
+                        </h3>
+                        <div
+                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                        >
+                            <table class="w-full text-sm">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700 w-12"
+                                            >#</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Check</th
+                                        >
+                                        <th
+                                            class="px-4 py-3 text-left font-bold text-slate-700"
+                                            >Pregunta clave</th
+                                        >
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white divide-y divide-slate-100"
+                                >
+                                    {
+                                        linkedinChecklist.map((row) => (
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-4 py-3 font-bold text-blue-600 align-top">
+                                                    {row.n}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-700 align-top">
+                                                    {row.check}
+                                                </td>
+                                                <td class="px-4 py-3 text-slate-500 italic align-top">
+                                                    {row.q}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </article>
+        </section>
+    </main>
+
+    <footer
+        class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800 text-center text-sm"
+    >
+        <p>
+            &copy; {new Date().getFullYear()} Somos Empleables. Material
+            preparado para alumnos Duoc UC.
+        </p>
+    </footer>
+</Layout>
+
+<script>
+    // Active section tracking for the sticky TOC
+    const links = document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]");
+    const sections = document.querySelectorAll<HTMLElement>("article > section[id]");
+
+    if (links.length && sections.length) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        links.forEach((link) => {
+                            const isActive =
+                                link.getAttribute("data-toc-link") === id;
+                            link.classList.toggle("bg-blue-50", isActive);
+                            link.classList.toggle("text-blue-700", isActive);
+                        });
+                    }
+                });
+            },
+            { rootMargin: "-30% 0px -60% 0px" }
+        );
+
+        sections.forEach((s) => observer.observe(s));
+    }
+</script>
