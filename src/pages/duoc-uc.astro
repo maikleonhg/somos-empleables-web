@@ -44,19 +44,6 @@ const aptitudesEjemplos = [
     { perfil: "Ingeniero civil", tecnicas: "AutoCAD, Revit, Gestión de proyectos, Planificación de obras, Lean Construction", blandas: "Liderazgo de equipos, Resolución de problemas, Toma de decisiones bajo presión, Coordinación multidisciplinaria, Comunicación técnica" },
 ];
 
-// Checklist final LinkedIn (Etapa 4)
-const linkedinChecklist = [
-    { n: 1, check: "Foto de perfil profesional, fondo neutro, sonrisa leve", q: "¿Pasa el filtro de 2 segundos?" },
-    { n: 2, check: "Banner personalizado con propuesta de valor", q: "¿Refuerza mi marca o está vacío?" },
-    { n: 3, check: "Titular con cargo + palabra clave + valor agregado", q: "¿Aparezco si buscan mi cargo objetivo?" },
-    { n: 4, check: "\"Acerca de\" en 3 bloques con 1-2 logros cuantificados", q: "¿En 30 seg de lectura queda claro qué vendo?" },
-    { n: 5, check: "Cada experiencia tiene 3-5 logros MAR con números", q: "¿Hay logros o solo lista de funciones?" },
-    { n: 6, check: "Top 10 aptitudes alineadas al cargo objetivo", q: "¿Las 3 destacadas son las más importantes?" },
-    { n: 7, check: "Al menos 3-5 recomendaciones de fuentes diversas", q: "¿Tengo jefe, par, cliente representados?" },
-    { n: 8, check: "URL personalizada limpia", q: "¿La puedo poner en mi CV sin vergüenza?" },
-    { n: 9, check: "LinkedIn dice lo mismo que el CV (sin contradicciones)", q: "¿Pasa el cruce de verificación?" },
-    { n: 10, check: "Actividad mínima semanal (1 comentario / 1 post / 3 conexiones)", q: "¿Mi perfil está vivo o dormido?" },
-];
 
 // 10 preguntas que siempre caen (Etapa 3)
 const preguntasFrecuentes = [
@@ -81,7 +68,7 @@ const cvChecklist = [
     { n: 5, check: "Verifiqué con Ctrl+F todas las keywords de la oferta", q: "¿El ATS encuentra lo que busca?" },
     { n: 6, check: "Herramientas con nivel y contexto", q: "¿\"Excel avanzado\" o solo \"Excel\"?" },
     { n: 7, check: "LinkedIn dice lo mismo que el CV", q: "¿La verificación cruzada me ayuda o me hunde?" },
-    { n: 8, check: "Versión angulada al cargo específico (no genérica)", q: "¿Este CV fue hecho para esta oferta?" },
+    { n: 8, check: "Versión adaptada al cargo específico (no genérica)", q: "¿Este CV fue hecho para esta oferta?" },
     { n: 9, check: "Revisé manualmente que no se hayan inventado ni borrado logros cuantificados", q: "¿Los números siguen siendo los reales?" },
 ];
 
@@ -112,10 +99,10 @@ const entrevistaChecklist24h = [
 const cvInnegociables = [
     { titulo: "Formato ATS-friendly", body: "Una sola columna, vertical, sin foto, sin barras laterales ni íconos decorativos. PDF limpio, sin tablas anidadas. Como regla general, <strong>2 páginas</strong> (o 1 si tienes menos de 2 años de experiencia)." },
     { titulo: "Perfil Profesional fuerte en los primeros 4 renglones", body: "Años de experiencia + área, 2–3 fortalezas validadas externamente, 1 logro destacado cuantificado y las palabras clave del cargo objetivo. Es <strong>lo único garantizado</strong> que va a leer el reclutador." },
-    { titulo: "Logros cuantificados (formato MAR) bajo cada experiencia", body: "No funciones, <strong>logros</strong>. Los números son el principal diferenciador. Si una versión del CV pierde los números (porque la IA los borró al regenerar), pierde toda su fuerza y hay que recuperarlos manualmente." },
+    { titulo: "Logros cuantificados (formato MAR) bajo cada experiencia", body: "No solo funciones, <strong>logros</strong>. Los números son el principal diferenciador. Si una versión del CV pierde los números (porque la IA los borró al regenerar), pierde toda su fuerza y hay que recuperarlos manualmente." },
     { titulo: "La oferta es tu spoiler: adapta los CVs a lo que aparece en ella", body: "Leer la descripción del cargo función por función, subrayar las palabras clave (ej. <em>\"riesgo operacional\", \"KRI\", \"SLA\", \"stakeholders\", \"Lean\", \"SAP\", \"Power BI\"</em>) y verificar una por una que aparezcan en el CV, idealmente en la primera página. La IA y el reclutador buscan <strong>coincidencias exactas</strong>, no infieren." },
     { titulo: "Herramientas con nivel y contexto", body: "En lugar de listar <em>\"Excel, SQL, Power BI\"</em>, escribir <em>\"Excel avanzado (tablas dinámicas, Power Query), SQL intermedio, Power BI (modelado DAX y dashboards ejecutivos)\"</em>." },
-    { titulo: "No un solo CV — sí 1 maestro + 2 a 3 versiones anguladas", body: "Postular con un único CV genérico es la causa #1 del síndrome <em>\"postulo y nadie me llama\"</em>. Las versiones adaptadas comparten ~80% del contenido; cambian el perfil profesional, el orden de los logros y las palabras clave según el cargo." },
+    { titulo: "No un solo CV — sí 1 maestro + 2 a 3 versiones adaptadas", body: "Postular con un único CV genérico es la causa #1 del síndrome <em>\"postulo y nadie me llama\"</em>. Las versiones adaptadas comparten ~80% del contenido; cambian el perfil profesional, el orden de los logros y las palabras clave según el cargo." },
 ];
 
 // Errores comunes (Etapa 3)
@@ -147,7 +134,7 @@ const erroresEntrevista = [
                 class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none overflow-hidden"
             >
                 <div
-                    class="absolute top-0 left-0 md:left-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-blue-100/40 rounded-full blur-[60px] md:blur-[100px] opacity-70"
+                    class="absolute top-0 left-0 md:left-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-blue-50 rounded-full blur-[60px] md:blur-[100px] opacity-70"
                 >
                 </div>
                 <div
@@ -369,8 +356,10 @@ const erroresEntrevista = [
                                 >
                                     El escenario o problema inicial. <em
                                         >Ej:</em
-                                    > una base de datos de clientes con 25% de duplicidad
-                                    que genera errores en campañas y pérdidas económicas.
+                                    > en tu práctica detectas que el equipo arma
+                                    el reporte semanal de ventas a mano, copiando
+                                    datos entre 4 planillas y tardando 6 horas
+                                    cada lunes.
                                 </p>
                             </div>
                             <div
@@ -394,9 +383,11 @@ const erroresEntrevista = [
                                     class="text-sm text-slate-600 leading-relaxed"
                                 >
                                     Los pasos técnicos y estratégicos que
-                                    tomaste. Herramientas (SQL, Python),
-                                    coordinación con equipos y la metodología
-                                    para sanear y normalizar la información.
+                                    tomaste. <em>Ej:</em> unificaste las 4
+                                    planillas en una sola con tablas dinámicas
+                                    y fórmulas que se actualizan al pegar los
+                                    datos del CRM. Capacitaste a 2 personas en
+                                    30 minutos.
                                 </p>
                             </div>
                             <div
@@ -420,20 +411,22 @@ const erroresEntrevista = [
                                     class="text-sm text-slate-600 leading-relaxed"
                                 >
                                     La consecuencia directa, idealmente en
-                                    números. <em>Ej:</em> 98% de limpieza, 15% menos
-                                    en costos de envío y miles de duplicados eliminados.
+                                    números. <em>Ej:</em> el reporte ahora toma
+                                    30 minutos (–92%), liberaste ~22 horas al
+                                    mes del equipo y te ofrecieron extender la
+                                    práctica.
                                 </p>
                             </div>
                         </div>
 
-                        <!-- 3. Diagnóstico Psicológico -->
+                        <!-- 3. Autodiagnóstico -->
                         <h3
                             class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
                         >
                             <span class="text-blue-600 text-base font-mono"
                                 >03.</span
                             >
-                            El Diagnóstico Psicológico
+                            El Autodiagnóstico
                         </h3>
                         <p class="text-slate-600 leading-relaxed mb-6">
                             Entender tu identidad profesional implica conocer
@@ -580,7 +573,6 @@ const erroresEntrevista = [
                                 <p
                                     class="text-sm text-slate-600 leading-relaxed"
                                 >
-                                    El reclutador rara vez baja a la segunda.
                                     Todo lo importante debe estar arriba.
                                 </p>
                             </div>
@@ -793,7 +785,7 @@ const erroresEntrevista = [
                             class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-8 shadow-sm"
                         >
                             <div
-                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50/60"
+                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50"
                             >
                                 <span
                                     class="inline-flex items-center gap-1.5 text-red-600 text-xs font-bold uppercase tracking-wider mb-3"
@@ -811,7 +803,7 @@ const erroresEntrevista = [
                                 </p>
                             </div>
                             <div
-                                class="p-5 md:p-6 bg-green-50/40 relative"
+                                class="p-5 md:p-6 bg-green-50 relative"
                             >
                                 <span
                                     class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
@@ -847,7 +839,7 @@ const erroresEntrevista = [
                             class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-4 shadow-sm"
                         >
                             <div
-                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50/60"
+                                class="p-5 md:p-6 border-b border-dashed border-slate-200 bg-slate-50"
                             >
                                 <span
                                     class="inline-flex items-center gap-1.5 text-red-600 text-xs font-bold uppercase tracking-wider mb-3"
@@ -864,7 +856,7 @@ const erroresEntrevista = [
                                 </p>
                             </div>
                             <div
-                                class="p-5 md:p-6 bg-green-50/40"
+                                class="p-5 md:p-6 bg-green-50"
                             >
                                 <span
                                     class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
@@ -887,7 +879,7 @@ const erroresEntrevista = [
                             </div>
                         </div>
                         <div
-                            class="bg-green-50/40 border border-green-200 p-5 md:p-6 rounded-2xl mb-8 shadow-sm"
+                            class="bg-green-50 border border-green-200 p-5 md:p-6 rounded-2xl mb-8 shadow-sm"
                         >
                             <span
                                 class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-3"
@@ -2988,118 +2980,12 @@ const erroresEntrevista = [
                             </div>
                         </div>
 
-                        <!-- 8. URL personalizada -->
+                        <!-- 8. Networking activo -->
                         <h3
                             class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
                         >
                             <span class="text-blue-600 text-base font-mono"
                                 >08.</span
-                            >
-                            URL personalizada — 5 minutos, alto retorno
-                        </h3>
-                        <p class="text-slate-600 leading-relaxed mb-6">
-                            Por defecto LinkedIn asigna una URL con números
-                            aleatorios. Cambiarla a una versión limpia:
-                        </p>
-                        <ul class="space-y-2 text-sm md:text-base text-slate-600 leading-relaxed list-disc pl-5 mb-6">
-                            <li>
-                                Te hace <strong class="text-slate-900"
-                                    >más fácil de encontrar en Google</strong
-                                >.
-                            </li>
-                            <li>
-                                Te permite ponerla en el CV y firma de email.
-                            </li>
-                            <li>Proyecta profesionalismo.</li>
-                        </ul>
-                        <div
-                            class="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded-r-lg"
-                        >
-                            <p
-                                class="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1"
-                            >
-                                Cómo
-                            </p>
-                            <p class="text-blue-900 leading-relaxed">
-                                Perfil → "Editar perfil público y URL" (arriba
-                                a la derecha) → editar URL.
-                            </p>
-                        </div>
-
-                        <p
-                            class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
-                        >
-                            Formatos recomendados
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
-                            <div
-                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
-                            >
-                                <span
-                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
-                                >
-                                    <span class="text-base leading-none">✓</span
-                                    >
-                                    Bien
-                                </span>
-                                <code
-                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
-                                    >linkedin.com/in/maximiliano-zuniga</code
-                                >
-                            </div>
-                            <div
-                                class="bg-green-50 border border-green-100 p-4 rounded-xl"
-                            >
-                                <span
-                                    class="inline-flex items-center gap-1.5 text-green-700 text-xs font-bold uppercase tracking-wider mb-2"
-                                >
-                                    <span class="text-base leading-none">✓</span
-                                    >
-                                    Bien (si nombre está ocupado)
-                                </span>
-                                <code
-                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
-                                    >linkedin.com/in/maximiliano-zuniga-finanzas</code
-                                >
-                            </div>
-                            <div
-                                class="bg-red-50 border border-red-100 p-4 rounded-xl"
-                            >
-                                <span
-                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-2"
-                                >
-                                    <span class="text-base leading-none">✕</span
-                                    >
-                                    Mal
-                                </span>
-                                <code
-                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
-                                    >linkedin.com/in/max1234xyz</code
-                                >
-                            </div>
-                            <div
-                                class="bg-red-50 border border-red-100 p-4 rounded-xl"
-                            >
-                                <span
-                                    class="inline-flex items-center gap-1.5 text-red-700 text-xs font-bold uppercase tracking-wider mb-2"
-                                >
-                                    <span class="text-base leading-none">✕</span
-                                    >
-                                    Mal
-                                </span>
-                                <code
-                                    class="block text-sm text-slate-800 bg-white px-3 py-2 rounded font-mono break-all"
-                                    >linkedin.com/in/maxitothebest</code
-                                >
-                            </div>
-                        </div>
-
-                        <!-- 9. Networking activo -->
-                        <h3
-                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
-                        >
-                            <span class="text-blue-600 text-base font-mono"
-                                >09.</span
                             >
                             Networking activo — lo que pasa después del perfil
                         </h3>
@@ -3256,55 +3142,67 @@ const erroresEntrevista = [
                             </p>
                         </div>
 
-                        <!-- 10. Checklist final -->
-                        <h3
-                            class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
-                        >
-                            <span class="text-blue-600 text-base font-mono"
-                                >10.</span
-                            >
-                            Checklist final de tu LinkedIn
-                        </h3>
+                    </section>
+
+                    <!-- ============== CIERRE ============== -->
+                    <section
+                        class="mt-24 pt-16 border-t border-slate-200"
+                    >
                         <div
-                            class="overflow-x-auto rounded-2xl border border-slate-200 mb-8"
+                            class="bg-slate-900 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden"
                         >
-                            <table class="w-full text-sm">
-                                <thead class="bg-slate-100">
-                                    <tr>
-                                        <th
-                                            class="px-4 py-3 text-left font-bold text-slate-700 w-12"
-                                            >#</th
-                                        >
-                                        <th
-                                            class="px-4 py-3 text-left font-bold text-slate-700"
-                                            >Check</th
-                                        >
-                                        <th
-                                            class="px-4 py-3 text-left font-bold text-slate-700"
-                                            >Pregunta clave</th
-                                        >
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    class="bg-white divide-y divide-slate-100"
+                            <div
+                                class="absolute -top-20 -right-20 w-64 h-64 bg-blue-600 rounded-full blur-[80px] opacity-30 pointer-events-none"
+                            >
+                            </div>
+                            <div
+                                class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-600 rounded-full blur-[80px] opacity-20 pointer-events-none"
+                            >
+                            </div>
+
+                            <div class="relative">
+                                <h3
+                                    class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight"
                                 >
-                                    {
-                                        linkedinChecklist.map((row) => (
-                                            <tr class="hover:bg-slate-50 transition-colors">
-                                                <td class="px-4 py-3 font-bold text-blue-600 align-top">
-                                                    {row.n}
-                                                </td>
-                                                <td class="px-4 py-3 text-slate-700 align-top">
-                                                    {row.check}
-                                                </td>
-                                                <td class="px-4 py-3 text-slate-500 italic align-top">
-                                                    {row.q}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-                                </tbody>
-                            </table>
+                                    El siguiente paso es tuyo
+                                </h3>
+                                <p
+                                    class="text-base md:text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed"
+                                >
+                                    Ya tienes los 4 pilares: autoconocimiento,
+                                    CV, entrevista y LinkedIn. Lo que queda es
+                                    ejecutar. Si quieres acompañamiento real
+                                    en el proceso, en <strong class="text-white"
+                                        >Somos Empleables</strong
+                                    > te guiamos paso a paso.
+                                </p>
+                                <div
+                                    class="flex flex-col sm:flex-row gap-3 justify-center"
+                                >
+                                    <a
+                                        href="https://programa.somosempleables.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full transition-colors"
+                                    >
+                                        Conoce el programa
+                                        <span aria-hidden="true">→</span>
+                                    </a>
+                                    <a
+                                        href="https://www.instagram.com/somosempleables/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-full transition-colors backdrop-blur-sm border border-white/10"
+                                    >
+                                        Síguenos en Instagram
+                                    </a>
+                                </div>
+                                <p
+                                    class="text-sm text-slate-400 mt-8"
+                                >
+                                    — Stefano Andreani · Somos Empleables
+                                </p>
+                            </div>
                         </div>
                     </section>
                 </article>
