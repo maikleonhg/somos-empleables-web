@@ -50,8 +50,8 @@ const {
             content="https://somosempleables.com/og-image.jpg"
         />
 
-        <!-- AOS CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+        <!-- AOS CSS (pinned — @next can break without notice) -->
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
 
         <!-- Google Analytics 4 -->
         <script
@@ -85,7 +85,7 @@ const {
         <slot />
 
         <!-- AOS Script -->
-        <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script is:inline src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
         <script is:inline>
             AOS.init({
                 duration: 800,
