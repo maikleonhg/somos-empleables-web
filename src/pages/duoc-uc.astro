@@ -63,19 +63,17 @@ const preguntasFrecuentes = [
 const cvChecklist = [
     { n: 1, check: "Formato 1 columna, sin foto, PDF", q: "¿Pasa un ATS?" },
     { n: 2, check: "Primera página con perfil + último cargo desarrollado", q: "¿Si solo lee la página 1, queda claro qué vendo?" },
-    { n: 3, check: "Perfil profesional ≤ 4 renglones con número y palabras clave", q: "¿Vendo en 6 segundos?" },
-    { n: 4, check: "Cada cargo tiene 3–5 viñetas en formato MAR con números", q: "¿Hay logros o solo funciones?" },
-    { n: 5, check: "Verifiqué con Ctrl+F todas las keywords de la oferta", q: "¿El ATS encuentra lo que busca?" },
+    { n: 3, check: "Perfil profesional ≤ 4 líneas con número y palabras clave", q: "¿Vendo en 6 segundos?" },
+    { n: 4, check: "Cada cargo tiene entre 4-5 funciones clave, con herramientas y, si es posible, logros cuantificados", q: "¿Hay logros o solo funciones?" },
+    { n: 5, check: "El CV incluye las palabras clave de la oferta (las máximas posibles)", q: "¿El ATS encuentra lo que busca?" },
     { n: 6, check: "Herramientas con nivel y contexto", q: "¿\"Excel avanzado\" o solo \"Excel\"?" },
-    { n: 7, check: "LinkedIn dice lo mismo que el CV", q: "¿La verificación cruzada me ayuda o me hunde?" },
-    { n: 8, check: "Versión adaptada al cargo específico (no genérica)", q: "¿Este CV fue hecho para esta oferta?" },
-    { n: 9, check: "Revisé manualmente que no se hayan inventado ni borrado logros cuantificados", q: "¿Los números siguen siendo los reales?" },
+    { n: 7, check: "Versión adaptada al cargo específico (no genérica)", q: "¿Este CV fue hecho para esta oferta?" },
 ];
 
 // Tipos de entrevista (Etapa 3)
 const tiposEntrevista = [
     { tipo: "Screening telefónico", quien: "Reclutador junior / atracción de talento", evalua: "Disponibilidad, renta, experiencia mínima, motivación básica. Filtro inicial.", prep: "Tono energético, respuestas cortas y firmes. Tener renta y fecha de inicio listas." },
-    { tipo: "Entrevista por competencias", quien: "Reclutador / psicólogo organizacional", evalua: "Competencias blandas con método STAR, coherencia, autoconocimiento.", prep: "Banco de ejemplos MAR/STAR listo. Practicar conflicto, error y trabajo en equipo." },
+    { tipo: "Entrevista por competencias", quien: "Reclutador / psicólogo organizacional", evalua: "Competencias blandas con método MAR, coherencia, autoconocimiento.", prep: "Banco de ejemplos MAR listo. Practicar conflicto, error y trabajo en equipo." },
     { tipo: "Entrevista técnica", quien: "Hiring manager / par técnico", evalua: "Dominio real del oficio, herramientas, decisiones técnicas, trade-offs.", prep: "Repasar herramientas con ejemplos concretos. Preparar 1-2 casos de decisiones técnicas." },
     { tipo: "Entrevista psicolaboral", quien: "Psicólogo externo", evalua: "Coherencia narrativa, manejo emocional, fit cultural, debilidades reales.", prep: "Historia de vida consistente. Errores reales. NO decir \"soy perfeccionista\"." },
     { tipo: "Entrevista final con gerencia", quien: "Gerente / Director", evalua: "Visión, motivación de largo plazo, fit estratégico, negociación.", prep: "Investigar a fondo. Preguntas inteligentes sobre el negocio. Proyección a 2-3 años." },
@@ -86,7 +84,7 @@ const entrevistaChecklist24h = [
     { n: 1, check: "Investigué la empresa (5 datos concretos) y al entrevistador (LinkedIn)" },
     { n: 2, check: "Identifiqué si es reclutador o hiring manager y ajusté el enfoque" },
     { n: 3, check: "Tengo lista mi versión de \"Háblame de ti\" en 90-120 seg (Pasado-Presente-Futuro)" },
-    { n: 4, check: "Tengo 3 a 5 historias MAR/STAR diferentes, una por competencia" },
+    { n: 4, check: "Tengo 3 a 5 historias MAR diferentes, una por competencia" },
     { n: 5, check: "Tengo mi narrativa de salida del trabajo anterior en una versión simple" },
     { n: 6, check: "Tengo mi rango de renta listo, sin preámbulos" },
     { n: 7, check: "Tengo 3 preguntas preparadas para el entrevistador" },
@@ -99,7 +97,7 @@ const entrevistaChecklist24h = [
 const cvInnegociables = [
     { titulo: "Formato ATS-friendly", body: "Una sola columna, vertical, sin foto, sin barras laterales ni íconos decorativos. PDF limpio, sin tablas anidadas. Como regla general, <strong>2 páginas</strong> (o 1 si tienes menos de 2 años de experiencia)." },
     { titulo: "Perfil Profesional fuerte en los primeros 4 renglones", body: "Años de experiencia + área, 2–3 fortalezas validadas externamente, 1 logro destacado cuantificado y las palabras clave del cargo objetivo. Es <strong>lo único garantizado</strong> que va a leer el reclutador." },
-    { titulo: "Logros cuantificados (formato MAR) bajo cada experiencia", body: "No solo funciones, <strong>logros</strong>. Los números son el principal diferenciador. Si una versión del CV pierde los números (porque la IA los borró al regenerar), pierde toda su fuerza y hay que recuperarlos manualmente." },
+    { titulo: "Logros cuantificados (formato MAR) bajo cada experiencia", body: "No solo funciones, <strong>logros</strong>. Los números son el principal diferenciador: le permiten al reclutador validar el impacto de tu trabajo. Un CV sin datos cuantitativos o porcentajes pierde fuerza y se ve genérico." },
     { titulo: "La oferta es tu spoiler: adapta los CVs a lo que aparece en ella", body: "Leer la descripción del cargo función por función, subrayar las palabras clave (ej. <em>\"riesgo operacional\", \"KRI\", \"SLA\", \"stakeholders\", \"Lean\", \"SAP\", \"Power BI\"</em>) y verificar una por una que aparezcan en el CV, idealmente en la primera página. La IA y el reclutador buscan <strong>coincidencias exactas</strong>, no infieren." },
     { titulo: "Herramientas con nivel y contexto", body: "En lugar de listar <em>\"Excel, SQL, Power BI\"</em>, escribir <em>\"Excel avanzado (tablas dinámicas, Power Query), SQL intermedio, Power BI (modelado DAX y dashboards ejecutivos)\"</em>." },
     { titulo: "No un solo CV — sí 1 maestro + 2 a 3 versiones adaptadas", body: "Postular con un único CV genérico es la causa #1 del síndrome <em>\"postulo y nadie me llama\"</em>. Las versiones adaptadas comparten ~80% del contenido; cambian el perfil profesional, el orden de los logros y las palabras clave según el cargo." },
@@ -434,52 +432,82 @@ const erroresEntrevista = [
                                 >luces como tus sombras</strong
                             > para presentarlas de forma estratégica.
                         </p>
-                        <ul class="space-y-4 mb-6">
+                        <ul class="space-y-4 mb-4">
                             <li
                                 class="bg-white p-5 rounded-xl border border-slate-100"
                             >
                                 <p
                                     class="font-bold text-slate-900 mb-1.5"
                                 >
-                                    Fortalezas con Evidencia
+                                    Fortalezas
                                 </p>
                                 <p
                                     class="text-slate-600 leading-relaxed text-sm md:text-base"
                                 >
-                                    Cada fortaleza debe ir acompañada de una <em
-                                        >"prueba de concepto"</em
-                                    >. No basta con decir que eres autodidacta;
-                                    debes demostrarlo contando, por ejemplo,
-                                    cómo aprendiste a automatizar procesos por
-                                    tu cuenta para reducir tareas <strong
+                                    No se trata solo de un ejercicio de
+                                    introspección; son tu diferencial, lo que
+                                    te da ventaja respecto a otros perfiles.
+                                    Los reclutadores las preguntan porque
+                                    buscan <strong class="text-slate-900"
+                                        >predecir tu desempeño futuro</strong
+                                    > basándose en tus éxitos pasados. Hazte una
+                                    lista con <strong class="text-slate-900"
+                                        >3 o 4 fortalezas</strong
+                                    > y explica cuándo, en tu trabajo o estudios,
+                                    demostraste cada una.
+                                </p>
+                            </li>
+                            <li
+                                class="bg-white p-5 rounded-xl border border-slate-100"
+                            >
+                                <p
+                                    class="font-bold text-slate-900 mb-1.5"
+                                >
+                                    Debilidades
+                                </p>
+                                <p
+                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
+                                >
+                                    Los reclutadores no buscan descartarte por
+                                    tus fallos, sino evaluar tu <strong
                                         class="text-slate-900"
-                                        >de dos días a solo diez minutos</strong
+                                        >autoconsciencia y honestidad</strong
+                                    >. Un candidato que afirma no tener
+                                    debilidades proyecta falta de autocrítica
+                                    o estancamiento. Quieren ver que eres capaz
+                                    de identificar tus puntos de mejora y, sobre
+                                    todo, que tienes la madurez para
+                                    gestionarlos proactivamente para que no
+                                    afecten los resultados del equipo. Una buena
+                                    práctica: anota <strong class="text-slate-900"
+                                        >3 o 4 debilidades</strong
+                                    > y pregúntate <em>"¿cómo podría mejorar en
+                                        esto?"</em
                                     >.
                                 </p>
                             </li>
-                            <li
-                                class="bg-white p-5 rounded-xl border border-slate-100"
-                            >
-                                <p
-                                    class="font-bold text-slate-900 mb-1.5"
-                                >
-                                    Debilidades con Plan de Acción
-                                </p>
-                                <p
-                                    class="text-slate-600 leading-relaxed text-sm md:text-base"
-                                >
-                                    Una debilidad bien manejada demuestra
-                                    madurez. Preséntala junto a su <strong
-                                        class="text-slate-900"
-                                        >método de gestión</strong
-                                    >. Si tu debilidad es la dificultad para
-                                    delegar por perfeccionismo, explica cómo hoy
-                                    usas sistemas de revisión por hitos y puntos
-                                    de control para asegurar la calidad mientras
-                                    empoderas a tu equipo.
-                                </p>
-                            </li>
                         </ul>
+
+                        <!-- Nota: ver Etapa 3 para cómo comunicarlas -->
+                        <div
+                            class="flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6 text-sm"
+                        >
+                            <span
+                                class="text-blue-600 text-base leading-none mt-0.5"
+                                aria-hidden="true">📌</span
+                            >
+                            <p class="text-slate-600 leading-relaxed m-0">
+                                <strong class="text-slate-900">Nota:</strong>
+                                la forma exacta de <strong class="text-slate-900"
+                                    >comunicar</strong
+                                > tus fortalezas y debilidades en una entrevista
+                                la vemos con más detalle en <a
+                                    href="#etapa-3"
+                                    class="text-blue-600 font-semibold hover:underline"
+                                    >Etapa 3 — La Entrevista</a
+                                >.
+                            </p>
+                        </div>
 
                         <!-- DISC Callout -->
                         <div
@@ -503,7 +531,7 @@ const erroresEntrevista = [
                                 </svg>
                                 Sugerencia Práctica
                             </p>
-                            <p class="text-blue-800 m-0 leading-relaxed">
+                            <p class="text-blue-800 m-0 leading-relaxed mb-4">
                                 Realiza un test de personalidad como el <strong
                                     >DISC</strong
                                 >. Esta herramienta gratuita permite identificar
@@ -511,6 +539,21 @@ const erroresEntrevista = [
                                 ayudándote a ponerle nombre a tus fortalezas
                                 naturales y a entender mejor tus áreas de
                                 mejora.
+                            </p>
+                            <a
+                                href="https://personality.co/es/personality-test"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-4 py-2 rounded-full transition-colors"
+                            >
+                                Hacer test gratis
+                                <span aria-hidden="true">↗</span>
+                            </a>
+                            <p
+                                class="text-xs text-blue-700/70 mt-3 mb-0"
+                            >
+                                Test externo de <code class="font-mono">personality.co</code> · gratis,
+                                ~5 minutos.
                             </p>
                         </div>
                     </section>
@@ -568,12 +611,16 @@ const erroresEntrevista = [
                                     >01</span
                                 >
                                 <h4 class="font-bold text-slate-900 mb-2">
-                                    La primera página es la más importante
+                                    Lo más importante va arriba
                                 </h4>
                                 <p
                                     class="text-sm text-slate-600 leading-relaxed"
                                 >
-                                    Todo lo importante debe estar arriba.
+                                    En esos 6 segundos el reclutador busca las <strong
+                                        class="text-slate-900"
+                                        >palabras clave de la oferta</strong
+                                    > en tu CV. Asegúrate de que aparezcan en la
+                                    primera página.
                                 </p>
                             </div>
                             <div
@@ -664,9 +711,12 @@ const erroresEntrevista = [
                                         Experiencia Laboral
                                     </p>
                                     <p class="text-sm text-slate-600 leading-relaxed">
-                                        Orden cronológico inverso, con bullets de
-                                        logros cuantificados, funciones clave y
-                                        herramientas.
+                                        Orden cronológico inverso. Bajo cada
+                                        cargo, separa <strong class="text-slate-900"
+                                            >bullets de funciones clave</strong
+                                        > (qué hacías) de los <strong class="text-slate-900"
+                                            >bullets de logros cuantificados</strong
+                                        > (impacto medible). Más las herramientas.
                                     </p>
                                 </div>
                             </li>
@@ -953,6 +1003,65 @@ const erroresEntrevista = [
                                     }
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- CV de ejemplo (Overleaf) -->
+                        <div
+                            class="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm mb-8 flex flex-col md:flex-row items-start gap-5"
+                        >
+                            <div
+                                class="shrink-0 w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    class="w-7 h-7"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <p
+                                    class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1"
+                                >
+                                    Plantilla descargable
+                                </p>
+                                <h4
+                                    class="text-xl font-bold text-slate-900 mb-2"
+                                >
+                                    CV de ejemplo — formato Harvard
+                                </h4>
+                                <p class="text-sm md:text-base text-slate-600 leading-relaxed mb-4">
+                                    Mira el CV de ejemplo en Overleaf. Puedes
+                                    copiarlo a tu cuenta, adaptarlo a tu perfil
+                                    y compilarlo a PDF cuando quieras. Aplica
+                                    todo lo de esta etapa: 1 columna, sin foto,
+                                    perfil profesional fuerte, logros con
+                                    números.
+                                </p>
+                                <a
+                                    href="https://www.overleaf.com/4124169739qwsqhvpsnddq#41d514"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-colors"
+                                >
+                                    Abrir en Overleaf
+                                    <span aria-hidden="true">↗</span>
+                                </a>
+                                <p
+                                    class="text-xs text-slate-400 mt-3 mb-0"
+                                >
+                                    Requiere cuenta gratis de Overleaf para
+                                    editar/compilar.
+                                </p>
+                            </div>
                         </div>
                     </section>
 
@@ -1379,50 +1488,37 @@ const erroresEntrevista = [
                             monólogo.
                         </p>
 
-                        <!-- c) STAR / MAR -->
+                        <!-- c) Método MAR -->
                         <h4
                             class="text-xl font-bold text-slate-900 mt-10 mb-3"
                         >
-                            c) Método STAR / MAR para preguntas por
-                            competencias
+                            c) Método MAR para preguntas por competencias
                         </h4>
                         <p class="text-slate-600 leading-relaxed mb-4">
                             Toda pregunta que empiece con <em
                                 >"Cuéntame de una vez que…"</em
-                            > o <em>"Dame un ejemplo de…"</em> se responde con esta
-                            estructura:
+                            > o <em>"Dame un ejemplo de…"</em> se responde con la
+                            misma estructura que viste en Etapa 1:
                         </p>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                             <div
                                 class="bg-white p-4 rounded-xl border border-slate-100"
                             >
                                 <span
                                     class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
-                                    >S</span
+                                    >M</span
                                 >
                                 <p
                                     class="text-xs font-bold text-slate-900 mb-1"
                                 >
-                                    Situación
+                                    Momento <span
+                                        class="text-slate-400 font-normal normal-case"
+                                        >(El Contexto)</span
+                                    >
                                 </p>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Contexto breve: empresa, equipo, problema.
-                                </p>
-                            </div>
-                            <div
-                                class="bg-white p-4 rounded-xl border border-slate-100"
-                            >
-                                <span
-                                    class="block text-3xl font-extrabold text-blue-200 leading-none mb-2 font-mono"
-                                    >T</span
-                                >
-                                <p
-                                    class="text-xs font-bold text-slate-900 mb-1"
-                                >
-                                    Tarea
-                                </p>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Cuál era tu responsabilidad específica.
+                                    Contexto breve: empresa, cargo y el
+                                    problema a resolver.
                                 </p>
                             </div>
                             <div
@@ -1435,11 +1531,14 @@ const erroresEntrevista = [
                                 <p
                                     class="text-xs font-bold text-slate-900 mb-1"
                                 >
-                                    Acción
+                                    Acción <span
+                                        class="text-slate-400 font-normal normal-case"
+                                        >(La Ejecución)</span
+                                    >
                                 </p>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Qué hiciste TÚ (no el equipo). Primera
-                                    persona.
+                                    Qué hiciste TÚ para solucionar el problema
+                                    (no el equipo). Primera persona.
                                 </p>
                             </div>
                             <div
@@ -1452,7 +1551,10 @@ const erroresEntrevista = [
                                 <p
                                     class="text-xs font-bold text-slate-900 mb-1"
                                 >
-                                    Resultado
+                                    Resultado <span
+                                        class="text-slate-400 font-normal normal-case"
+                                        >(El Impacto)</span
+                                    >
                                 </p>
                                 <p class="text-xs text-slate-600 leading-relaxed">
                                     Impacto medible. Números siempre que se
@@ -1461,7 +1563,7 @@ const erroresEntrevista = [
                             </div>
                         </div>
                         <p class="text-sm text-slate-500 italic mb-4">
-                            <strong>Duración objetivo por respuesta STAR:</strong
+                            <strong>Duración objetivo por respuesta MAR:</strong
                             > entre 90 segundos y 2 minutos.
                         </p>
 
@@ -2370,43 +2472,43 @@ const erroresEntrevista = [
                         <p
                             class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3"
                         >
-                            Ejemplo completo · Analista Senior de Control de
-                            Gestión
+                            Ejemplo completo · Técnico en Informática recién
+                            titulado
                         </p>
                         <div
                             class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm mb-8"
                         >
                             <p class="text-slate-700 leading-relaxed mb-4">
-                                Soy Ingeniera Comercial con 6 años de
-                                experiencia en control de gestión y
-                                planificación financiera en empresas de retail
-                                y banca. Mi foco es traducir datos complejos en
-                                decisiones de negocio claras para gerencias
-                                comerciales y de finanzas. 📊
+                                Soy <strong class="text-slate-900"
+                                    >Técnico en Informática</strong
+                                > recién titulado con enfoque en soporte técnico
+                                y administración de redes. Mi objetivo es facilitar
+                                el uso de la tecnología, resolviendo incidencias
+                                técnicas de forma rápida para mantener la continuidad
+                                operativa de los equipos.
                             </p>
                             <p class="text-slate-700 leading-relaxed mb-4">
-                                En mi rol actual en Falabella Retail lideré la <strong
+                                En mi práctica profesional, gestioné el <strong
                                     class="text-slate-900"
-                                    >automatización del cierre mensual</strong
-                                > migrando el proceso a Power BI con conexión directa
-                                a SAP HANA, reduciendo el cierre de 5 a 1,5 días
-                                y liberando 60 horas mensuales del equipo para análisis.
-                                Además, rediseñé el <strong class="text-slate-900"
-                                    >reporte de margen por SKU</strong
-                                > que hoy revisa el Comité Comercial, permitiendo
-                                detectar 18 SKUs con margen negativo y recuperar
-                                cerca de <strong class="text-slate-900"
-                                    >$120M anuales</strong
-                                >. 🚀
+                                    >soporte técnico para más de 40 usuarios</strong
+                                >, reduciendo el tiempo de respuesta en un 30%
+                                mediante la implementación de un sistema de
+                                tickets básico. Además, realicé el <strong
+                                    class="text-slate-900"
+                                    >mantenimiento preventivo de hardware</strong
+                                >, logrando extender la vida útil de los equipos
+                                en un departamento clave.
                             </p>
                             <p class="text-slate-700 leading-relaxed">
-                                Manejo Excel avanzado, Power BI (DAX), SQL
-                                intermedio y SAP S/4HANA. Hoy busco un rol de
-                                Jefatura de Control de Gestión donde pueda
-                                liderar equipo y entrar antes en la toma de
-                                decisiones. Si estás armando equipo en áreas de
-                                FP&A o Control de Gestión, escríbeme — me
-                                encantaría conversar.
+                                Manejo <strong class="text-slate-900">SQL</strong>,
+                                configuración de redes <strong class="text-slate-900"
+                                    >Cisco</strong
+                                >, soporte Windows/Linux y ensamblaje de
+                                hardware. Actualmente busco integrarme a un
+                                equipo de TI donde pueda aplicar mis
+                                conocimientos técnicos y seguir aprendiendo. Si
+                                buscas un perfil proactivo y con capacidad de
+                                aprendizaje rápido, ¡conectemos!
                             </p>
                         </div>
 
@@ -2667,14 +2769,14 @@ const erroresEntrevista = [
                             </p>
                         </div>
 
-                        <!-- 6. Aptitudes y endosos -->
+                        <!-- 6. Aptitudes y recomendaciones -->
                         <h3
                             class="flex items-baseline gap-3 text-2xl font-bold text-slate-900 mt-14 mb-5"
                         >
                             <span class="text-blue-600 text-base font-mono"
                                 >06.</span
                             >
-                            Aptitudes y endosos — selección estratégica
+                            Aptitudes y recomendaciones — selección estratégica
                         </h3>
                         <p class="text-slate-600 leading-relaxed mb-6">
                             LinkedIn permite listar hasta 50 aptitudes, pero <strong
@@ -2758,14 +2860,15 @@ const erroresEntrevista = [
 
                         <div class="bg-white p-6 rounded-2xl border border-slate-200 mb-8">
                             <p class="font-bold text-slate-900 mb-3">
-                                Cómo conseguir endosos (sin sentirte incómodo)
+                                Cómo conseguir recomendaciones (sin sentirte
+                                incómodo)
                             </p>
                             <ol class="space-y-3 text-sm md:text-base text-slate-600 leading-relaxed list-decimal pl-5">
                                 <li>
                                     <strong class="text-slate-900"
                                         >Endosa primero.</strong
-                                    > El 60% de las personas te devuelve el endoso
-                                    sin que lo pidas.
+                                    > El 60% de las personas te devuelve la
+                                    recomendación sin que la pidas.
                                 </li>
                                 <li>
                                     <strong class="text-slate-900"
@@ -2809,10 +2912,10 @@ const erroresEntrevista = [
                             colegas, jefes o clientes. Son lo más próximo a una <strong
                                 class="text-slate-900"
                                 >referencia laboral verificable</strong
-                            >, y un perfil con 3-5 recomendaciones buenas
-                            genera <strong class="text-slate-900"
-                                >más confianza que 50 endosos</strong
-                            >.
+                            > y, junto con tu perfil, son <strong
+                                class="text-slate-900"
+                                >la señal más fuerte de credibilidad</strong
+                            > que tu LinkedIn puede mostrar.
                         </p>
 
                         <p
@@ -2943,19 +3046,21 @@ const erroresEntrevista = [
                                 <p
                                     class="text-slate-700 italic text-sm md:text-base leading-relaxed"
                                 >
-                                    "Trabajé con Laura durante 2 años en
-                                    Falabella, donde fue fundamental para
-                                    implementar el nuevo sistema de reporting
-                                    de margen. Su capacidad de traducir
-                                    requerimientos del negocio a soluciones
-                                    técnicas en Power BI nos permitió <strong
+                                    "Diego hizo su práctica profesional en
+                                    nuestro departamento de TI haciéndose
+                                    cargo del soporte técnico a más de 40
+                                    usuarios. Implementó un sistema de tickets
+                                    básico que nos permitió <strong
                                         class="not-italic"
-                                        >reducir el cierre mensual de 5 a 1,5
-                                        días</strong
-                                    >. Además, su actitud colaborativa y
-                                    disposición a enseñar marcaron al equipo.
-                                    La recomiendo sin reservas para roles de
-                                    liderazgo en control de gestión."
+                                        >reducir el tiempo de respuesta en un
+                                        30%</strong
+                                    > y propuso mejoras de mantenimiento preventivo
+                                    que extendieron la vida útil de varios equipos
+                                    clave. Mostró autonomía, capacidad de aprender
+                                    rápido y muy buena disposición para enseñar
+                                    a otros. Lo recomiendo sin reservas para
+                                    cargos de soporte técnico o administración
+                                    de redes."
                                 </p>
                             </div>
                             <div
@@ -2971,9 +3076,9 @@ const erroresEntrevista = [
                                 <p
                                     class="text-slate-700 italic text-sm md:text-base leading-relaxed"
                                 >
-                                    "Laura es una excelente profesional, muy
-                                    responsable y proactiva." <span
-                                        class="not-italic text-red-700 font-semibold not-italic"
+                                    "Diego es un excelente profesional, muy
+                                    responsable y proactivo." <span
+                                        class="not-italic text-red-700 font-semibold"
                                         >— no dice nada útil.</span
                                     >
                                 </p>
@@ -3144,9 +3249,77 @@ const erroresEntrevista = [
 
                     </section>
 
-                    <!-- ============== CIERRE ============== -->
+                    <!-- ============== MANIFIESTO ============== -->
                     <section
                         class="mt-24 pt-16 border-t border-slate-200"
+                    >
+                        <div class="max-w-2xl mx-auto">
+                            <p
+                                class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-6 text-center"
+                            >
+                                Una última cosa
+                            </p>
+
+                            <div
+                                class="text-base md:text-lg text-slate-700 leading-relaxed space-y-5"
+                            >
+                                <p>
+                                    Si llegaste hasta acá, ya tienes algo que
+                                    la mayoría no tiene: una guía completa.
+                                    Pero la verdad incómoda es que encontrar
+                                    trabajo no se trata realmente de la
+                                    universidad de la que vienes, ni del CV
+                                    que armaste, ni de cuán bonito quedó tu
+                                    LinkedIn, ni siquiera de cuántas
+                                    entrevistas hagas. Se trata de <strong
+                                        class="text-slate-900"
+                                        >cuánto te importa cada detalle y
+                                        cuánto esfuerzo real le pones a cada
+                                        parte del proceso</strong
+                                    >.
+                                </p>
+                                <p>
+                                    De ajustar el CV una vez más aunque ya
+                                    parezca listo, de practicar el "háblame
+                                    de ti" en voz alta aunque te dé pudor, de
+                                    investigar a la empresa aunque sea
+                                    domingo, de volver a escribir el resumen
+                                    de LinkedIn porque ese párrafo todavía no
+                                    transmite lo que vales.
+                                </p>
+                                <p>
+                                    Al final, los que quedan seleccionados no
+                                    son los más inteligentes ni los más
+                                    talentosos: son los que <strong
+                                        class="text-slate-900"
+                                        >se toman la búsqueda de trabajo como
+                                        un trabajo</strong
+                                    >. Los que aparecen todos los días, miden
+                                    lo que hacen, corrigen lo que no funciona
+                                    y mejoran un 1% en cada postulación.
+                                </p>
+                            </div>
+
+                            <p
+                                class="text-xl md:text-2xl font-bold text-slate-900 leading-tight mt-10 text-center"
+                            >
+                                Esa es la diferencia. Y esa, a diferencia de
+                                la suerte, <span class="text-blue-600"
+                                    >sí depende enteramente de ti</span
+                                >.
+                            </p>
+
+                            <p
+                                class="text-sm text-slate-500 mt-10 text-center italic"
+                            >
+                                — Stefano Andreani · Somos Empleables
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- ============== CIERRE / CTA ============== -->
+                    <section
+                        class="mt-16"
                     >
                         <div
                             class="bg-slate-900 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden"
