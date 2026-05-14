@@ -1,0 +1,3 @@
+/blog/estrategia-francotirador  /recursos/estrategia-francotirador  301
+/blog/*                         /recursos/:splat                     301
+/blog                           /recursos                            301
