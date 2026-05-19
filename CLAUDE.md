@@ -22,6 +22,16 @@ npm install        # solo la primera vez
 npm run dev        # servidor local en http://localhost:4321
 ```
 
+### Acceso desde otro dispositivo (Tailscale / LAN / móvil)
+
+Astro por defecto solo escucha en `127.0.0.1`. Para exponerlo a la red (Tailscale, LAN, teléfono):
+
+```bash
+npm run dev -- --host        # escucha en 0.0.0.0:4321
+```
+
+Luego abre desde otro dispositivo: `http://<ip-tailscale-o-lan>:4321`.
+
 ### Dev en VPS + túnel SSH (para iterar con Claude desde el VPS)
 
 Patrón paralelo al de `se-programa-local`. El dev server corre en el VPS, tú ves la página desde tu navegador local.
@@ -47,9 +57,10 @@ Para detener el dev server: `tmux kill-session -t se-web-dev`.
 src/
 ├── pages/
 │   ├── index.astro          # Home
+│   ├── duoc-uc.astro        # Landing dedicada a alumnos Duoc UC
 │   ├── privacidad.astro
 │   ├── terminos.astro
-│   └── blog/                # Posts del blog (Markdown)
+│   └── recursos/            # Recursos / posts (antes /blog)
 ├── components/
 │   ├── Navbar.astro
 │   ├── CTA.astro
@@ -59,9 +70,19 @@ src/
 └── styles/                  # CSS global — mantener consistencia visual
 ```
 
-## Blog
+## Recursos (antes /blog)
 
-Los posts van en `src/pages/blog/` como archivos `.md` o `.astro`. Al pushear, Netlify los publica automáticamente.
+Las páginas de recursos viven en `src/pages/recursos/` como `.astro`. Al pushear a `main`, Netlify las publica. La ruta `/blog/*` fue reemplazada por `/recursos/*`.
+
+## Assets multimedia — Cloudinary
+
+Los videos y assets pesados se hostean en **Cloudinary** (cuenta `denbk9c31`). No comprometer bandwidth de Netlify con MP4 grandes.
+
+- **Video original:** `https://res.cloudinary.com/denbk9c31/video/upload/<version>/<public_id>.mp4`
+- **Poster (primer frame) generado automáticamente:** insertar `so_0` después de `/upload/` y cambiar extensión a `.jpg`:
+  `https://res.cloudinary.com/denbk9c31/video/upload/so_0/<version>/<public_id>.jpg`
+
+Ejemplo en uso: testimonios verticales 9:16 en `src/components/Testimonials.astro` — el array `testimonials` lista cada `{video, poster, name, role}`. Para agregar un nuevo testimonio: subir el .mp4 a Cloudinary y agregar una entrada al array con ambas URLs.
 
 ## Restricciones
 
