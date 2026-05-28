@@ -1,0 +1,289 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const errores = [
+    {
+        num: "01",
+        title: "Cambias de estrategia antes de que funcione",
+        description:
+            "Un día decides enfocarte en un área. A la semana siguiente, ya estás mirando algo completamente distinto. Modificas el CV cada dos días. Empiezas un curso y lo abandonas. Pruebas LinkedIn, luego portales, luego contactos… sin darle tiempo a nada.",
+        resultHtml:
+            '<strong class="text-slate-900">El resultado:</strong> sientes que «nada funciona», pero en realidad nunca sostuviste una estrategia el tiempo suficiente como para evaluarla.',
+        quote:
+            "La búsqueda laboral no premia a quien hace más cosas, sino a quien hace las cosas correctas con consistencia.",
+        actions: [
+            'Define un <strong class="text-slate-900">cargo objetivo claro</strong> antes de postular.',
+            "Elige una estrategia (networking, postulación directa, marca personal) y dale al menos 3-4 semanas antes de cambiarla.",
+            "Mide resultados reales: ¿cuántas postulaciones hiciste? ¿Cuántas respuestas obtuviste? Sin datos, no puedes mejorar.",
+        ],
+    },
+    {
+        num: "02",
+        title: "Postulas a todo por desesperación",
+        description:
+            'Cuando llevas mucho tiempo sin respuestas, el instinto te dice: «Postula a más cosas, lo que sea». Entonces empiezas a enviar tu CV a cargos que no te interesan, que no tienen relación con tu experiencia, o que aceptarías solo por salir del paso.',
+        resultHtml:
+            '<strong class="text-slate-900">El resultado:</strong> tu perfil se vuelve confuso, tus postulaciones pierden fuerza, y la frustración se multiplica. Mientras más desordenada es la búsqueda, más difícil es transmitir quién eres y qué puedes aportar.',
+        quote: "Postular a todo no es ser proactivo. Es dispersarse.",
+        actions: [
+            "Reduce el volumen y aumenta la calidad. Es mejor enviar 5 postulaciones estratégicas que 30 genéricas.",
+            "Adapta tu CV y mensaje a cada cargo. Si no puedes explicar en una frase por qué ese puesto tiene sentido para ti, probablemente no deberías postular.",
+            "Prioriza roles donde tu experiencia y el cargo se cruzan de forma clara.",
+        ],
+    },
+    {
+        num: "03",
+        title: "Confundes silencio con rechazo personal",
+        description:
+            'Este es el error más dañino de todos. Cuando no recibes respuestas, tu mente empieza a construir una historia: «No soy suficiente», «Ya no estoy vigente», «Hay gente mejor que yo».',
+        resultHtml:
+            'Pero la realidad del mercado laboral es mucho más compleja. Una postulación sin respuesta puede deberse a timing, competencia, falta de match con un perfil específico, un CV que no comunica bien tu valor, o simplemente un filtro automatizado. <strong class="text-slate-900">Nada de eso significa que no tengas potencial.</strong>',
+        quote:
+            "No recibir respuestas no es un veredicto sobre tu valor profesional. Es información sobre tu proceso.",
+        actions: [
+            "Separa tu identidad de tus resultados. Tú no eres tu búsqueda laboral.",
+            'Usa cada «no» (o cada silencio) como <strong class="text-slate-900">dato para ajustar</strong>, no como razón para abandonar.',
+            "Rodéate de personas que estén en el mismo camino. La búsqueda laboral en solitario desgasta el doble.",
+        ],
+    },
+];
+
+const cierreBullets = [
+    'Tienen <strong class="text-slate-900">claridad</strong> sobre lo que buscan.',
+    'Mantienen una <strong class="text-slate-900">estrategia consistente</strong> en el tiempo.',
+    'Saben <strong class="text-slate-900">comunicar su valor</strong> de forma clara y relevante.',
+    'Cultivan una <strong class="text-slate-900">mentalidad resiliente</strong> que les permite seguir incluso cuando no hay resultados inmediatos.',
+];
+---
+
+<Layout
+    title="Los 3 errores que te hacen abandonar tu búsqueda laboral | Recursos | Somos Empleables"
+    description="Buscar trabajo no es solo postular y esperar. Los 3 errores que te hacen abandonar antes de tiempo y cómo dejar de sabotearte."
+>
+    <main class="relative w-full pt-32 pb-24 bg-slate-50">
+        <!-- Hero Section -->
+        <section class="max-w-5xl mx-auto px-6 mb-20 text-center relative">
+            <!-- Background Gradients -->
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none overflow-hidden"
+            >
+                <div
+                    class="absolute top-0 left-0 md:left-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-blue-50 rounded-full blur-[60px] md:blur-[100px] opacity-70"
+                >
+                </div>
+                <div
+                    class="absolute top-0 right-0 md:right-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-purple-100/40 rounded-full blur-[60px] md:blur-[100px] opacity-70"
+                >
+                </div>
+            </div>
+
+            <span
+                class="inline-flex items-center gap-2 text-blue-700 font-semibold tracking-wide uppercase text-xs md:text-sm border border-blue-200 bg-blue-50 px-4 py-2 rounded-full mb-8 shadow-sm"
+            >
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"
+                ></span>
+                Recurso · Mentalidad
+            </span>
+
+            <h1
+                class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]"
+            >
+                Los 3 errores que te hacen
+                <br class="hidden md:block" />
+                <span class="text-blue-600"
+                    >abandonar tu búsqueda laboral</span
+                >
+            </h1>
+
+            <p
+                class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+            >
+                Y cómo dejar de
+                <strong class="text-slate-900">sabotearte</strong> en el proceso.
+            </p>
+        </section>
+
+        <!-- Article -->
+        <section class="max-w-3xl mx-auto px-6">
+            <article>
+                <!-- Intro -->
+                <div class="mb-16 pb-10 border-b border-slate-200">
+                    <p
+                        class="text-xl font-bold text-slate-900 leading-relaxed mb-4"
+                    >
+                        Buscas trabajo hace semanas —o meses— y sientes que nada
+                        avanza.
+                    </p>
+                    <p class="text-base text-slate-600 leading-relaxed mb-4">
+                        Postulas, esperas, no pasa nada. Vuelves a postular. Y
+                        poco a poco, una idea se instala en tu cabeza:
+                    </p>
+                    <blockquote
+                        class="border-l-4 border-blue-600 pl-4 italic text-slate-700 my-5"
+                    >
+                        «Quizás el problema soy yo».
+                    </blockquote>
+                    <p class="text-base text-slate-600 leading-relaxed mb-4">
+                        Buscar trabajo no es solo postular y esperar. Es un
+                        proceso que requiere método, claridad y una mentalidad
+                        que la mayoría nunca entrena.
+                    </p>
+                    <p class="text-base text-slate-600 leading-relaxed">
+                        Y los que abandonan no lo hacen porque sean débiles. Lo
+                        hacen porque caen en errores que nadie les advirtió.
+                    </p>
+                </div>
+
+                <!-- Errores -->
+                {
+                    errores.map((e) => (
+                        <section class="mb-14">
+                            <div class="flex items-baseline gap-4 mb-6">
+                                <span class="text-blue-600 text-sm font-mono font-bold">
+                                    Error #{e.num}
+                                </span>
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-6 leading-tight">
+                                {e.title}
+                            </h2>
+                            <p class="text-base text-slate-600 leading-relaxed mb-5">
+                                {e.description}
+                            </p>
+                            <p
+                                class="text-base text-slate-600 leading-relaxed mb-5"
+                                set:html={e.resultHtml}
+                            />
+                            <blockquote class="border-l-4 border-blue-600 pl-4 italic text-slate-700 my-6">
+                                {e.quote}
+                            </blockquote>
+                            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 md:p-6 my-6">
+                                <p class="text-sm font-bold text-blue-700 uppercase tracking-wider mb-4">
+                                    Qué hacer en su lugar
+                                </p>
+                                <ul class="space-y-3">
+                                    {e.actions.map((a) => (
+                                        <li class="flex gap-3 text-base text-slate-700 leading-relaxed">
+                                            <span class="text-blue-600 font-bold shrink-0">
+                                                →
+                                            </span>
+                                            <span set:html={a} />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </section>
+                    ))
+                }
+
+                <!-- Cierre -->
+                <section class="mt-16 pt-10 border-t border-slate-200">
+                    <h2
+                        class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-6 leading-tight"
+                    >
+                        La verdad que nadie te dice sobre buscar trabajo
+                    </h2>
+                    <p class="text-base text-slate-600 leading-relaxed mb-4">
+                        Buscar trabajo <strong class="text-slate-900"
+                            >es un proceso</strong
+                        >, no un evento. Y como todo proceso, tiene etapas,
+                        tiene momentos difíciles y tiene un punto donde los
+                        resultados empiezan a llegar… si no abandonas antes.
+                    </p>
+                    <p class="text-base text-slate-600 leading-relaxed mb-6">
+                        Las personas que consiguen el trabajo que quieren no son
+                        necesariamente las más talentosas ni las que tienen el
+                        mejor CV. Son las que:
+                    </p>
+                    <ul class="space-y-3 mb-8">
+                        {
+                            cierreBullets.map((b) => (
+                                <li class="flex gap-3 text-base text-slate-700 leading-relaxed">
+                                    <span class="text-blue-600 font-bold shrink-0">
+                                        ✓
+                                    </span>
+                                    <span set:html={b} />
+                                </li>
+                            ))
+                        }
+                    </ul>
+
+                    <div
+                        class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 my-6"
+                    >
+                        <p class="text-lg md:text-xl leading-relaxed">
+                            Con la <strong class="text-blue-400"
+                                >estrategia correcta</strong
+                            >, buscar trabajo deja de sentirse como un salto al
+                            vacío. Se convierte en un camino con dirección.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- CTA Final -->
+                <section class="mt-16">
+                    <div
+                        class="bg-slate-900 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden"
+                    >
+                        <div
+                            class="absolute -top-20 -right-20 w-64 h-64 bg-blue-600 rounded-full blur-[80px] opacity-30 pointer-events-none"
+                        >
+                        </div>
+                        <div
+                            class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-600 rounded-full blur-[80px] opacity-20 pointer-events-none"
+                        >
+                        </div>
+
+                        <div class="relative">
+                            <h3
+                                class="text-2xl md:text-4xl font-extrabold mb-4 leading-tight"
+                            >
+                                ¿Y ahora qué?
+                            </h3>
+                            <p
+                                class="text-base md:text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed"
+                            >
+                                Si llegaste hasta aquí, ya diste un paso
+                                importante: dejaste de reaccionar desde la
+                                ansiedad y empezaste a buscar respuestas.
+                                Síguenos en Instagram para no perderte los
+                                próximos recursos.
+                            </p>
+                            <div class="flex justify-center">
+                                <a
+                                    href="https://www.instagram.com/somosempleables/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center justify-center gap-2 bg-white text-slate-900 hover:bg-slate-100 font-bold px-6 py-3 rounded-full transition-colors"
+                                >
+                                    Síguenos en Instagram
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                            <p class="text-sm text-slate-400 mt-8">
+                                — Stefano Andreani · Somos Empleables
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Back link -->
+                <div class="mt-12 text-center">
+                    <a
+                        href="/recursos"
+                        class="text-blue-600 font-semibold hover:underline"
+                        >← Ver todos los recursos</a
+                    >
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer
+        class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800 text-center text-sm"
+    >
+        <p>
+            &copy; {new Date().getFullYear()} Somos Empleables. Todos los derechos
+            reservados.
+        </p>
+    </footer>
+</Layout>
