@@ -56,7 +56,7 @@ export const recursos: Recurso[] = [
     title: "Estrategia Francotirador vs. Masiva",
     description:
       "Descubre por qué enviar cientos de currículums ya no funciona y cómo la Estrategia Francotirador puede conseguirte el empleo que deseas.",
-    pubDate: "2025-12-16",
+    pubDate: "2024-12-16",
     author: AUTHOR,
     tags: ["búsqueda de empleo", "estrategia", "postulaciones"],
   },
