@@ -1,0 +1,66 @@
+---
+// PLANTILLA para un recurso nuevo. Astro IGNORA archivos con prefijo "_".
+// Pasos: (1) copiar este archivo a <slug>.astro, (2) reemplazar el contenido,
+// (3) agregar la entrada correspondiente en src/data/recursos.ts.
+import Layout from "../../layouts/Layout.astro";
+import ArticleSchema from "../../components/ArticleSchema.astro";
+import BreadcrumbSchema from "../../components/BreadcrumbSchema.astro";
+import ResourceByline from "../../components/ResourceByline.astro";
+
+const SLUG = "REEMPLAZAR-CON-EL-SLUG"; // debe coincidir con el nombre del archivo y con recursos.ts
+---
+
+<Layout
+    title="TÍTULO DEL RECURSO | Recursos | Somos Empleables"
+    description="DESCRIPCIÓN DE 1-2 FRASES PARA SEO."
+>
+    <Fragment slot="head">
+        <ArticleSchema slug={SLUG} />
+        <BreadcrumbSchema slug={SLUG} />
+    </Fragment>
+
+    <main class="relative w-full pt-32 pb-24 bg-slate-50">
+        <!-- Hero -->
+        <section class="max-w-5xl mx-auto px-6 mb-20 text-center relative">
+            <h1
+                class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]"
+            >
+                TÍTULO DEL RECURSO
+            </h1>
+            <p
+                class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+            >
+                SUBTÍTULO / GANCHO.
+            </p>
+            <ResourceByline slug={SLUG} />
+        </section>
+
+        <!-- Cuerpo del artículo -->
+        <section class="max-w-3xl mx-auto px-6">
+            <article>
+                <p class="text-base text-slate-600 leading-relaxed mb-4">
+                    CONTENIDO. Usar &lt;h2&gt; para subtítulos, &lt;blockquote&gt; para
+                    citas, y bloques destacados para puntos clave (ver recursos existentes).
+                </p>
+
+                <!-- Back link -->
+                <div class="mt-12 text-center">
+                    <a
+                        href="/recursos"
+                        class="text-blue-600 font-semibold hover:underline"
+                        >← Ver todos los recursos</a
+                    >
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer
+        class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800 text-center text-sm"
+    >
+        <p>
+            &copy; {new Date().getFullYear()} Somos Empleables. Todos los derechos
+            reservados.
+        </p>
+    </footer>
+</Layout>

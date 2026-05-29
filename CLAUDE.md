@@ -72,7 +72,17 @@ src/
 
 ## Recursos (antes /blog)
 
-Las páginas de recursos viven en `src/pages/recursos/` como `.astro`. Al pushear a `main`, Netlify las publica. La ruta `/blog/*` fue reemplazada por `/recursos/*`.
+Las páginas de recursos viven en `src/pages/recursos/` como `.astro`. La metadata (título, fecha, autor, tags) vive centralizada en `src/data/recursos.ts`, que alimenta el JSON-LD (`ArticleSchema`/`BreadcrumbSchema`), el byline (`ResourceByline`), el RSS (`/rss.xml`) y el `llms.txt`.
+
+### Cómo publicar un recurso nuevo
+
+1. **Copiar la plantilla:** `cp src/pages/recursos/_plantilla.astro src/pages/recursos/<slug>.astro` (el `<slug>` en kebab-case = la URL).
+2. **Pegar el contenido** que entrega el equipo, respetando la jerarquía semántica: un solo `<h1>`, subtítulos en `<h2>`. Reemplazar el `SLUG` en el archivo.
+3. **Agregar la entrada en `src/data/recursos.ts`** con `slug`, `title` (limpio, sin "| Recursos…"), `description`, `pubDate` (ISO), `author: AUTHOR`, `tags`.
+4. **Actualizar `public/llms.txt`**: agregar una línea del recurso en la sección "## Recursos".
+5. **Verificar:** `npm run build`, luego revisar en el deploy preview de Netlify que el recurso se ve bien y que el JSON-LD aparece (Google Rich Results Test).
+
+El byline, JSON-LD, RSS y sitemap se aplican solos al estar en `recursos.ts`.
 
 ## Assets multimedia — Cloudinary
 

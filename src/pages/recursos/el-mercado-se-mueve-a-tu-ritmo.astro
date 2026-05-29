@@ -1,5 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ArticleSchema from "../../components/ArticleSchema.astro";
+import BreadcrumbSchema from "../../components/BreadcrumbSchema.astro";
+import ResourceByline from "../../components/ResourceByline.astro";
 
 const diagnostico = [
     "Tu CV describe funciones, pero no resultados.",
@@ -14,6 +17,10 @@ const diagnostico = [
     title="El mercado se mueve a tu ritmo | Recursos | Somos Empleables"
     description="Cuando tu valor no se entiende rápido, las oportunidades pasan. Mini diagnóstico + 3 señales que abren ventanas: CV, entrevistas y negociación."
 >
+    <Fragment slot="head">
+        <ArticleSchema slug="el-mercado-se-mueve-a-tu-ritmo" />
+        <BreadcrumbSchema slug="el-mercado-se-mueve-a-tu-ritmo" />
+    </Fragment>
     <main class="relative w-full pt-32 pb-24 bg-slate-50">
         <!-- Hero Section -->
         <section
@@ -56,6 +63,7 @@ const diagnostico = [
                 <strong class="text-slate-900">no se entiende rápido</strong>,
                 las oportunidades pasan.
             </p>
+            <ResourceByline slug="el-mercado-se-mueve-a-tu-ritmo" />
         </section>
 
         <!-- Article -->

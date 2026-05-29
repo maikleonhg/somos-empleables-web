@@ -1,0 +1,19 @@
+---
+import { getRecurso } from "../data/recursos";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const r = getRecurso(slug);
+const fecha = new Date(`${r.pubDate}T00:00:00`).toLocaleDateString("es-CL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<p class="text-sm text-slate-500 mt-6">
+  Por <span class="font-semibold text-slate-700">{r.author}</span> · {fecha}
+</p>

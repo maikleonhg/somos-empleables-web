@@ -1,0 +1,31 @@
+---
+import { getRecurso, AUTHOR_URL, SITE, DEFAULT_OG } from "../data/recursos";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const r = getRecurso(slug);
+const url = `${SITE}/recursos/${r.slug}`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: r.title,
+  description: r.description,
+  datePublished: r.pubDate,
+  ...(r.updatedDate ? { dateModified: r.updatedDate } : {}),
+  author: { "@type": "Person", name: r.author, url: AUTHOR_URL },
+  publisher: {
+    "@type": "Organization",
+    name: "Somos Empleables",
+    logo: { "@type": "ImageObject", url: DEFAULT_OG },
+  },
+  image: r.ogImage ?? DEFAULT_OG,
+  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  keywords: r.tags.join(", "),
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
