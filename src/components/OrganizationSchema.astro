@@ -1,0 +1,19 @@
+---
+const org = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Somos Empleables",
+  url: "https://somosempleables.com",
+  logo: "https://somosempleables.com/og-image.jpg",
+  description:
+    "Coaching de empleabilidad para profesionales: CV, LinkedIn, networking y búsqueda de empleo.",
+  sameAs: [
+    "https://www.instagram.com/somosempleables/",
+    "https://www.linkedin.com/company/somosempleables/",
+    "https://www.facebook.com/somosempleables",
+    "https://www.tiktok.com/@somosempleables",
+  ],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(org)} />
