@@ -1,11 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ArticleSchema from "../../components/ArticleSchema.astro";
+import BreadcrumbSchema from "../../components/BreadcrumbSchema.astro";
+import ResourceByline from "../../components/ResourceByline.astro";
 ---
 
 <Layout
     title="Por qué mandas CVs y no te llaman | Recursos | Somos Empleables"
     description="El diagnóstico real: por qué postular en volumen con un CV genérico no funciona, cómo opera el filtro ATS y qué cambiar para que tu perfil sea visible."
 >
+    <Fragment slot="head">
+        <ArticleSchema slug="por-que-mandas-cvs-y-no-te-llaman" />
+        <BreadcrumbSchema slug="por-que-mandas-cvs-y-no-te-llaman" />
+    </Fragment>
     <main class="relative w-full pt-32 pb-24 bg-slate-50">
         <!-- Hero Section -->
         <section
@@ -50,6 +57,7 @@ import Layout from "../../layouts/Layout.astro";
                     >nadie te lo explicó antes</strong
                 >.
             </p>
+            <ResourceByline slug="por-que-mandas-cvs-y-no-te-llaman" />
 
             <!-- Hero callout -->
             <div

@@ -1,5 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ArticleSchema from "../../components/ArticleSchema.astro";
+import BreadcrumbSchema from "../../components/BreadcrumbSchema.astro";
+import ResourceByline from "../../components/ResourceByline.astro";
 
 const errores = [
     {
@@ -42,6 +45,10 @@ const errores = [
     title="Por qué no te llaman (y no tiene que ver con tu suerte) | Recursos | Somos Empleables"
     description="Si estás postulando, cumples los requisitos y no te llaman, no es mala suerte. Los 3 errores estructurales que hacen invisible a tu CV."
 >
+    <Fragment slot="head">
+        <ArticleSchema slug="por-que-no-te-llaman" />
+        <BreadcrumbSchema slug="por-que-no-te-llaman" />
+    </Fragment>
     <main class="relative w-full pt-32 pb-24 bg-slate-50">
         <!-- Hero Section -->
         <section
@@ -84,6 +91,7 @@ const errores = [
                 te llaman, en la mayoría de los casos el problema es
                 <strong class="text-slate-900">estructura</strong>.
             </p>
+            <ResourceByline slug="por-que-no-te-llaman" />
         </section>
 
         <!-- Article -->
