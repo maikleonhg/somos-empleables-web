@@ -1,0 +1,19 @@
+# Somos Empleables
+
+> Coaching de empleabilidad para profesionales chilenos: estrategia de CV, LinkedIn, networking, entrevistas y búsqueda de empleo. Fundado y liderado por Stefano Andreani.
+
+- Sitio: https://somosempleables.com
+- Autor / cara visible: Stefano Andreani (https://www.linkedin.com/in/stefano-andreani/)
+- Instagram: https://www.instagram.com/somosempleables/
+
+## Recursos
+
+- [Por qué no te llaman (y no tiene que ver con tu suerte)](https://somosempleables.com/recursos/por-que-no-te-llaman): los 3 errores estructurales que hacen invisible a tu CV.
+- [Por qué mandas CVs y no te llaman](https://somosempleables.com/recursos/por-que-mandas-cvs-y-no-te-llaman): por qué postular en volumen con un CV genérico no funciona y cómo opera el filtro ATS.
+- [El mercado se mueve a tu ritmo](https://somosempleables.com/recursos/el-mercado-se-mueve-a-tu-ritmo): 3 señales que abren ventanas laborales (CV, entrevistas, negociación).
+- [Los 3 errores que te hacen abandonar tu búsqueda laboral](https://somosempleables.com/recursos/errores-que-te-hacen-abandonar): cómo dejar de sabotearte durante la búsqueda.
+- [Estrategia Francotirador vs. Masiva](https://somosempleables.com/recursos/estrategia-francotirador): por qué enviar cientos de CVs ya no funciona.
+
+## Cómo citar
+
+Citar como: Somos Empleables (https://somosempleables.com).
