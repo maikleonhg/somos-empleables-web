@@ -1,0 +1,974 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+    title="Evaluación profesional gratuita — Somos Empleables"
+    description="Responde 5 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
+>
+    <main id="quiz-root" class="quiz-root"></main>
+</Layout>
+
+<style>
+    /* ============================================================
+       Port de /root/apps/se-quiz/src/index.css
+       Astro scopea este bloque solo a esta página, así que no
+       hace falta reescribirlo a Tailwind ni prefijar selectores.
+       Se mantiene tal cual el original salvo el body (se deja el
+       fondo/tipografía general al Layout) y dos clases nuevas al
+       final (pantalla de carga + accesibilidad) que no existían
+       en el original.
+       ============================================================ */
+
+    .quiz-root {
+        --brand: #2563eb;
+        --brand-dark: #1d4ed8;
+        --brand-light: #eff6ff;
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --bg: #f8f7f4;
+        --card-bg: #ffffff;
+        --border: #e5e7eb;
+        --radius: 14px;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 16px rgba(0, 0, 0, 0.05);
+
+        display: block;
+        font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text-primary);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Progress bar ─── */
+    .quiz-root :global(.progress-bar) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--border);
+        z-index: 100;
+    }
+    .quiz-root :global(.progress-fill) {
+        height: 100%;
+        background: var(--brand);
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── Layout ─── */
+    .quiz-root :global(.quiz-wrapper) {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 16px 32px;
+    }
+    .quiz-root :global(.quiz-container) {
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    /* ─── Header row ─── */
+    .quiz-root :global(.step-header) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .quiz-root :global(.step-counter) {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        letter-spacing: 0.02em;
+    }
+    .quiz-root :global(.back-btn) {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px 0;
+        transition: color 0.15s;
+    }
+    .quiz-root :global(.back-btn:hover) {
+        color: var(--text-primary);
+    }
+
+    /* ─── Step animation ─── */
+    @keyframes stepEnter {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .quiz-root :global(.step-content) {
+        animation: stepEnter 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* ─── Question ─── */
+    .quiz-root :global(.question) {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--text-primary);
+    }
+
+    /* ─── Options grid ─── */
+    .quiz-root :global(.options-grid) {
+        display: grid;
+        gap: 10px;
+    }
+    .quiz-root :global(.grid-2) {
+        grid-template-columns: 1fr 1fr;
+    }
+    .quiz-root :global(.grid-1) {
+        grid-template-columns: 1fr;
+    }
+    @media (max-width: 380px) {
+        .quiz-root :global(.grid-2) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ─── Option card ─── */
+    .quiz-root :global(.option-card) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 16px;
+        background: var(--card-bg);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        cursor: pointer;
+        text-align: left;
+        transition:
+            border-color 0.15s,
+            background 0.15s,
+            transform 0.12s,
+            box-shadow 0.15s;
+        box-shadow: var(--shadow);
+        width: 100%;
+    }
+    .quiz-root :global(.option-card:hover) {
+        border-color: #93c5fd;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.12);
+    }
+    .quiz-root :global(.option-card.selected) {
+        border-color: var(--brand);
+        background: var(--brand-light);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .quiz-root :global(.option-icon) {
+        font-size: 22px;
+        line-height: 1;
+    }
+    .quiz-root :global(.option-label) {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        line-height: 1.4;
+    }
+
+    /* ─── Form fields ─── */
+    .quiz-root :global(.form-fields) {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .quiz-root :global(.field-input) {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text-primary);
+        background: var(--card-bg);
+        outline: none;
+        transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
+        box-shadow: var(--shadow);
+    }
+    .quiz-root :global(.field-input:focus) {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .quiz-root :global(.field-input::placeholder) {
+        color: #9ca3af;
+    }
+
+    /* ─── Next button ─── */
+    .quiz-root :global(.next-btn) {
+        width: 100%;
+        padding: 15px 24px;
+        background: var(--text-primary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            opacity 0.15s,
+            transform 0.12s;
+        letter-spacing: 0.01em;
+    }
+    .quiz-root :global(.next-btn:hover:not(:disabled)) {
+        opacity: 0.88;
+        transform: translateY(-1px);
+    }
+    .quiz-root :global(.next-btn:disabled) {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    /* ─── Intro screen ─── */
+    .quiz-root :global(.intro-wrapper) {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+    }
+    .quiz-root :global(.intro-card) {
+        width: 100%;
+        max-width: 440px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 40px 32px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+        animation: stepEnter 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        text-align: center;
+    }
+    .quiz-root :global(.intro-logo) {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--brand);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    .quiz-root :global(.intro-icon) {
+        font-size: 40px;
+        margin: 0 auto;
+    }
+    .quiz-root :global(.intro-title) {
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--text-primary);
+    }
+    .quiz-root :global(.intro-subtitle) {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.65;
+    }
+    .quiz-root :global(.intro-pills) {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .quiz-root :global(.intro-pill) {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #f3f4f6;
+        border-radius: 100px;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+    .quiz-root :global(.intro-btn) {
+        width: 100%;
+        padding: 16px 24px;
+        background: var(--brand);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            background 0.15s,
+            transform 0.12s;
+        margin-top: 4px;
+    }
+    .quiz-root :global(.intro-btn:hover) {
+        background: var(--brand-dark);
+        transform: translateY(-1px);
+    }
+    .quiz-root :global(.intro-time) {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-top: -4px;
+    }
+
+    /* ─── Result screen ─── */
+    .quiz-root :global(.result-wrapper) {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
+    .quiz-root :global(.result-card) {
+        width: 100%;
+        max-width: 480px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 36px 28px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+        animation: stepEnter 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    @keyframes checkPop {
+        0% {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+        60% {
+            transform: scale(1.12);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    .quiz-root :global(.result-check) {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #dcfce7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        animation: checkPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both;
+    }
+    .quiz-root :global(.result-label) {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand);
+    }
+    .quiz-root :global(.result-greeting) {
+        font-size: 15px;
+        color: var(--text-secondary);
+    }
+    .quiz-root :global(.result-greeting strong) {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+    .quiz-root :global(.result-title) {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.3;
+    }
+    .quiz-root :global(.result-description) {
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.7;
+    }
+    .quiz-root :global(.result-brechas) {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .quiz-root :global(.result-brechas-title) {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+        margin-bottom: 2px;
+    }
+    .quiz-root :global(.brecha-item) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        background: #fef9c3;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #713f12;
+    }
+    .quiz-root :global(.brecha-dot) {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #eab308;
+        flex-shrink: 0;
+    }
+    .quiz-root :global(.result-divider) {
+        border: none;
+        border-top: 1px solid var(--border);
+    }
+    .quiz-root :global(.result-cta-text) {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    .quiz-root :global(.result-disclaimer) {
+        font-size: 12px;
+        color: #9ca3af;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    /* ─── Pantalla de carga (nueva, no existía en el original) ─── */
+    .quiz-root :global(.cargando-wrapper) {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+        gap: 16px;
+        text-align: center;
+    }
+    .quiz-root :global(.cargando-spinner) {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 3px solid var(--border);
+        border-top-color: var(--brand);
+        animation: girar 0.8s linear infinite;
+    }
+    @keyframes girar {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    .quiz-root :global(.cargando-texto) {
+        font-size: 15px;
+        color: var(--text-secondary);
+    }
+</style>
+
+<script is:inline>
+    // ============================================================
+    // Port de /root/apps/se-quiz/src/App.jsx a JS vanilla.
+    // Sin React: estado en variables de módulo, render por
+    // reemplazo de innerHTML del contenedor #quiz-root.
+    //
+    // Cambios respecto del original (ver task-3-brief.md):
+    // 1. STEPS y DIAGNOSES se copian tal cual.
+    // 2. El paso "contacto" pide nombre, correo e Instagram
+    //    (se elimina el campo teléfono).
+    // 3. La pantalla de resultado no lleva botón de agendamiento;
+    //    cierra derivando a Clau/Felipe del equipo.
+    // 4. Se agregan eventos GA4 (quiz_start, quiz_step,
+    //    quiz_complete, quiz_submit_failed).
+    // 5. El envío al webhook reintenta una vez y usa keepalive;
+    //    el resultado se muestra SIEMPRE, falle o no el POST.
+    // ============================================================
+
+    const WEBHOOK = "https://n8n.somosempleables.com/webhook/quiz-lead";
+
+    // Copiado tal cual de se-quiz/src/App.jsx — no tocar el copy.
+    const STEPS = [
+        {
+            id: "situacion",
+            question: "¿Cuál es tu situación laboral actual?",
+            columns: 2,
+            options: [
+                {
+                    value: "empleado_cambio",
+                    label: "Empleado, buscando algo mejor",
+                    icon: "💼",
+                },
+                {
+                    value: "desempleado",
+                    label: "Desempleado, buscando activamente",
+                    icon: "🔍",
+                },
+                {
+                    value: "freelance",
+                    label: "Freelance / independiente",
+                    icon: "🧑‍💻",
+                },
+                { value: "recien_egresado", label: "Recién egresado", icon: "🎓" },
+            ],
+        },
+        {
+            id: "area",
+            question: "¿En qué área profesional te desarrollas?",
+            columns: 2,
+            options: [
+                { value: "tecnologia", label: "Tecnología e IT", icon: "💻" },
+                { value: "marketing", label: "Marketing y Ventas", icon: "📊" },
+                {
+                    value: "finanzas",
+                    label: "Finanzas y Administración",
+                    icon: "📈",
+                },
+                { value: "rrhh", label: "Recursos Humanos", icon: "👥" },
+                {
+                    value: "ingenieria",
+                    label: "Ingeniería y Construcción",
+                    icon: "⚙️",
+                },
+                { value: "otra", label: "Otra área", icon: "🌐" },
+            ],
+        },
+        {
+            id: "experiencia",
+            question: "¿Cuántos años de experiencia profesional tienes?",
+            columns: 2,
+            options: [
+                { value: "0_1", label: "Menos de 1 año", icon: "🌱" },
+                { value: "2_5", label: "2 a 5 años", icon: "📗" },
+                { value: "6_10", label: "6 a 10 años", icon: "📘" },
+                { value: "10_plus", label: "Más de 10 años", icon: "🏆" },
+            ],
+        },
+        {
+            id: "bloqueo",
+            question:
+                "¿Cuál es tu mayor obstáculo para conseguir el trabajo que quieres?",
+            columns: 1,
+            options: [
+                { value: "cv", label: "Mi CV no refleja mi valor real", icon: "📄" },
+                {
+                    value: "posicionamiento",
+                    label: "No sé cómo posicionarme en el mercado",
+                    icon: "🎯",
+                },
+                {
+                    value: "entrevistas",
+                    label: "Las entrevistas no me salen bien",
+                    icon: "🎤",
+                },
+                { value: "red", label: "No tengo red de contactos", icon: "🔗" },
+                { value: "direccion", label: "No sé qué cargo buscar", icon: "🧭" },
+            ],
+        },
+        {
+            id: "urgencia",
+            question: "¿Con qué urgencia necesitas este cambio?",
+            columns: 1,
+            options: [
+                {
+                    value: "ahora",
+                    label: "Lo necesito ya — estoy buscando activamente",
+                    icon: "🔥",
+                },
+                { value: "pronto", label: "En los próximos 3 a 6 meses", icon: "📅" },
+                {
+                    value: "explorando",
+                    label: "Solo estoy explorando opciones",
+                    icon: "🔭",
+                },
+            ],
+        },
+        {
+            id: "contacto",
+            type: "form",
+            question: "¿A dónde enviamos tu diagnóstico?",
+        },
+    ];
+
+    // Copiado tal cual de se-quiz/src/App.jsx — no tocar el copy.
+    const DIAGNOSES = {
+        cv: {
+            titulo: "Tu CV está invisibilizando tu talento",
+            descripcion:
+                "Tienes experiencia real, pero la forma en que la presentas no comunica tu valor. Los reclutadores deciden en 6 segundos — si el CV no habla claro, el teléfono no suena. No es un problema de lo que has logrado, es un problema de cómo lo estás contando.",
+            brechas: [
+                "Narrativa profesional sin estructurar",
+                "Logros reales sin visibilizar",
+            ],
+        },
+        posicionamiento: {
+            titulo: "Falta claridad en tu propuesta de valor",
+            descripcion:
+                "Sin posicionamiento claro, el mercado no sabe cómo verte. No es falta de experiencia — es falta de estrategia. El trabajo correcto existe, pero no te está encontrando a ti todavía.",
+            brechas: [
+                "Perfil LinkedIn no optimizado",
+                "Cargo objetivo sin definir",
+            ],
+        },
+        entrevistas: {
+            titulo: "Las entrevistas te están costando oportunidades",
+            descripcion:
+                "Llegas a las instancias de selección pero no cierras. Esto es 100% entrenable — no es cuestión de personalidad ni de experiencia. Es técnica, preparación y estructura narrativa específica.",
+            brechas: [
+                "Sin práctica de entrevistas estructuradas",
+                "Narrativa personal sin pulir",
+            ],
+        },
+        red: {
+            titulo: "Tu red profesional es tu activo sin explotar",
+            descripcion:
+                "El 70-80% de los trabajos no se publican — se cubren por referidos. Si no tienes una estrategia de networking activa, estás compitiendo con desventaja enorme contra candidatos con menos experiencia pero mejor conectados.",
+            brechas: [
+                "LinkedIn sin estrategia de conexiones",
+                "Sin metodología de acercamiento",
+            ],
+        },
+        direccion: {
+            titulo: "La dirección es el punto de partida de todo",
+            descripcion:
+                "Buscar trabajo sin saber qué cargo quieres es como navegar sin brújula — gastas energía en todas direcciones y avanzas poco. Primero la claridad sobre tu perfil, luego la ejecución.",
+            brechas: [
+                "Cargo objetivo sin definir",
+                "Sin análisis de mercado para tu perfil",
+            ],
+        },
+    };
+
+    // ─── Estado (vanilla, sin framework) ───
+    let fase = "intro"; // 'intro' | 'quiz' | 'cargando' | 'resultado'
+    let paso = 0;
+    const respuestas = {};
+    let contacto = { nombre: "", email: "", instagram: "" };
+    let animClave = 0;
+
+    const root = document.getElementById("quiz-root");
+
+    // ─── Utilidades ───
+
+    function escapeHtml(valor) {
+        const div = document.createElement("div");
+        div.textContent = valor ?? "";
+        return div.innerHTML;
+    }
+
+    function gtagEvento(nombreEvento, params) {
+        if (typeof window.gtag === "function") window.gtag("event", nombreEvento, params);
+    }
+
+    function pasoActual() {
+        return STEPS[paso];
+    }
+
+    function puedeAvanzar() {
+        const step = pasoActual();
+        if (step.type === "form") {
+            return (
+                contacto.nombre.trim() !== "" &&
+                contacto.email.trim() !== "" &&
+                contacto.instagram.trim() !== ""
+            );
+        }
+        return !!respuestas[step.id];
+    }
+
+    // ─── Envío al webhook (con un reintento y keepalive) ───
+
+    async function enviar(payload) {
+        const opciones = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            keepalive: true,
+        };
+        try {
+            const r = await fetch(WEBHOOK, opciones);
+            if (r.ok) return true;
+        } catch (_) {
+            /* reintento abajo */
+        }
+        try {
+            const r = await fetch(WEBHOOK, opciones);
+            if (r.ok) return true;
+        } catch (_) {
+            /* se reporta abajo */
+        }
+        gtagEvento("quiz_submit_failed", {});
+        return false;
+    }
+
+    // Regla de oro: el resultado se muestra siempre, falle o no el POST.
+    async function terminar() {
+        const payload = {
+            ...respuestas,
+            nombre: contacto.nombre,
+            email: contacto.email,
+            instagram: contacto.instagram,
+            timestamp: new Date().toISOString(),
+        };
+        gtagEvento("quiz_complete", {
+            bloqueo: respuestas.bloqueo,
+            urgencia: respuestas.urgencia,
+        });
+        fase = "cargando";
+        render();
+        await enviar(payload); // no se ramifica por el resultado
+        fase = "resultado";
+        render();
+    }
+
+    // ─── Navegación ───
+
+    function avanzar() {
+        const step = pasoActual();
+        const esUltimo = paso === STEPS.length - 1;
+
+        if (!esUltimo) {
+            gtagEvento("quiz_step", { step_number: paso + 1, step_id: step.id });
+            animClave++;
+            paso++;
+            render();
+            return;
+        }
+
+        // Último paso (form) → enviar y mostrar resultado.
+        gtagEvento("quiz_step", { step_number: paso + 1, step_id: step.id });
+        terminar();
+    }
+
+    function retroceder() {
+        if (paso === 0) {
+            fase = "intro";
+            render();
+            return;
+        }
+        animClave++;
+        paso--;
+        render();
+    }
+
+    function comenzar() {
+        gtagEvento("quiz_start", {});
+        fase = "quiz";
+        paso = 0;
+        render();
+    }
+
+    // ─── Templates ───
+
+    function vistaIntro() {
+        return `
+            <div class="intro-wrapper">
+                <div class="intro-card">
+                    <div class="intro-logo">Somos Empleables</div>
+                    <div class="intro-icon">🎯</div>
+                    <h1 class="intro-title">Descubre qué te está frenando en tu búsqueda laboral</h1>
+                    <p class="intro-subtitle">
+                        Responde 5 preguntas y te entregamos un diagnóstico personalizado con las brechas exactas
+                        que están bloqueando tu próximo trabajo.
+                    </p>
+                    <div class="intro-pills">
+                        <span class="intro-pill">✓ Gratis</span>
+                        <span class="intro-pill">✓ 3 minutos</span>
+                        <span class="intro-pill">✓ 100% confidencial</span>
+                    </div>
+                    <button type="button" class="intro-btn" data-action="comenzar">
+                        Comenzar evaluación gratuita →
+                    </button>
+                    <p class="intro-time">Sin tarjeta. Sin compromiso.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function vistaOpciones(step) {
+        return `
+            <div class="options-grid grid-${step.columns}">
+                ${step.options
+                    .map((opt) => {
+                        const seleccionada = respuestas[step.id] === opt.value;
+                        return `
+                            <button
+                                type="button"
+                                class="option-card${seleccionada ? " selected" : ""}"
+                                data-action="seleccionar"
+                                data-value="${escapeHtml(opt.value)}"
+                                aria-pressed="${seleccionada}"
+                            >
+                                <span class="option-icon" aria-hidden="true">${opt.icon}</span>
+                                <span class="option-label">${escapeHtml(opt.label)}</span>
+                            </button>
+                        `;
+                    })
+                    .join("")}
+            </div>
+        `;
+    }
+
+    function vistaFormulario() {
+        return `
+            <div class="form-fields">
+                <label class="sr-only" for="quiz-nombre">Tu nombre completo</label>
+                <input
+                    id="quiz-nombre"
+                    type="text"
+                    placeholder="Tu nombre completo"
+                    value="${escapeHtml(contacto.nombre)}"
+                    class="field-input"
+                    autocomplete="name"
+                    data-field="nombre"
+                />
+                <label class="sr-only" for="quiz-email">Tu correo electrónico</label>
+                <input
+                    id="quiz-email"
+                    type="email"
+                    placeholder="Tu correo electrónico"
+                    value="${escapeHtml(contacto.email)}"
+                    class="field-input"
+                    autocomplete="email"
+                    data-field="email"
+                />
+                <label class="sr-only" for="quiz-instagram">Tu Instagram</label>
+                <input
+                    id="quiz-instagram"
+                    type="text"
+                    placeholder="Tu Instagram (ej: @tunombre)"
+                    value="${escapeHtml(contacto.instagram)}"
+                    class="field-input"
+                    autocomplete="off"
+                    data-field="instagram"
+                />
+            </div>
+        `;
+    }
+
+    function vistaQuiz() {
+        const step = pasoActual();
+        const progreso = (paso / STEPS.length) * 100;
+        const esUltimo = paso === STEPS.length - 1;
+        const habilitado = puedeAvanzar();
+
+        return `
+            <div class="quiz-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progreso}%"></div>
+                </div>
+                <div class="quiz-container">
+                    <div class="step-header">
+                        <button type="button" class="back-btn" data-action="retroceder">← Atrás</button>
+                        <span class="step-counter">${paso + 1} / ${STEPS.length}</span>
+                    </div>
+                    <div class="step-content" data-anim="${animClave}">
+                        <h2 class="question">${escapeHtml(step.question)}</h2>
+                        ${step.type === "form" ? vistaFormulario() : vistaOpciones(step)}
+                    </div>
+                    <button
+                        type="button"
+                        class="next-btn"
+                        data-action="avanzar"
+                        ${habilitado ? "" : "disabled"}
+                    >
+                        ${esUltimo ? "Ver mi diagnóstico →" : "Siguiente →"}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function vistaCargando() {
+        return `
+            <div class="cargando-wrapper">
+                <div class="cargando-spinner" aria-hidden="true"></div>
+                <p class="cargando-texto">Preparando tu diagnóstico...</p>
+            </div>
+        `;
+    }
+
+    function vistaResultado() {
+        const diagnostico = DIAGNOSES[respuestas.bloqueo] || DIAGNOSES.cv;
+        const primerNombre = (contacto.nombre.split(" ")[0] || "").trim();
+
+        return `
+            <div class="result-wrapper">
+                <div class="result-card">
+                    <div class="result-check" aria-hidden="true">✓</div>
+                    <div>
+                        <div class="result-label">Tu diagnóstico profesional</div>
+                    </div>
+                    <p class="result-greeting">
+                        <strong>${escapeHtml(primerNombre)}</strong>, identificamos lo siguiente en tu perfil:
+                    </p>
+                    <h2 class="result-title">${escapeHtml(diagnostico.titulo)}</h2>
+                    <p class="result-description">${escapeHtml(diagnostico.descripcion)}</p>
+                    <div class="result-brechas">
+                        <div class="result-brechas-title">Brechas identificadas</div>
+                        ${diagnostico.brechas
+                            .map(
+                                (b) => `
+                            <div class="brecha-item">
+                                <span class="brecha-dot" aria-hidden="true"></span>
+                                ${escapeHtml(b)}
+                            </div>
+                        `,
+                            )
+                            .join("")}
+                    </div>
+                    <hr class="result-divider" />
+                    <p class="result-cta-text">
+                        Clau o Felipe, del equipo, te van a escribir para conversar tu caso.
+                    </p>
+                    <p class="result-disclaimer">
+                        Te enviamos tu diagnóstico completo a ${escapeHtml(contacto.email)}.
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+
+    // ─── Render ───
+
+    function render() {
+        if (fase === "intro") root.innerHTML = vistaIntro();
+        else if (fase === "quiz") root.innerHTML = vistaQuiz();
+        else if (fase === "cargando") root.innerHTML = vistaCargando();
+        else if (fase === "resultado") root.innerHTML = vistaResultado();
+    }
+
+    // ─── Delegación de eventos (el contenedor no se reemplaza, solo su innerHTML) ───
+
+    root.addEventListener("click", (evento) => {
+        const objetivo = evento.target.closest("[data-action]");
+        if (!objetivo) return;
+        const accion = objetivo.dataset.action;
+
+        if (accion === "comenzar") comenzar();
+        else if (accion === "retroceder") retroceder();
+        else if (accion === "avanzar") {
+            if (!objetivo.disabled) avanzar();
+        } else if (accion === "seleccionar") {
+            const step = pasoActual();
+            respuestas[step.id] = objetivo.dataset.value;
+            render();
+        }
+    });
+
+    root.addEventListener("input", (evento) => {
+        const campo = evento.target.dataset.field;
+        if (!campo) return;
+        contacto[campo] = evento.target.value;
+        const boton = root.querySelector('[data-action="avanzar"]');
+        if (boton) boton.disabled = !puedeAvanzar();
+    });
+
+    render();
+</script>
