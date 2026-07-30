@@ -33,7 +33,11 @@ import Layout from "../layouts/Layout.astro";
         --shadow: 0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 16px rgba(0, 0, 0, 0.05);
 
         display: block;
-        font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+        /* Sin font-family propia: hereda la Inter que carga Layout.astro
+           (el original cargaba DM Sans en su propio index.html; acá no
+           se pide esa fuente para no sumar una petición extra a Google
+           Fonts y para que el quiz se vea consistente con el resto del
+           sitio). */
         background: var(--bg);
         color: var(--text-primary);
         -webkit-font-smoothing: antialiased;
@@ -500,6 +504,20 @@ import Layout from "../layouts/Layout.astro";
     //    quiz_complete, quiz_submit_failed).
     // 5. El envío al webhook reintenta una vez y usa keepalive;
     //    el resultado se muestra SIEMPRE, falle o no el POST.
+    //
+    // Fix round 1 (revisión post-implementación):
+    // - El envío tiene timeout (AbortSignal.timeout, 5s por intento) para
+    //   que un POST colgado no deje a la persona varada en "cargando".
+    // - Seleccionar una opción actualiza el DOM quirúrgicamente (clase
+    //   .selected + aria-pressed), sin volver a reemplazar el innerHTML
+    //   del paso — no pierde el foco de teclado ni re-dispara la
+    //   animación de entrada en cada clic.
+    // - Los valores de nombre/correo/Instagram se asignan como propiedad
+    //   del DOM (input.value = ...), nunca como atributo HTML — evita
+    //   la clase de bug de comillas sin escapar en un atributo.
+    // - quiz_start y quiz_step se emiten una sola vez por sesión de
+    //   página (flag + Set de pasos ya reportados), para no inflar el
+    //   abandono-por-pregunta si la persona retrocede y reintenta.
     // ============================================================
 
     const WEBHOOK = "https://n8n.somosempleables.com/webhook/quiz-lead";
@@ -661,7 +679,13 @@ import Layout from "../layouts/Layout.astro";
     let paso = 0;
     const respuestas = {};
     let contacto = { nombre: "", email: "", instagram: "" };
-    let animClave = 0;
+
+    // Dedup de eventos GA4: sin esto, retroceder y volver a avanzar
+    // (o reiniciar desde el intro) infla el denominador de abandono
+    // por pregunta, que es justo la métrica que este quiz existe para
+    // medir.
+    let yaComenzo = false;
+    const pasosReportados = new Set();
 
     const root = document.getElementById("quiz-root");
 
@@ -693,24 +717,32 @@ import Layout from "../layouts/Layout.astro";
         return !!respuestas[step.id];
     }
 
-    // ─── Envío al webhook (con un reintento y keepalive) ───
+    // ─── Envío al webhook (con un reintento, keepalive y timeout) ───
 
-    async function enviar(payload) {
+    // Un solo intento de POST. El signal se crea de nuevo en cada llamada
+    // (un AbortSignal.timeout() ya consumido no sirve para un segundo
+    // intento) para que un POST que nunca responde caiga al catch en vez
+    // de dejar el await colgado para siempre.
+    async function intentarEnvio(payload) {
         const opciones = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
             keepalive: true,
+            signal: AbortSignal.timeout(5000),
         };
+        const r = await fetch(WEBHOOK, opciones);
+        return r.ok;
+    }
+
+    async function enviar(payload) {
         try {
-            const r = await fetch(WEBHOOK, opciones);
-            if (r.ok) return true;
+            if (await intentarEnvio(payload)) return true;
         } catch (_) {
-            /* reintento abajo */
+            /* reintento abajo (cubre error de red y timeout) */
         }
         try {
-            const r = await fetch(WEBHOOK, opciones);
-            if (r.ok) return true;
+            if (await intentarEnvio(payload)) return true;
         } catch (_) {
             /* se reporta abajo */
         }
@@ -740,20 +772,27 @@ import Layout from "../layouts/Layout.astro";
 
     // ─── Navegación ───
 
+    // Emite "quiz_step" una sola vez por índice de paso, aunque la
+    // persona retroceda y vuelva a avanzar por el mismo paso.
+    function emitirPasoUnaVez(numeroPaso, stepId) {
+        if (pasosReportados.has(numeroPaso)) return;
+        pasosReportados.add(numeroPaso);
+        gtagEvento("quiz_step", { step_number: numeroPaso + 1, step_id: stepId });
+    }
+
     function avanzar() {
         const step = pasoActual();
         const esUltimo = paso === STEPS.length - 1;
 
+        emitirPasoUnaVez(paso, step.id);
+
         if (!esUltimo) {
-            gtagEvento("quiz_step", { step_number: paso + 1, step_id: step.id });
-            animClave++;
             paso++;
             render();
             return;
         }
 
         // Último paso (form) → enviar y mostrar resultado.
-        gtagEvento("quiz_step", { step_number: paso + 1, step_id: step.id });
         terminar();
     }
 
@@ -763,13 +802,18 @@ import Layout from "../layouts/Layout.astro";
             render();
             return;
         }
-        animClave++;
         paso--;
         render();
     }
 
     function comenzar() {
-        gtagEvento("quiz_start", {});
+        // "quiz_start" una sola vez por sesión de página: si la persona
+        // retrocede hasta el intro y hace clic de nuevo en "Comenzar",
+        // no se vuelve a contar como un inicio nuevo.
+        if (!yaComenzo) {
+            yaComenzo = true;
+            gtagEvento("quiz_start", {});
+        }
         fase = "quiz";
         paso = 0;
         render();
@@ -826,6 +870,11 @@ import Layout from "../layouts/Layout.astro";
         `;
     }
 
+    // Nota: los inputs NO llevan atributo `value` en el template. El valor
+    // se asigna como propiedad del DOM en sincronizarFormulario() después
+    // de insertar el HTML (ver render()). Así el dato del usuario nunca
+    // pasa por un atributo HTML — se evita la clase de bug de
+    // escapar-comillas-en-un-atributo por completo, no se parcha.
     function vistaFormulario() {
         return `
             <div class="form-fields">
@@ -834,7 +883,6 @@ import Layout from "../layouts/Layout.astro";
                     id="quiz-nombre"
                     type="text"
                     placeholder="Tu nombre completo"
-                    value="${escapeHtml(contacto.nombre)}"
                     class="field-input"
                     autocomplete="name"
                     data-field="nombre"
@@ -844,7 +892,6 @@ import Layout from "../layouts/Layout.astro";
                     id="quiz-email"
                     type="email"
                     placeholder="Tu correo electrónico"
-                    value="${escapeHtml(contacto.email)}"
                     class="field-input"
                     autocomplete="email"
                     data-field="email"
@@ -854,13 +901,27 @@ import Layout from "../layouts/Layout.astro";
                     id="quiz-instagram"
                     type="text"
                     placeholder="Tu Instagram (ej: @tunombre)"
-                    value="${escapeHtml(contacto.instagram)}"
                     class="field-input"
                     autocomplete="off"
                     data-field="instagram"
                 />
             </div>
         `;
+    }
+
+    // Rellena los valores de los 3 campos desde el estado `contacto`
+    // como propiedad del DOM (no como atributo HTML) tras cada render
+    // que incluya el formulario — necesario para conservar lo tipeado
+    // al retroceder y volver a avanzar hasta este paso.
+    function sincronizarFormulario() {
+        const step = pasoActual();
+        if (!step || step.type !== "form") return;
+        const nombreInput = document.getElementById("quiz-nombre");
+        const emailInput = document.getElementById("quiz-email");
+        const instagramInput = document.getElementById("quiz-instagram");
+        if (nombreInput) nombreInput.value = contacto.nombre;
+        if (emailInput) emailInput.value = contacto.email;
+        if (instagramInput) instagramInput.value = contacto.instagram;
     }
 
     function vistaQuiz() {
@@ -879,7 +940,7 @@ import Layout from "../layouts/Layout.astro";
                         <button type="button" class="back-btn" data-action="retroceder">← Atrás</button>
                         <span class="step-counter">${paso + 1} / ${STEPS.length}</span>
                     </div>
-                    <div class="step-content" data-anim="${animClave}">
+                    <div class="step-content">
                         <h2 class="question">${escapeHtml(step.question)}</h2>
                         ${step.type === "form" ? vistaFormulario() : vistaOpciones(step)}
                     </div>
@@ -950,9 +1011,30 @@ import Layout from "../layouts/Layout.astro";
 
     function render() {
         if (fase === "intro") root.innerHTML = vistaIntro();
-        else if (fase === "quiz") root.innerHTML = vistaQuiz();
-        else if (fase === "cargando") root.innerHTML = vistaCargando();
+        else if (fase === "quiz") {
+            root.innerHTML = vistaQuiz();
+            sincronizarFormulario();
+        } else if (fase === "cargando") root.innerHTML = vistaCargando();
         else if (fase === "resultado") root.innerHTML = vistaResultado();
+    }
+
+    // Actualiza la selección de una opción sin reemplazar el innerHTML del
+    // paso: evita perder el foco de teclado y evita que la animación de
+    // entrada de .step-content se vuelva a disparar en cada clic (antes
+    // pasaba porque seleccionar() llamaba a render(), que regenera todo
+    // el paso — la persona veía la pregunta desvanecerse y reaparecer
+    // cada vez que cambiaba de opinión).
+    function actualizarSeleccion(step) {
+        const contenedor = root.querySelector(".options-grid");
+        if (contenedor) {
+            contenedor.querySelectorAll(".option-card").forEach((boton) => {
+                const seleccionada = boton.dataset.value === respuestas[step.id];
+                boton.classList.toggle("selected", seleccionada);
+                boton.setAttribute("aria-pressed", String(seleccionada));
+            });
+        }
+        const botonAvanzar = root.querySelector('[data-action="avanzar"]');
+        if (botonAvanzar) botonAvanzar.disabled = !puedeAvanzar();
     }
 
     // ─── Delegación de eventos (el contenedor no se reemplaza, solo su innerHTML) ───
@@ -969,7 +1051,7 @@ import Layout from "../layouts/Layout.astro";
         } else if (accion === "seleccionar") {
             const step = pasoActual();
             respuestas[step.id] = objetivo.dataset.value;
-            render();
+            actualizarSeleccion(step);
         }
     });
 
