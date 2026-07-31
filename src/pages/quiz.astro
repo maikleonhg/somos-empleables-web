@@ -558,7 +558,10 @@ import Layout from "../layouts/Layout.astro";
 
     const WEBHOOK = "https://n8n.somosempleables.com/webhook/quiz-lead";
 
-    // Copiado tal cual de se-quiz/src/App.jsx — no tocar el copy.
+    // Basado en se-quiz/src/App.jsx, pero YA NO es copia tal cual: esta rama
+    // agregó los pasos "tiempo_busqueda" y "profesion" (texto libre), que no
+    // existen en ese archivo. Si tocas el copy de los demás pasos, mantenlo
+    // alineado con /root/scripts/quiz/compose.mjs.
     const STEPS = [
         {
             id: "situacion",
@@ -678,7 +681,7 @@ import Layout from "../layouts/Layout.astro";
         },
     ];
 
-    // Copy en clave de HIPÓTESIS, no de diagnóstico cerrado: esto sale de 5
+    // Copy en clave de HIPÓTESIS, no de diagnóstico cerrado: esto sale de 6
     // respuestas de alternativas, así que no podemos afirmar el caso de nadie.
     // Debe mantenerse alineado con /root/scripts/quiz/compose.mjs, que es el
     // copy del correo (mismos títulos, cuerpo más largo).
@@ -822,11 +825,15 @@ import Layout from "../layouts/Layout.astro";
 
     // Regla de oro: el resultado se muestra siempre, falle o no el POST.
     async function terminar() {
+        // Trim explícito: emailValido() ya trimea para validar, así que sin
+        // esto " juan@gmail.com " pasaba la validación y llegaba con espacios
+        // a Notion y al sendTo de Gmail — el correo podía no llegar nunca.
         const payload = {
             ...respuestas,
-            nombre: contacto.nombre,
-            email: contacto.email,
-            instagram: contacto.instagram,
+            profesion: (respuestas.profesion ?? "").trim(),
+            nombre: contacto.nombre.trim(),
+            email: contacto.email.trim(),
+            instagram: contacto.instagram.trim(),
             timestamp: new Date().toISOString(),
         };
         gtagEvento("quiz_complete", {
@@ -956,6 +963,7 @@ import Layout from "../layouts/Layout.astro";
                     class="field-input"
                     autocomplete="name"
                     data-field="nombre"
+                    enterkeyhint="next"
                 />
                 <label class="sr-only" for="quiz-email">Tu correo electrónico</label>
                 <input
@@ -965,15 +973,9 @@ import Layout from "../layouts/Layout.astro";
                     class="field-input"
                     autocomplete="email"
                     data-field="email"
-                />
-                <label class="sr-only" for="quiz-instagram">Tu Instagram</label>
-                <input
-                    id="quiz-instagram"
-                    type="text"
-                    placeholder="Tu Instagram (ej: @tunombre)"
-                    class="field-input"
-                    autocomplete="off"
-                    data-field="instagram"
+                    aria-describedby="quiz-email-error"
+                    aria-invalid="${mostrarErrorEmail() ? "true" : "false"}"
+                    enterkeyhint="next"
                 />
                 <p
                     id="quiz-email-error"
@@ -983,8 +985,18 @@ import Layout from "../layouts/Layout.astro";
                 >
                     Revisa tu correo: ahí te enviamos el diagnóstico completo.
                 </p>
+                <label class="sr-only" for="quiz-instagram">Tu Instagram</label>
+                <input
+                    id="quiz-instagram"
+                    type="text"
+                    placeholder="Tu Instagram (ej: @tunombre)"
+                    class="field-input"
+                    autocomplete="off"
+                    data-field="instagram"
+                    enterkeyhint="done"
+                />
                 <p class="field-consent">
-                    Al continuar aceptas que te contactemos por correo.
+                    Al continuar aceptas que te contactemos por correo o Instagram.
                     Lee cómo cuidamos tus datos en nuestra
                     <a href="/privacidad">Política de Privacidad</a>.
                 </p>
@@ -1003,6 +1015,8 @@ import Layout from "../layouts/Layout.astro";
     function actualizarErrorEmail() {
         const aviso = root.querySelector("#quiz-email-error");
         if (aviso) aviso.hidden = !mostrarErrorEmail();
+        const input = root.querySelector("#quiz-email");
+        if (input) input.setAttribute("aria-invalid", String(mostrarErrorEmail()));
     }
 
     // Paso de una sola respuesta escrita. El valor NO se pone como atributo
@@ -1020,6 +1034,7 @@ import Layout from "../layouts/Layout.astro";
                     class="field-input"
                     autocomplete="organization-title"
                     data-respuesta="${step.id}"
+                    enterkeyhint="next"
                 />
             </div>
         `;
@@ -1098,7 +1113,9 @@ import Layout from "../layouts/Layout.astro";
 
     function vistaResultado() {
         const diagnostico = DIAGNOSES[respuestas.bloqueo] || DIAGNOSES.cv;
-        const primerNombre = (contacto.nombre.split(" ")[0] || "").trim();
+        // Trim ANTES de split: si el nombre partía con espacio (autocompletar
+        // móvil), split(" ")[0] devolvía "" y el saludo salía vacío.
+        const primerNombre = contacto.nombre.trim().split(/\s+/)[0] || "";
 
         return `
             <div class="result-wrapper">
@@ -1203,6 +1220,21 @@ import Layout from "../layouts/Layout.astro";
         if (campo === "email") actualizarErrorEmail();
         const boton = root.querySelector('[data-action="avanzar"]');
         if (boton) boton.disabled = !puedeAvanzar();
+    });
+
+    // Enter en el teclado del móvil debe avanzar igual que tocar el botón:
+    // sin esto, la persona escribe en el paso de profesión (o en el
+    // formulario final), presiona "Ir"/"return" y no pasa nada — tiene que
+    // cerrar el teclado a mano para encontrar el botón. Es `keydown`, no
+    // `input`, así que no interfiere con el handler de `input` que no puede
+    // re-renderizar (perdería el foco letra por letra). Reusa avanzar(), que
+    // sí puede re-renderizar: solo corre una vez por Enter, no por tecla.
+    root.addEventListener("keydown", (evento) => {
+        if (evento.key !== "Enter") return;
+        if (evento.target.tagName !== "INPUT") return;
+        if (!puedeAvanzar()) return;
+        evento.preventDefault();
+        avanzar();
     });
 
     render();
