@@ -6,7 +6,11 @@ import Layout from "../layouts/Layout.astro";
     title="Evaluación profesional gratuita — Somos Empleables"
     description="Responde 5 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
 >
-    <main id="quiz-root" class="quiz-root"></main>
+    {/* aria-live va acá y no en un contenedor interno: este elemento es el
+        único que NO se reemplaza (solo su innerHTML), y una región viva que
+        nace junto con el contenido no la anuncia ningún lector de pantalla.
+        Sin esto el quiz avanza de pregunta en silencio absoluto. */}
+    <main id="quiz-root" class="quiz-root" aria-live="polite"></main>
 </Layout>
 
 <style>
@@ -218,6 +222,25 @@ import Layout from "../layouts/Layout.astro";
     }
     .quiz-root :global(.field-input::placeholder) {
         color: #9ca3af;
+    }
+    .quiz-root :global(.field-error) {
+        margin: -4px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #b91c1c;
+    }
+    .quiz-root :global(.field-error[hidden]) {
+        display: none;
+    }
+    .quiz-root :global(.field-consent) {
+        margin: 4px 0 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #6b7280;
+    }
+    .quiz-root :global(.field-consent a) {
+        color: inherit;
+        text-decoration: underline;
     }
     .quiz-root :global(.sr-only) {
         position: absolute;
@@ -447,6 +470,14 @@ import Layout from "../layouts/Layout.astro";
         background: #eab308;
         flex-shrink: 0;
     }
+    /* La advertencia de que esto es una hipótesis y no un diagnóstico cerrado.
+       Va legible, no en letra chica: es parte del mensaje, no un descargo. */
+    .quiz-root :global(.result-caveat) {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-style: italic;
+    }
     .quiz-root :global(.result-divider) {
         border: none;
         border-top: 1px solid var(--border);
@@ -630,48 +661,51 @@ import Layout from "../layouts/Layout.astro";
         },
     ];
 
-    // Copiado tal cual de se-quiz/src/App.jsx — no tocar el copy.
+    // Copy en clave de HIPÓTESIS, no de diagnóstico cerrado: esto sale de 5
+    // respuestas de alternativas, así que no podemos afirmar el caso de nadie.
+    // Debe mantenerse alineado con /root/scripts/quiz/compose.mjs, que es el
+    // copy del correo (mismos títulos, cuerpo más largo).
     const DIAGNOSES = {
         cv: {
-            titulo: "Tu CV está invisibilizando tu talento",
+            titulo: "Probablemente tu CV no te está representando",
             descripcion:
-                "Tienes experiencia real, pero la forma en que la presentas no comunica tu valor. Los reclutadores deciden en 6 segundos — si el CV no habla claro, el teléfono no suena. No es un problema de lo que has logrado, es un problema de cómo lo estás contando.",
+                "Si tienes experiencia real y aun así el teléfono no suena, lo primero que solemos mirar es cómo está contada. Los reclutadores deciden en segundos, y muchas veces el problema no es lo que lograste sino cómo se lee.",
             brechas: [
                 "Narrativa profesional sin estructurar",
                 "Logros reales sin visibilizar",
             ],
         },
         posicionamiento: {
-            titulo: "Falta claridad en tu propuesta de valor",
+            titulo: "Puede que falte claridad en tu propuesta de valor",
             descripcion:
-                "Sin posicionamiento claro, el mercado no sabe cómo verte. No es falta de experiencia — es falta de estrategia. El trabajo correcto existe, pero no te está encontrando a ti todavía.",
+                "Cuando no está claro cómo quieres que te vean, el mercado lo decide por ti — y suele ubicarte por debajo de lo que vales. En estos casos rara vez falta experiencia; lo que falta es estrategia.",
             brechas: [
                 "Perfil LinkedIn no optimizado",
                 "Cargo objetivo sin definir",
             ],
         },
         entrevistas: {
-            titulo: "Las entrevistas te están costando oportunidades",
+            titulo: "Las entrevistas podrían estar costándote oportunidades",
             descripcion:
-                "Llegas a las instancias de selección pero no cierras. Esto es 100% entrenable — no es cuestión de personalidad ni de experiencia. Es técnica, preparación y estructura narrativa específica.",
+                "Si llegas a la entrevista, el CV y el perfil ya funcionaron: lo que estaría fallando es el cierre. Es de las cosas que más rápido mejoran con método, porque es técnica y preparación, no personalidad.",
             brechas: [
                 "Sin práctica de entrevistas estructuradas",
                 "Narrativa personal sin pulir",
             ],
         },
         red: {
-            titulo: "Tu red profesional es tu activo sin explotar",
+            titulo: "Tu red podría ser tu activo sin explotar",
             descripcion:
-                "El 70-80% de los trabajos no se publican — se cubren por referidos. Si no tienes una estrategia de networking activa, estás compitiendo con desventaja enorme contra candidatos con menos experiencia pero mejor conectados.",
+                "Buena parte de los trabajos no llega a publicarse: se cubren por referidos. Si ese canal está apagado, estarías compitiendo sólo por la parte visible del mercado, que es donde hay más gente peleando.",
             brechas: [
                 "LinkedIn sin estrategia de conexiones",
                 "Sin metodología de acercamiento",
             ],
         },
         direccion: {
-            titulo: "La dirección es el punto de partida de todo",
+            titulo: "Quizás el punto de partida sea la dirección",
             descripcion:
-                "Buscar trabajo sin saber qué cargo quieres es como navegar sin brújula — gastas energía en todas direcciones y avanzas poco. Primero la claridad sobre tu perfil, luego la ejecución.",
+                "Buscar sin un cargo objetivo definido suele gastar mucha energía para avanzar poco. Antes de ejecutar conviene cerrar la pregunta de hacia dónde — todo lo demás rinde más después.",
             brechas: [
                 "Cargo objetivo sin definir",
                 "Sin análisis de mercado para tu perfil",
@@ -710,12 +744,20 @@ import Layout from "../layouts/Layout.astro";
         return STEPS[paso];
     }
 
+    // Validación deliberadamente laxa: algo@algo.dominio. No se persigue el RFC
+    // — el objetivo es atajar el typo que hace que el diagnóstico prometido no
+    // llegue nunca y el lead se pierda en silencio, no rechazar correos raros
+    // pero válidos.
+    function emailValido(valor) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor.trim());
+    }
+
     function puedeAvanzar() {
         const step = pasoActual();
         if (step.type === "form") {
             return (
                 contacto.nombre.trim() !== "" &&
-                contacto.email.trim() !== "" &&
+                emailValido(contacto.email) &&
                 contacto.instagram.trim() !== ""
             );
         }
@@ -910,8 +952,34 @@ import Layout from "../layouts/Layout.astro";
                     autocomplete="off"
                     data-field="instagram"
                 />
+                <p
+                    id="quiz-email-error"
+                    class="field-error"
+                    role="alert"
+                    ${mostrarErrorEmail() ? "" : "hidden"}
+                >
+                    Revisa tu correo: ahí te enviamos el diagnóstico completo.
+                </p>
+                <p class="field-consent">
+                    Al continuar aceptas que te contactemos por correo.
+                    Lee cómo cuidamos tus datos en nuestra
+                    <a href="/privacidad">Política de Privacidad</a>.
+                </p>
             </div>
         `;
+    }
+
+    // El aviso sólo aparece cuando la persona YA escribió algo que no parece un
+    // correo. Mostrarlo con el campo vacío sería regañar antes de tiempo.
+    function mostrarErrorEmail() {
+        return contacto.email.trim() !== "" && !emailValido(contacto.email);
+    }
+
+    // Se togglea a mano, sin re-render: el handler de `input` NO redibuja el
+    // paso (eso perdía el foco del teclado a cada tecla).
+    function actualizarErrorEmail() {
+        const aviso = root.querySelector("#quiz-email-error");
+        if (aviso) aviso.hidden = !mostrarErrorEmail();
     }
 
     // Rellena los valores de los 3 campos desde el estado `contacto`
@@ -980,15 +1048,15 @@ import Layout from "../layouts/Layout.astro";
                 <div class="result-card">
                     <div class="result-check" aria-hidden="true">✓</div>
                     <div>
-                        <div class="result-label">Tu diagnóstico profesional</div>
+                        <div class="result-label">Nuestra primera hipótesis</div>
                     </div>
                     <p class="result-greeting">
-                        <strong>${escapeHtml(primerNombre)}</strong>, identificamos lo siguiente en tu perfil:
+                        <strong>${escapeHtml(primerNombre)}</strong>, por lo que nos contaste, esto es lo que más nos llama la atención:
                     </p>
                     <h2 class="result-title">${escapeHtml(diagnostico.titulo)}</h2>
                     <p class="result-description">${escapeHtml(diagnostico.descripcion)}</p>
                     <div class="result-brechas">
-                        <div class="result-brechas-title">Brechas identificadas</div>
+                        <div class="result-brechas-title">Qué revisaríamos contigo</div>
                         ${diagnostico.brechas
                             .map(
                                 (b) => `
@@ -1000,9 +1068,12 @@ import Layout from "../layouts/Layout.astro";
                             )
                             .join("")}
                     </div>
+                    <p class="result-caveat">
+                        Con 5 preguntas no alcanzamos a ver tu caso completo — esto es un punto de partida para conversarlo, no una conclusión.
+                    </p>
                     <hr class="result-divider" />
                     <p class="result-cta-text">
-                        Clau o Felipe, del equipo, te van a escribir para conversar tu caso.
+                        Stefano te va a escribir para conversar tu caso y confirmar si esto calza con lo que te está pasando.
                     </p>
                     <p class="result-disclaimer">
                         Te enviamos tu diagnóstico completo a ${escapeHtml(contacto.email)}.
@@ -1064,6 +1135,7 @@ import Layout from "../layouts/Layout.astro";
         const campo = evento.target.dataset.field;
         if (!campo) return;
         contacto[campo] = evento.target.value;
+        if (campo === "email") actualizarErrorEmail();
         const boton = root.querySelector('[data-action="avanzar"]');
         if (boton) boton.disabled = !puedeAvanzar();
     });
