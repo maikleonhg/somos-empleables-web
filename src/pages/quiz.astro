@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
     title="Evaluación profesional gratuita — Somos Empleables"
-    description="Responde 5 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
+    description="Responde 7 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
 >
     {/* aria-live va acá y no en un contenedor interno: este elemento es el
         único que NO se reemplaza (solo su innerHTML), y una región viva que
@@ -666,6 +666,12 @@ import Layout from "../layouts/Layout.astro";
             ],
         },
         {
+            id: "profesion",
+            type: "texto",
+            question: "¿Cuál es tu profesión?",
+            placeholder: "Ej: Ingeniera comercial, contador, diseñador gráfico",
+        },
+        {
             id: "contacto",
             type: "form",
             question: "¿A dónde enviamos tu diagnóstico?",
@@ -771,6 +777,9 @@ import Layout from "../layouts/Layout.astro";
                 emailValido(contacto.email) &&
                 contacto.instagram.trim() !== ""
             );
+        }
+        if (step.type === "texto") {
+            return (respuestas[step.id] ?? "").trim() !== "";
         }
         return !!respuestas[step.id];
     }
@@ -890,7 +899,7 @@ import Layout from "../layouts/Layout.astro";
                     <div class="intro-icon">🎯</div>
                     <h1 class="intro-title">Descubre qué te está frenando en tu búsqueda laboral</h1>
                     <p class="intro-subtitle">
-                        Responde 5 preguntas y te entregamos un diagnóstico personalizado con las brechas exactas
+                        Responde 7 preguntas y te entregamos un diagnóstico personalizado con las brechas exactas
                         que están bloqueando tu próximo trabajo.
                     </p>
                     <div class="intro-pills">
@@ -996,6 +1005,34 @@ import Layout from "../layouts/Layout.astro";
         if (aviso) aviso.hidden = !mostrarErrorEmail();
     }
 
+    // Paso de una sola respuesta escrita. El valor NO se pone como atributo
+    // `value` en el HTML: se asigna como propiedad del DOM en sincronizarTexto()
+    // después de insertar el markup, igual que el formulario de contacto. Así se
+    // evita por completo la clase de bug de escapar comillas en un atributo.
+    function vistaTexto(step) {
+        return `
+            <div class="form-fields">
+                <label class="sr-only" for="quiz-texto">${escapeHtml(step.question)}</label>
+                <input
+                    id="quiz-texto"
+                    type="text"
+                    placeholder="${escapeHtml(step.placeholder)}"
+                    class="field-input"
+                    autocomplete="organization-title"
+                    data-respuesta="${step.id}"
+                />
+            </div>
+        `;
+    }
+
+    // Conserva lo escrito al retroceder y volver a avanzar.
+    function sincronizarTexto() {
+        const step = pasoActual();
+        if (!step || step.type !== "texto") return;
+        const input = document.getElementById("quiz-texto");
+        if (input) input.value = respuestas[step.id] ?? "";
+    }
+
     // Rellena los valores de los 3 campos desde el estado `contacto`
     // como propiedad del DOM (no como atributo HTML) tras cada render
     // que incluya el formulario — necesario para conservar lo tipeado
@@ -1029,7 +1066,13 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                     <div class="step-content">
                         <h2 class="question">${escapeHtml(step.question)}</h2>
-                        ${step.type === "form" ? vistaFormulario() : vistaOpciones(step)}
+                        ${
+                            step.type === "form"
+                                ? vistaFormulario()
+                                : step.type === "texto"
+                                  ? vistaTexto(step)
+                                  : vistaOpciones(step)
+                        }
                     </div>
                     <button
                         type="button"
@@ -1083,7 +1126,7 @@ import Layout from "../layouts/Layout.astro";
                             .join("")}
                     </div>
                     <p class="result-caveat">
-                        Con 5 preguntas no alcanzamos a ver tu caso completo — esto es un punto de partida para conversarlo, no una conclusión.
+                        Con estas pocas preguntas no alcanzamos a ver tu caso completo — esto es un punto de partida para conversarlo, no una conclusión.
                     </p>
                     <hr class="result-divider" />
                     <p class="result-cta-text">
@@ -1104,6 +1147,7 @@ import Layout from "../layouts/Layout.astro";
         else if (fase === "quiz") {
             root.innerHTML = vistaQuiz();
             sincronizarFormulario();
+            sincronizarTexto();
         } else if (fase === "cargando") root.innerHTML = vistaCargando();
         else if (fase === "resultado") root.innerHTML = vistaResultado();
     }
@@ -1146,6 +1190,13 @@ import Layout from "../layouts/Layout.astro";
     });
 
     root.addEventListener("input", (evento) => {
+        const clave = evento.target.dataset.respuesta;
+        if (clave) {
+            respuestas[clave] = evento.target.value;
+            const btn = root.querySelector('[data-action="avanzar"]');
+            if (btn) btn.disabled = !puedeAvanzar();
+            return;
+        }
         const campo = evento.target.dataset.field;
         if (!campo) return;
         contacto[campo] = evento.target.value;
