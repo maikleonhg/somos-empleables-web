@@ -779,19 +779,22 @@ import Layout from "../layouts/Layout.astro";
             signal: AbortSignal.timeout(5000),
         };
         const r = await fetch(WEBHOOK, opciones);
-        return r.ok;
+        return { ok: r.ok, status: r.status };
     }
 
     async function enviar(payload) {
-        try {
-            if (await intentarEnvio(payload)) return true;
-        } catch (_) {
-            /* reintento abajo (cubre error de red y timeout) */
-        }
-        try {
-            if (await intentarEnvio(payload)) return true;
-        } catch (_) {
-            /* se reporta abajo */
+        for (let intento = 0; intento < 2; intento++) {
+            try {
+                const r = await intentarEnvio(payload);
+                if (r.ok) return true;
+                // Un 4xx significa que al webhook no le sirve este payload:
+                // reintentarlo con exactamente los mismos datos da el mismo
+                // error y sólo deja a la persona esperando 5 segundos más.
+                // Solo se reintenta lo transitorio (5xx, red, timeout).
+                if (r.status >= 400 && r.status < 500) break;
+            } catch (_) {
+                /* red o timeout: transitorio, se reintenta */
+            }
         }
         gtagEvento("quiz_submit_failed", {});
         return false;
