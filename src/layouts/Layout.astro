@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import OrganizationSchema from "../components/OrganizationSchema.astro";
+import MetaPixel from "../components/MetaPixel.astro";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -88,6 +89,8 @@ const {
             }
             gtag("config", "G-4TES4Z620T");
         </script>
+
+        <MetaPixel />
         <slot name="head" />
     </head>
     <body

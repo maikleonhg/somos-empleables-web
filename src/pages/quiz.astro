@@ -760,6 +760,14 @@ import Layout from "../layouts/Layout.astro";
         if (typeof window.gtag === "function") window.gtag("event", nombreEvento, params);
     }
 
+    // El Pixel solo se inicializa en los hostnames de producción (ver
+    // MetaPixel.astro), así que fuera de prod `fbq` no existe y esto es un
+    // no-op. Mismo contrato que gtagEvento: nunca reventar el quiz porque
+    // un tracker de terceros no cargó.
+    function fbqEvento(nombreEvento, params) {
+        if (typeof window.fbq === "function") window.fbq("track", nombreEvento, params);
+    }
+
     function pasoActual() {
         return STEPS[paso];
     }
@@ -840,6 +848,13 @@ import Layout from "../layouts/Layout.astro";
             bloqueo: respuestas.bloqueo,
             urgencia: respuestas.urgencia,
         });
+        // `Lead` es el evento estándar de Meta para "dejó sus datos": es el que
+        // se elige como objetivo de optimización en Ads Manager. Va acá, junto
+        // a quiz_complete y ANTES del POST, por la misma regla de oro del quiz
+        // — el envío al webhook puede fallar y la persona igual completó.
+        // Deliberadamente no se le mandan las respuestas ni el contacto: Meta
+        // no necesita el detalle del lead, solo saber que ocurrió.
+        fbqEvento("Lead", { content_name: "Quiz Empleabilidad" });
         fase = "cargando";
         render();
         await enviar(payload); // no se ramifica por el resultado
