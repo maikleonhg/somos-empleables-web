@@ -1,0 +1,64 @@
+---
+/**
+ * Meta Pixel — tracking de Meta (Facebook/Instagram) para el sitio público.
+ *
+ * Es el MISMO pixel que ya corre en se-programa (`1270199794600328`): un solo
+ * pixel para los dos dominios, así Meta ve el funnel completo
+ * somosempleables.com → programa.somosempleables.com en vez de dos audiencias
+ * inconexas. El ID es público por diseño (viaja en el HTML de cualquier sitio
+ * que lo use), por eso va hardcodeado y no en una env var.
+ *
+ * Para qué está: acumular histórico de tráfico orgánico ANTES de correr la
+ * primera campaña de Meta Ads. El algoritmo optimiza mucho mejor con 30-60
+ * días de eventos previos, y estos eventos son los que después alimentan
+ * públicos similares y retargeting.
+ *
+ * El evento de conversión (`Lead`) lo dispara el quiz en `src/pages/quiz.astro`.
+ * Acá solo va el `PageView` automático.
+ */
+---
+
+{/* Mismo criterio que GA4 en Layout.astro: solo se carga en los hostnames de
+    producción. Deploy previews de Netlify y dev local no deben ensuciar el
+    pixel — a diferencia de GA4, Meta no tiene un filtro de "tráfico interno"
+    que permita separarlo después, así que la única defensa es no dispararlo.
+    A propósito NO se agrega el <noscript><img> del snippet oficial: esa
+    imagen se pide siempre, sin pasar por este guard, y contaminaría el pixel
+    desde los previews a cambio de un puñado de visitas sin JS. */}
+<script is:inline>
+    (function () {
+        var PIXEL_PROD_HOSTNAMES = [
+            "somosempleables.com",
+            "www.somosempleables.com",
+        ];
+        if (PIXEL_PROD_HOSTNAMES.indexOf(window.location.hostname) === -1)
+            return;
+
+        !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod
+                    ? n.callMethod.apply(n, arguments)
+                    : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+        })(
+            window,
+            document,
+            "script",
+            "https://connect.facebook.net/en_US/fbevents.js",
+        );
+
+        fbq("init", "1270199794600328");
+        fbq("track", "PageView");
+    })();
+</script>
