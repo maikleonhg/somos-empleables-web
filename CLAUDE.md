@@ -9,9 +9,10 @@ Sitio web público de Somos Empleables. Stack: Astro + Tailwind CSS.
 
 ## Reglas de trabajo
 
-- **Nunca pushear a `main` directamente.** Stefano trabaja en `stefano-updates`.
+- **Nunca pushear a `main` directamente.** Trabajar siempre en una rama sacada desde `main` (`feat/...`, `fix/...`, `content/...`, `docs/...`).
+- **El patrón `stefano-updates` está descontinuado.** Esa rama se borró el 2026-06-05 por estar 100% contenida en `main`: nunca produjo contenido que no reescribiera Maik. No la recrees.
 - Hacer commits frecuentes con cada cambio aprobado — no acumular todo al final.
-- Al terminar una sesión de cambios, crear PR desde `stefano-updates` → `main` para revisión de Maik.
+- Al terminar una sesión de cambios, crear PR → `main` para revisión de Maik. **Maik mergea**, no tú.
 
 ## Arranque
 
@@ -57,12 +58,14 @@ Para detener el dev server: `tmux kill-session -t se-web-dev`.
 src/
 ├── pages/
 │   ├── index.astro          # Home
+│   ├── quiz.astro           # Quiz de captación de leads (live 2026-07-30) — 8 pasos + webhook n8n
 │   ├── duoc-uc.astro        # Landing dedicada a alumnos Duoc UC
-│   ├── privacidad.astro
-│   ├── terminos.astro
+│   ├── privacidad.astro     # Reescrita 2026-08-04 desde el borrador de Notion
+│   ├── terminos.astro       # Reescrita 2026-08-04 desde el borrador validado por el abogado
 │   └── recursos/            # Recursos / posts (antes /blog)
 ├── components/
 │   ├── Navbar.astro
+│   ├── MetaPixel.astro      # Meta Pixel — solo dispara en hostnames de prod (ver abajo)
 │   ├── CTA.astro
 │   ├── Services.astro
 │   ├── Testimonials.astro
@@ -93,6 +96,16 @@ Los videos y assets pesados se hostean en **Cloudinary** (cuenta `denbk9c31`). N
   `https://res.cloudinary.com/denbk9c31/video/upload/so_0/<version>/<public_id>.jpg`
 
 Ejemplo en uso: testimonios verticales 9:16 en `src/components/Testimonials.astro` — el array `testimonials` lista cada `{video, poster, name, role}`. Para agregar un nuevo testimonio: subir el .mp4 a Cloudinary y agregar una entrada al array con ambas URLs.
+
+## Analítica: GA4 y Meta Pixel
+
+Los dos viven en `src/layouts/Layout.astro`, así que aplican a todas las páginas.
+
+- **GA4** (`G-4TES4Z620T`): se carga siempre, pero fuera de los hostnames de producción marca la visita como `traffic_type: internal` y el filtro de GA4 la excluye. O sea, en previews **sí** se dispara, solo que queda filtrado.
+- **Meta Pixel** (`1270199794600328`, en `src/components/MetaPixel.astro`): **no se carga en absoluto** fuera de `somosempleables.com` / `www.`. Meta no tiene un filtro de tráfico interno equivalente al de GA4, así que la única forma de que los deploy previews no ensucien la audiencia es no dispararlo ahí.
+- **Consecuencia práctica: el deploy preview de un PR NUNCA sirve para verificar el Pixel.** Se comprueba en producción, con el Pixel Helper o en Events Manager. Si vas a "arreglar" el Pixel porque no lo ves en un preview, no está roto: está haciendo justo lo que debe.
+- Es el mismo pixel que corre en `programa.somosempleables.com` — un solo ID para los dos dominios, para que Meta vea el funnel completo.
+- El quiz emite `fbq('track','Lead')` al completar (en `src/pages/quiz.astro`), sin enviarle a Meta las respuestas ni los datos de contacto.
 
 ## Restricciones
 
