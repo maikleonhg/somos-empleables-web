@@ -232,6 +232,43 @@ import Layout from "../layouts/Layout.astro";
     .quiz-root :global(.field-error[hidden]) {
         display: none;
     }
+    /* Pregunta de seguimiento en IG: dos píldoras compactas dentro del mismo
+       formulario. Deliberadamente NO es un paso más del quiz — el valor de
+       este quiz es la baja fricción, y un paso extra sube el abandono. */
+    .quiz-root :global(.field-inline-question) {
+        margin: 4px 0 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+    .quiz-root :global(.pill-group) {
+        display: flex;
+        gap: 8px;
+    }
+    .quiz-root :global(.pill) {
+        flex: 1;
+        padding: 11px 14px;
+        background: var(--card-bg);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--text-primary);
+        cursor: pointer;
+        text-align: center;
+        transition:
+            border-color 0.15s,
+            background 0.15s;
+    }
+    .quiz-root :global(.pill:hover) {
+        border-color: #93c5fd;
+    }
+    .quiz-root :global(.pill.selected) {
+        border-color: var(--brand);
+        background: var(--brand-light);
+        font-weight: 600;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
     .quiz-root :global(.field-consent) {
         margin: 4px 0 0;
         font-size: 12px;
@@ -533,7 +570,11 @@ import Layout from "../layouts/Layout.astro";
     // Cambios respecto del original (ver task-3-brief.md):
     // 1. STEPS y DIAGNOSES se copian tal cual.
     // 2. El paso "contacto" pide nombre, correo e Instagram
-    //    (se elimina el campo teléfono).
+    //    (se elimina el campo teléfono), y desde 2026-08-05 además
+    //    "¿ya nos sigues en Instagram?" (`nos_sigue`: si|no). Va DENTRO
+    //    del formulario a propósito, no como paso 9: la gracia del quiz
+    //    es la baja fricción y un paso más sube el abandono. Es señal de
+    //    calificación para el setter — quien ya sigue llega más tibio.
     // 3. La pantalla de resultado no lleva botón de agendamiento;
     //    cierra derivando a Clau/Felipe del equipo.
     // 4. Se agregan eventos GA4 (quiz_start, quiz_step,
@@ -737,7 +778,15 @@ import Layout from "../layouts/Layout.astro";
     let fase = "intro"; // 'intro' | 'quiz' | 'cargando' | 'resultado'
     let paso = 0;
     const respuestas = {};
-    let contacto = { nombre: "", email: "", instagram: "" };
+    let contacto = { nombre: "", email: "", instagram: "", nosSigue: "" };
+
+    // Señal de calificación para el setter, no de marketing: quien ya nos sigue
+    // llega más tibio. Es autodeclarado, así que el "sí" está inflado (la gente
+    // responde para quedar bien) y el "no" es el dato confiable.
+    const NOS_SIGUE_OPCIONES = [
+        { value: "si", label: "Sí, ya los sigo" },
+        { value: "no", label: "Todavía no" },
+    ];
 
     // Dedup de eventos GA4: sin esto, retroceder y volver a avanzar
     // (o reiniciar desde el intro) infla el denominador de abandono
@@ -786,7 +835,8 @@ import Layout from "../layouts/Layout.astro";
             return (
                 contacto.nombre.trim() !== "" &&
                 emailValido(contacto.email) &&
-                contacto.instagram.trim() !== ""
+                contacto.instagram.trim() !== "" &&
+                contacto.nosSigue !== ""
             );
         }
         if (step.type === "texto") {
@@ -842,6 +892,7 @@ import Layout from "../layouts/Layout.astro";
             nombre: contacto.nombre.trim(),
             email: contacto.email.trim(),
             instagram: contacto.instagram.trim(),
+            nos_sigue: contacto.nosSigue,
             timestamp: new Date().toISOString(),
         };
         gtagEvento("quiz_complete", {
@@ -1010,6 +1061,20 @@ import Layout from "../layouts/Layout.astro";
                     data-field="instagram"
                     enterkeyhint="done"
                 />
+                <p class="field-inline-question" id="quiz-nos-sigue-label">
+                    ¿Ya nos sigues en Instagram?
+                </p>
+                <div class="pill-group" role="group" aria-labelledby="quiz-nos-sigue-label">
+                    ${NOS_SIGUE_OPCIONES.map(
+                        (opcion) => `
+                        <button
+                            type="button"
+                            class="pill ${contacto.nosSigue === opcion.value ? "selected" : ""}"
+                            data-nos-sigue="${opcion.value}"
+                            aria-pressed="${contacto.nosSigue === opcion.value}"
+                        >${opcion.label}</button>`,
+                    ).join("")}
+                </div>
                 <p class="field-consent">
                     Al continuar aceptas que te contactemos por correo o Instagram.
                     Lee cómo cuidamos tus datos en nuestra
@@ -1206,6 +1271,22 @@ import Layout from "../layouts/Layout.astro";
     // ─── Delegación de eventos (el contenedor no se reemplaza, solo su innerHTML) ───
 
     root.addEventListener("click", (evento) => {
+        // Píldoras de "¿nos sigues en Instagram?". Se actualizan en el sitio,
+        // sin re-renderizar: un render() acá borraría lo que la persona ya
+        // escribió en nombre/correo/Instagram y le quitaría el foco del teclado.
+        const pildora = evento.target.closest("[data-nos-sigue]");
+        if (pildora) {
+            contacto.nosSigue = pildora.dataset.nosSigue;
+            root.querySelectorAll("[data-nos-sigue]").forEach((boton) => {
+                const seleccionada = boton.dataset.nosSigue === contacto.nosSigue;
+                boton.classList.toggle("selected", seleccionada);
+                boton.setAttribute("aria-pressed", String(seleccionada));
+            });
+            const botonAvanzar = root.querySelector('[data-action="avanzar"]');
+            if (botonAvanzar) botonAvanzar.disabled = !puedeAvanzar();
+            return;
+        }
+
         const objetivo = evento.target.closest("[data-action]");
         if (!objetivo) return;
         const accion = objetivo.dataset.action;
