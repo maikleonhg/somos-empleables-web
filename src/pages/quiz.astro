@@ -778,7 +778,7 @@ import Layout from "../layouts/Layout.astro";
     let fase = "intro"; // 'intro' | 'quiz' | 'cargando' | 'resultado'
     let paso = 0;
     const respuestas = {};
-    let contacto = { nombre: "", email: "", instagram: "", nosSigue: "" };
+    let contacto = { nombre: "", email: "", instagram: "", edad: "", nosSigue: "" };
 
     // Señal de calificación para el setter, no de marketing: quien ya nos sigue
     // llega más tibio. Es autodeclarado, así que el "sí" está inflado (la gente
@@ -825,8 +825,19 @@ import Layout from "../layouts/Layout.astro";
     // — el objetivo es atajar el typo que hace que el diagnóstico prometido no
     // llegue nunca y el lead se pierda en silencio, no rechazar correos raros
     // pero válidos.
+    //
+    // El TLD exige letras y no `[^\s@]{2,}`: con la versión anterior, un correo
+    // terminado en punto (".com.") pasaba la validación, porque "com." cumple
+    // esa clase. Gmail lo rechazaba después con "Invalid To header" y esa
+    // persona nunca recibía su diagnóstico — pasó el 2026-08-05.
     function emailValido(valor) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor.trim());
+        return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(valor.trim());
+    }
+
+    // Uno o dos dígitos, mayor que cero. Sin edad mínima: no bloqueamos a nadie
+    // por ser menor, sólo evitamos el campo vacío y la basura tipeada.
+    function edadValida(valor) {
+        return /^\d{1,2}$/.test(valor) && Number(valor) > 0;
     }
 
     function puedeAvanzar() {
@@ -836,6 +847,7 @@ import Layout from "../layouts/Layout.astro";
                 contacto.nombre.trim() !== "" &&
                 emailValido(contacto.email) &&
                 contacto.instagram.trim() !== "" &&
+                edadValida(contacto.edad) &&
                 contacto.nosSigue !== ""
             );
         }
@@ -892,6 +904,8 @@ import Layout from "../layouts/Layout.astro";
             nombre: contacto.nombre.trim(),
             email: contacto.email.trim(),
             instagram: contacto.instagram.trim(),
+            // Número, no string: la propiedad `Edad` de Notion es numérica.
+            edad: Number(contacto.edad),
             nos_sigue: contacto.nosSigue,
             timestamp: new Date().toISOString(),
         };
@@ -1059,6 +1073,18 @@ import Layout from "../layouts/Layout.astro";
                     class="field-input"
                     autocomplete="off"
                     data-field="instagram"
+                    enterkeyhint="next"
+                />
+                <label class="sr-only" for="quiz-edad">Tu edad</label>
+                <input
+                    id="quiz-edad"
+                    type="text"
+                    placeholder="Tu edad"
+                    class="field-input"
+                    autocomplete="off"
+                    inputmode="numeric"
+                    maxlength="2"
+                    data-field="edad"
                     enterkeyhint="done"
                 />
                 <p class="field-inline-question" id="quiz-nos-sigue-label">
@@ -1128,7 +1154,7 @@ import Layout from "../layouts/Layout.astro";
         if (input) input.value = respuestas[step.id] ?? "";
     }
 
-    // Rellena los valores de los 3 campos desde el estado `contacto`
+    // Rellena los valores de los 4 campos desde el estado `contacto`
     // como propiedad del DOM (no como atributo HTML) tras cada render
     // que incluya el formulario — necesario para conservar lo tipeado
     // al retroceder y volver a avanzar hasta este paso.
@@ -1138,9 +1164,11 @@ import Layout from "../layouts/Layout.astro";
         const nombreInput = document.getElementById("quiz-nombre");
         const emailInput = document.getElementById("quiz-email");
         const instagramInput = document.getElementById("quiz-instagram");
+        const edadInput = document.getElementById("quiz-edad");
         if (nombreInput) nombreInput.value = contacto.nombre;
         if (emailInput) emailInput.value = contacto.email;
         if (instagramInput) instagramInput.value = contacto.instagram;
+        if (edadInput) edadInput.value = contacto.edad;
     }
 
     function vistaQuiz() {
@@ -1312,6 +1340,14 @@ import Layout from "../layouts/Layout.astro";
         }
         const campo = evento.target.dataset.field;
         if (!campo) return;
+        // `inputmode="numeric"` sólo cambia el teclado del móvil: en desktop y
+        // pegando texto igual entran letras. Se descartan acá, y se reescribe
+        // el input sólo si algo cambió — reasignar .value en cada tecla manda
+        // el cursor al final y hace imposible corregir el primer dígito.
+        if (campo === "edad") {
+            const limpio = evento.target.value.replace(/\D/g, "");
+            if (limpio !== evento.target.value) evento.target.value = limpio;
+        }
         contacto[campo] = evento.target.value;
         if (campo === "email") actualizarErrorEmail();
         const boton = root.querySelector('[data-action="avanzar"]');
