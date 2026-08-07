@@ -275,6 +275,16 @@ import Layout from "../layouts/Layout.astro";
         line-height: 1.5;
         color: #6b7280;
     }
+    .quiz-root :global(.field-hint) {
+        margin: 8px 0 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: #4b5563;
+    }
+    .quiz-root :global(.field-hint strong) {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
     .quiz-root :global(.field-consent a) {
         color: inherit;
         text-decoration: underline;
@@ -869,7 +879,12 @@ import Layout from "../layouts/Layout.astro";
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
             keepalive: true,
-            signal: AbortSignal.timeout(5000),
+            // 12s, no 5s: en redes lentas un POST que SÍ llega tardaba más
+            // de 5s en responder, el cliente se rendía y el reintento creaba
+            // un lead duplicado (2 fichas, 2 correos, 2 pings con el mismo
+            // timestamp). Con el envío ya en segundo plano (ver `terminar`),
+            // esta espera no la ve nadie, así que se puede dar margen real.
+            signal: AbortSignal.timeout(12000),
         };
         const r = await fetch(WEBHOOK, opciones);
         return { ok: r.ok, status: r.status };
@@ -920,11 +935,15 @@ import Layout from "../layouts/Layout.astro";
         // Deliberadamente no se le mandan las respuestas ni el contacto: Meta
         // no necesita el detalle del lead, solo saber que ocurrió.
         fbqEvento("Lead", { content_name: "Quiz Empleabilidad" });
-        fase = "cargando";
-        render();
-        await enviar(payload); // no se ramifica por el resultado
+        // Regla de oro reforzada: el resultado se muestra de INMEDIATO y el
+        // POST viaja en segundo plano (fire-and-forget). `keepalive:true` lo
+        // mantiene vivo aunque la persona cierre la pestaña. Antes se hacía
+        // `await enviar` antes de mostrar el resultado, lo que obligaba a un
+        // timeout corto y ese timeout corto duplicaba leads en redes lentas.
+        // Ahora el envío no bloquea la UI, así que el timeout puede ser holgado.
         fase = "resultado";
         render();
+        void enviar(payload); // no se espera ni se ramifica por el resultado
     }
 
     // ─── Navegación ───
@@ -1075,6 +1094,11 @@ import Layout from "../layouts/Layout.astro";
                     data-field="instagram"
                     enterkeyhint="next"
                 />
+                <p class="field-hint">
+                    📲 Recuerda escribir correctamente tu usuario de Instagram.
+                    Si no podemos encontrarte, no podremos contactarte ni
+                    continuar con tu postulación.
+                </p>
                 <label class="sr-only" for="quiz-edad">Tu edad</label>
                 <input
                     id="quiz-edad"
@@ -1101,6 +1125,11 @@ import Layout from "../layouts/Layout.astro";
                         >${opcion.label}</button>`,
                     ).join("")}
                 </div>
+                <p class="field-hint">
+                    <strong>Importante:</strong> solo contactamos a quienes nos
+                    siguen en Instagram. Si aún no lo haces, síguenos para poder
+                    continuar con tu postulación.
+                </p>
                 <p class="field-consent">
                     Al continuar aceptas que te contactemos por correo o Instagram.
                     Lee cómo cuidamos tus datos en nuestra
