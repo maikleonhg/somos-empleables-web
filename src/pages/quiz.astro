@@ -275,6 +275,16 @@ import Layout from "../layouts/Layout.astro";
         line-height: 1.5;
         color: #6b7280;
     }
+    .quiz-root :global(.field-hint) {
+        margin: 8px 0 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: #4b5563;
+    }
+    .quiz-root :global(.field-hint strong) {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
     .quiz-root :global(.field-consent a) {
         color: inherit;
         text-decoration: underline;
@@ -1084,6 +1094,11 @@ import Layout from "../layouts/Layout.astro";
                     data-field="instagram"
                     enterkeyhint="next"
                 />
+                <p class="field-hint">
+                    📲 Recuerda escribir correctamente tu usuario de Instagram.
+                    Si no podemos encontrarte, no podremos contactarte ni
+                    continuar con tu postulación.
+                </p>
                 <label class="sr-only" for="quiz-edad">Tu edad</label>
                 <input
                     id="quiz-edad"
@@ -1110,6 +1125,11 @@ import Layout from "../layouts/Layout.astro";
                         >${opcion.label}</button>`,
                     ).join("")}
                 </div>
+                <p class="field-hint">
+                    <strong>Importante:</strong> solo contactamos a quienes nos
+                    siguen en Instagram. Si aún no lo haces, síguenos para poder
+                    continuar con tu postulación.
+                </p>
                 <p class="field-consent">
                     Al continuar aceptas que te contactemos por correo o Instagram.
                     Lee cómo cuidamos tus datos en nuestra
