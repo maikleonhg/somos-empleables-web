@@ -58,10 +58,11 @@ Para detener el dev server: `tmux kill-session -t se-web-dev`.
 src/
 ├── pages/
 │   ├── index.astro          # Home
-│   ├── quiz.astro           # Quiz de captación de leads (live 2026-07-30) — 8 pasos + webhook n8n
+│   ├── quiz.astro           # Quiz de captación de leads (live 2026-07-30) — ver sección abajo
 │   ├── duoc-uc.astro        # Landing dedicada a alumnos Duoc UC
 │   ├── privacidad.astro     # Reescrita 2026-08-04 desde el borrador de Notion
 │   ├── terminos.astro       # Reescrita 2026-08-04 desde el borrador validado por el abogado
+│                            #   (ambas: contacto = soporte@somosempleables.com desde PR #20)
 │   └── recursos/            # Recursos / posts (antes /blog)
 ├── components/
 │   ├── Navbar.astro
@@ -86,6 +87,20 @@ Las páginas de recursos viven en `src/pages/recursos/` como `.astro`. La metada
 5. **Verificar:** `npm run build`, luego revisar en el deploy preview de Netlify que el recurso se ve bien y que el JSON-LD aparece (Google Rich Results Test).
 
 El byline, JSON-LD, RSS y sitemap se aplican solos al estar en `recursos.ts`.
+
+## Quiz (`src/pages/quiz.astro`)
+
+Live desde 2026-07-30. Captación de leads: 8 pasos + formulario, devuelve 1 de 5 hipótesis en pantalla y dispara el webhook `quiz-lead` de n8n. Astro + JS vanilla, sin framework — el archivo es autocontenido y tiene los comentarios de diseño arriba del script; **léelos antes de tocarlo**, casi cada decisión ahí está pagada con un bug.
+
+Lo que cambió después del lanzamiento y hay que tener presente:
+
+- **Edad** (PR #19, 2026-08-06) e **"¿ya nos sigues en Instagram?"** (PR #18, 2026-08-05) van **dentro del formulario de contacto**, no como pasos nuevos. Es deliberado: la gracia del quiz es la baja fricción y cada paso extra sube el abandono. `nos_sigue` es señal de calificación para el setter (quien ya sigue llega más tibio), no dato de marketing. `edad` se manda como número, no string — la propiedad `Edad` en Notion es numérica.
+- **El envío no bloquea el resultado** (PR #21, 2026-08-07). `terminar()` hace `void enviar(payload)` y muestra el diagnóstico al instante. Antes se hacía `await` antes de pintar, y en redes lentas la persona veía "cargando" hasta que se rendía el cliente: el reintento creaba un **lead duplicado** (2 fichas, 2 correos, 2 pings con el mismo timestamp). Si vuelves a poner un `await` ahí, vuelve el bug.
+- **El timeout es de 12s por intento, no 5.** Con el envío ya en segundo plano esa espera no la ve nadie, así que puede darse margen real. El `AbortSignal.timeout()` se crea **de nuevo en cada intento** — uno ya consumido no sirve para el segundo.
+- **Solo se reintenta lo transitorio.** Un 4xx corta el loop: reintentar el mismo payload da el mismo error. 5xx, red y timeout sí se reintentan (una vez).
+- **Regla de oro: el resultado se muestra siempre, falle o no el POST.** Si falla, se emite `quiz_submit_failed` a GA4 y la persona igual ve su diagnóstico.
+
+El copy del correo que sale después **no vive en este repo**: la fuente de verdad es `/root/scripts/quiz/compose.mjs` en el VPS, que se despliega a mano al Code node de n8n.
 
 ## Assets multimedia — Cloudinary
 
