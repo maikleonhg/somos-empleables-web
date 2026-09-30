@@ -2,16 +2,23 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-{/* Contenido tomado del borrador "📜 BORRADOR — Términos y Condiciones SE
-    (2026-07-09)" en Notion, cuyo cuerpo principal el abogado ya validó.
+{/* Contenido tomado del borrador "📜 BORRADOR — Términos y Condiciones SE" en
+    Notion, versión v5 (2026-09-11), revisada por el abogado.
 
-    QUEDA FUERA A PROPÓSITO el "Anexo A — Reglamento del Programa" (tiempos por
-    etapa, reloj desde el cierre de la etapa 3, meta de postulaciones semanales,
-    amonestaciones, cláusula de cumplimiento sin resultado): el abogado todavía
-    no le hace su pasada y el equipo aún no fija las cifras. Publicarlo a medias
-    sería peor que no publicarlo — son obligaciones exigibles al cliente.
-
-    PENDIENTE DE SE: razón social, RUT y domicilio completo (sección 2). */}
+    Decisiones de Maik al publicarla (2026-09-30):
+    - QUEDA FUERA el "Anexo A — Reglamento del Programa" (tiempos por etapa,
+      meta de acciones semanales, procedimiento por incumplimiento): el proceso
+      interno todavía no cambia, y publicar obligaciones exigibles que el equipo
+      no aplica sería peor que no publicarlas. Las cláusulas del cuerpo que lo
+      citaban se reescribieron para no apuntar a un anexo inexistente.
+    - SIN PRECIOS: ni el del programa ni el de la extensión opcional. Se dice
+      que se informan antes de pagar.
+    - Reembolso con etapas 1-3 en curso: 10%.
+    - La cláusula 1 NO promete enviar una copia por correo. Sí dice que la
+      aceptación queda registrada con fecha y versión: eso lo hace la casilla
+      del registro de ingreso de se-programa (y la de los tests para quien no
+      lo haya aceptado). Si se toca este texto, hay que subir la versión allá.
+    - Contacto: soporte@ (PR #20), no contacto@ como dice el borrador. */}
 
 <Layout title="Términos y Condiciones | Somos Empleables">
     <main class="pt-32 pb-16 px-6 max-w-4xl mx-auto">
@@ -20,7 +27,7 @@ import Layout from "../layouts/Layout.astro";
         </h1>
 
         <div class="prose prose-slate max-w-none text-slate-600">
-            <p>Última actualización: Agosto 2026</p>
+            <p>Última actualización: Septiembre 2026</p>
 
             <h3>1. Aceptación de los términos</h3>
             <p>
@@ -32,122 +39,340 @@ import Layout from "../layouts/Layout.astro";
                     >Política de Privacidad</a
                 >. Si no estás de acuerdo, no debes usar el Servicio.
             </p>
+            <p>
+                <strong>Versión aplicable y constancia de aceptación.</strong>
+                Antes de contratar puedes leer, descargar e imprimir la versión
+                vigente de estos Términos. Tu aceptación queda registrada en la
+                plataforma con su fecha y la versión que aceptaste, y esa
+                versión rige íntegramente tu contrato durante toda su duración.
+            </p>
 
             <h3>2. Quiénes somos</h3>
             <p>
-                El Servicio es operado por Somos Empleables, con domicilio en
-                Chile. Para cualquier consulta: <a
+                Somos Empleables es el <strong>nombre comercial</strong> bajo el
+                cual opera <strong>ANDREANICONSULTORES SPA</strong>, RUT
+                <strong>78.122.087-6</strong>, representada legalmente por
+                <strong>Stefano Andreani González</strong>.
+            </p>
+            <p>
+                <strong>Domicilio para notificaciones y reclamos:</strong> La
+                Bolsa #81, Santiago, Región Metropolitana, Chile.
+            </p>
+            <p>
+                <strong>Correo de contacto y reclamos:</strong>
+                <a
                     href="mailto:soporte@somosempleables.com"
                     class="text-blue-600 hover:underline"
                     >soporte@somosempleables.com</a
-                >.
+                >, habilitado expresamente como canal válido y equivalente al
+                domicilio físico para toda comunicación, notificación y reclamo,
+                incluido el ejercicio del derecho de retracto de la sección 6.
             </p>
 
             <h3>3. Descripción del Servicio</h3>
             <p>
                 Somos Empleables es un servicio de <strong
-                    >acompañamiento y coaching de empleabilidad</strong
-                >. Incluye, según el plan contratado: curso, plataforma,
-                sesiones con un coach, herramientas para construir y optimizar
-                tu CV (incluida inteligencia artificial), catálogo de ofertas y
-                seguimiento de tu proceso. <strong
-                    >El Servicio no garantiza la obtención de un empleo</strong
-                > ni resultados específicos.
+                    >acompañamiento y formación en empleabilidad</strong
+                >. Incluye, según el plan: curso por módulos, plataforma,
+                sesiones individuales y grupales, herramientas para construir y
+                optimizar tu CV (incluida inteligencia artificial), catálogo de
+                ofertas y seguimiento de tu proceso.
+            </p>
+            <p>
+                El programa se organiza en etapas. Las tres primeras son de
+                preparación y terminan con la entrega de tu
+                <strong>CV terminado</strong> (cierre de la Etapa 3); luego
+                viene la búsqueda activa de empleo, con postulaciones,
+                entrevistas y activación de tu red de contactos.
+            </p>
+            <p>
+                <strong>Duración.</strong> El programa tiene una duración máxima
+                de <strong>5 meses</strong>: <strong>3 meses</strong> de
+                programa activo y, si al término de ese período cumpliste con
+                tus sesiones, tu bitácora y tus acciones de búsqueda, y aún no
+                has conseguido empleo, <strong
+                    >2 meses adicionales de seguimiento sin costo</strong
+                >. El cumplimiento se verifica con los registros de la
+                plataforma, a los que tienes acceso permanente y cuya corrección
+                puedes pedir si detectas un error.
+            </p>
+            <p>
+                El Servicio constituye una <strong
+                    >obligación de medios y no de resultado</strong
+                >: <strong>no garantiza la obtención de un empleo</strong> ni
+                resultados específicos, que dependen también de tu trabajo y del
+                mercado laboral.
             </p>
 
             <h3>4. Registro y cuenta</h3>
             <p>
                 Debes registrarte (habitualmente con tu cuenta de Google), ser
                 mayor de 18 años y tener capacidad legal. Eres responsable de la
-                veracidad de tus datos y de la confidencialidad de tu acceso.
+                veracidad de tus datos y de la confidencialidad de tu acceso. El
+                uso de tu cuenta de Google para registrarte implica el
+                tratamiento de los datos descritos en la <a
+                    href="/privacidad"
+                    class="text-blue-600 hover:underline"
+                    >Política de Privacidad</a
+                >.
             </p>
 
             <h3>5. Precios y pago</h3>
             <p>
-                Los precios se expresan en pesos chilenos (CLP), con impuestos
-                incluidos. Los pagos se procesan mediante <strong
-                    >Webpay Plus de Transbank</strong
-                >; no almacenamos los datos de tu tarjeta. El acceso se habilita
-                al confirmarse el pago.
+                Los precios se expresan en pesos chilenos (CLP). El Servicio no
+                está afecto a IVA; se emite boleta exenta electrónica. El precio
+                final aplicable se informa <strong
+                    >antes de realizar el pago</strong
+                > y es el que consta en el comprobante de la transacción. Si existe
+                una promoción vigente, se informa junto con su fecha de término.
+            </p>
+            <p>
+                El pago es un <strong>cobro único</strong> (no es una
+                suscripción) y puede realizarse en una o varias cuotas a través
+                de <strong>Webpay Plus de Transbank</strong>; no almacenamos tu
+                tarjeta. Cuando se acuerde pago en dos partes, este se compone de
+                una <strong>reserva</strong> y el <strong>saldo</strong>, en los
+                montos y fechas informados antes del pago. El acceso se habilita
+                al confirmar el pago.
+            </p>
+            <p>
+                Cualquier servicio adicional opcional (por ejemplo, la extensión
+                de la sección 11.5 o la membresía de la sección 11.4) se informa
+                con su precio antes de contratarlo y nunca se cobra de forma
+                automática.
             </p>
 
             <h3>6. Derecho de retracto y reembolsos</h3>
             <p>
-                Conforme al artículo 3 bis de la Ley 19.496, en las compras
-                realizadas por medios electrónicos podrás <strong
-                    >retractarte dentro de 10 días</strong
-                >, salvo las excepciones legales. Tratándose de servicios, la
-                devolución no comprende las sumas correspondientes a servicios
-                ya prestados, y el reembolso que proceda se efectúa dentro de
-                los plazos legales.
+                <strong>6.1 Retracto legal.</strong> Conforme al artículo 3 bis
+                de la Ley 19.496, en contrataciones por medios electrónicos
+                podrás <strong>retractarte dentro de 10 días</strong> contados
+                desde la celebración del contrato y antes de que el Servicio se
+                preste. La habilitación del acceso a la plataforma no extingue
+                por sí sola este derecho: el plazo de 10 días corre íntegro
+                desde la celebración del contrato. El retracto puede ejercerse
+                por carta certificada al domicilio de la sección 2 o por correo
+                electrónico a la dirección allí indicada. Ejercido el retracto,
+                devolvemos las sumas abonadas <strong
+                    >sin retención de gastos</strong
+                >, dentro de <strong>30 días corridos</strong> desde la
+                comunicación. Para estos efectos, se entiende que el Servicio
+                comienza a prestarse con la realización de la <strong
+                    >primera sesión individual</strong
+                > con tu coach; la habilitación del acceso a la plataforma, por
+                sí sola, no constituye prestación del Servicio.
+            </p>
+            <p>
+                <strong>6.2 Desistimiento posterior al plazo de retracto.</strong>
+                Transcurrido el plazo legal, puedes poner término al contrato en
+                cualquier momento comunicándolo por el canal de la sección 2. La
+                devolución se determina en proporción al avance efectivo del
+                programa, conforme a la siguiente escala:
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Momento en que comunicas tu desistimiento</th>
+                        <th>Devolución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Dentro del plazo legal de retracto (10 días) y antes
+                            de la primera sesión individual
+                        </td>
+                        <td>100%, sin retención de gastos</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Antes de la primera sesión individual, fuera del
+                            plazo de retracto
+                        </td>
+                        <td>85%</td>
+                    </tr>
+                    <tr>
+                        <td>Con la Etapa 1, la Etapa 2 o la Etapa 3 en curso</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Con la Etapa 3 cerrada (CV terminado y entregado)
+                        </td>
+                        <td>Sin devolución</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                El porcentaje se calcula sobre las sumas efectivamente pagadas a
+                la fecha del desistimiento. Si el pago se acordó en dos partes y
+                el saldo aún no se ha pagado, la devolución se calcula sobre la
+                reserva y no se exige el saldo pendiente. Las comisiones de la
+                plataforma de pago no se descuentan de la devolución.
+            </p>
+            <p>
+                La ausencia de devolución en el último tramo se funda en que el
+                CV terminado es el entregable de mayor valor del programa y su
+                transferencia es irreversible. Los reembolsos que procedan se
+                pagan dentro de <strong>30 días corridos</strong> desde la
+                solicitud, por el mismo medio de pago utilizado. Somos
+                Empleables puede resolver favorablemente situaciones
+                excepcionales fuera de esta escala (por ejemplo, causas de salud
+                graves acreditadas), sin que ello constituya un precedente
+                exigible.
             </p>
 
             <h3>7. Propiedad intelectual</h3>
             <p>
-                La plataforma, la marca, los contenidos del curso, la
-                metodología y el software son de Somos Empleables o de sus
-                licenciantes, y están protegidos por la Ley 17.336. Te otorgamos
-                una <strong>licencia limitada, personal e intransferible</strong
-                > para usarlos durante la vigencia del Servicio. No puedes copiarlos
-                ni explotarlos comercialmente sin autorización escrita.
+                La plataforma, el nombre comercial, los contenidos del curso, la
+                metodología y el software son de ANDREANICONSULTORES SPA o de
+                sus licenciantes (Ley 17.336). Te otorgamos una <strong
+                    >licencia limitada, personal e intransferible</strong
+                > para uso propio durante la vigencia de tu acceso. No puedes
+                copiar, distribuir, revender ni explotar comercialmente estos
+                contenidos sin autorización escrita.
             </p>
 
             <h3>8. Tu contenido (CV y datos que subes)</h3>
             <p>
                 Conservas la titularidad de tu CV y de tu información. Nos
-                otorgas una <strong>licencia limitada para tratarlos</strong> con
-                el fin de prestarte el Servicio, incluido su procesamiento con inteligencia
-                artificial, según se detalla en la <a
-                    href="/privacidad"
-                    class="text-blue-600 hover:underline"
+                otorgas una <strong>licencia limitada y revocable para tratarlos</strong
+                > con el único fin de prestarte el Servicio, en los términos de la
+                <a href="/privacidad" class="text-blue-600 hover:underline"
                     >Política de Privacidad</a
-                >. Declaras que la información que entregas es veraz, propia y no
-                infringe derechos de terceros.
+                >. Declaras que la información es veraz, propia y no infringe
+                derechos de terceros.
+            </p>
+            <p>
+                <strong>Procesamiento con IA.</strong> El uso de herramientas de
+                inteligencia artificial para analizar y optimizar tu CV se
+                somete a un <strong>consentimiento específico y revocable</strong
+                >, que se solicita de forma separada e informa qué datos se
+                procesan, con qué finalidad y con qué proveedores.
+            </p>
+            <p>
+                <strong>Datos sensibles.</strong> Si tu CV o tus antecedentes
+                incluyen datos que la ley califica como sensibles, su
+                tratamiento requiere consentimiento <strong
+                    >expreso y separado</strong
+                >, que puedes negar o revocar sin que ello afecte el resto del
+                Servicio.
             </p>
 
             <h3>9. Uso aceptable</h3>
             <p>
-                Te comprometes a no usar el Servicio para fines ilícitos; a no
-                vulnerar ni sobrecargar la plataforma; a no subir contenido
-                ilegal, falso o de terceros sin permiso; y a no suplantar
-                identidades. Podemos suspender las cuentas que infrinjan estas
-                reglas.
+                No usar el Servicio para fines ilícitos; no vulnerar ni
+                sobrecargar la plataforma; no subir contenido ilegal, falso o de
+                terceros sin permiso; no suplantar identidades; no compartir
+                credenciales de acceso. Podemos suspender cuentas infractoras
+                conforme a la sección 11.
             </p>
 
-            <h3>10. Limitación de responsabilidad</h3>
+            <h3>10. Responsabilidad</h3>
             <p>
-                El Servicio se entrega "tal cual" y según disponibilidad. En la
-                máxima medida que permite la ley, no respondemos por daños
-                indirectos ni por la no obtención de un empleo. <strong
-                    >Nada de lo anterior limita los derechos que la ley chilena
-                    reconoce a los consumidores.</strong
+                Somos Empleables responde por la correcta prestación del
+                Servicio conforme a estos Términos y a la garantía legal que
+                establece la Ley 19.496.
+            </p>
+            <p>
+                No respondemos por: (a) la obtención o no obtención de un
+                empleo, que depende del trabajo del cliente y del mercado
+                laboral; (b) el contenido, la veracidad, la vigencia o las
+                condiciones de las ofertas laborales publicadas por terceros en
+                el Portal de Ofertas, respecto de las cuales no actuamos como
+                empleador ni como intermediario y no cobramos comisión alguna
+                — si nos informas que una oferta es falsa, engañosa o está
+                vencida, la revisaremos y la retiraremos cuando corresponda;
+                (c) las interrupciones del Servicio originadas en caso fortuito
+                o fuerza mayor, conforme a la sección 17.
+            </p>
+            <p>
+                Si la plataforma sufre una interrupción prolongada atribuible a
+                nosotros o a nuestros proveedores, los plazos del programa se
+                suspenden por ese tiempo y el período afectado se recupera al
+                reanudarse el Servicio, sin costo para ti. Las mantenciones
+                programadas de la plataforma se informan con anticipación
+                razonable.
+            </p>
+            <p>
+                <strong
+                    >Nada en estos Términos limita, restringe ni renuncia a los
+                    derechos que la ley chilena reconoce a los consumidores.</strong
                 >
             </p>
 
             <h3>11. Terminación</h3>
             <p>
-                Puedes cerrar tu cuenta cuando quieras. Nosotros podemos
-                suspender o terminar tu acceso en caso de incumplimiento. El
-                tratamiento de tus datos después de la terminación se rige por
-                la <a href="/privacidad" class="text-blue-600 hover:underline"
+                <strong>11.1 Término por el cliente.</strong> Puedes poner
+                término a tu contrato cuando quieras, con los efectos económicos
+                de la sección 6.
+            </p>
+            <p>
+                <strong>11.2 Término por Somos Empleables.</strong> Podemos
+                suspender o terminar el acceso ante un incumplimiento grave de la
+                sección 9, previa notificación escrita que describa el hecho y
+                otorgue un plazo de <strong>7 días</strong> para subsanarlo o
+                presentar descargos, salvo que la gravedad del caso exija
+                suspensión inmediata. Si el término se produce por esta vía, se
+                aplica la misma escala de devolución de la sección 6.2 según el
+                avance a esa fecha. Lo anterior es sin perjuicio de las acciones
+                que correspondan a Somos Empleables por los perjuicios
+                efectivamente causados por el incumplimiento.
+            </p>
+            <p>
+                <strong>11.3 Datos tras la terminación.</strong> El tratamiento
+                de tus datos una vez terminado el contrato se rige por la <a
+                    href="/privacidad"
+                    class="text-blue-600 hover:underline"
                     >Política de Privacidad</a
                 >.
+            </p>
+            <p>
+                <strong>11.4 Vigencia del acceso a la plataforma.</strong>
+                Durante el programa (sección 3) tienes acceso completo a la
+                plataforma. Si la etapa de preparación se atrasa por causas no
+                atribuibles a ti, tu acceso se extiende por el tiempo necesario
+                para completar el período de búsqueda y el seguimiento que
+                correspondan. Cumplido ese plazo se desactivan el <strong
+                    >Estudio de CV</strong
+                > y la <strong>agenda de sesiones individuales</strong>; el resto
+                de los recursos (curso por módulos, grabaciones y Portal de
+                Ofertas) se mantiene disponible mientras la plataforma siga
+                operativa. Al término del programa puedes optar voluntariamente a
+                un <strong>plan de membresía</strong> mensual, que incluye
+                asistente de CV, plataforma y sesiones grupales, y cuyo valor se
+                informa antes de contratarlo.
+            </p>
+            <p>
+                <strong>11.5 Extensión opcional.</strong> Al término del
+                programa activo, cualquier cliente puede contratar
+                voluntariamente <strong>1 mes adicional de acompañamiento</strong
+                >, con independencia de cómo haya transcurrido su proceso. Su
+                valor se informa antes de contratarla y nunca se cobra de forma
+                automática. Ni esta extensión ni el seguimiento de la sección 3
+                constituyen una garantía de obtención de empleo.
             </p>
 
             <h3>12. Modificaciones</h3>
             <p>
-                Podemos modificar estos Términos; publicaremos siempre la
-                versión vigente con su fecha. El uso continuado del Servicio
-                implica la aceptación de la versión vigente.
+                Podemos modificar estos Términos hacia el futuro. <strong
+                    >Las modificaciones rigen únicamente para contrataciones
+                    posteriores a su publicación.</strong
+                > La versión que aceptaste al momento de contratar rige
+                íntegramente tu contrato hasta su término, sin que el uso
+                continuado de la plataforma implique aceptación de versiones
+                posteriores. Publicaremos siempre la versión vigente con su fecha
+                y mantendremos disponibles las versiones anteriores para los
+                clientes a quienes les apliquen.
             </p>
 
             <h3>13. Ley aplicable y jurisdicción</h3>
             <p>
-                Estos Términos se rigen por las <strong>leyes de Chile</strong>.
-                Las controversias se someterán a los tribunales competentes de
-                Chile, sin perjuicio de los derechos que la ley reconoce al
-                consumidor, incluido el de recurrir al SERNAC y a los tribunales
-                de su domicilio.
+                Estos Términos se rigen por las <strong>leyes de Chile</strong>;
+                las controversias se someten a los tribunales competentes de
+                Chile, <strong>sin perjuicio de los derechos del consumidor</strong
+                >, incluido recurrir al SERNAC y demandar ante el juzgado de
+                policía local de su domicilio.
             </p>
 
             <h3>14. Contacto y reclamos</h3>
@@ -156,9 +381,60 @@ import Layout from "../layouts/Layout.astro";
                     href="mailto:soporte@somosempleables.com"
                     class="text-blue-600 hover:underline"
                     >soporte@somosempleables.com</a
-                >. Como consumidor, también puedes recurrir al <strong
-                    >SERNAC</strong
+                >. Acusamos recibo dentro de <strong>2 días hábiles</strong> y
+                respondemos el fondo dentro de <strong>10 días hábiles</strong>.
+                Como consumidor, también puedes recurrir al <strong>SERNAC</strong
                 >.
+            </p>
+
+            <h3>15. Confidencialidad</h3>
+            <p>
+                Somos Empleables y su equipo mantienen en reserva la información
+                profesional y personal que compartes durante el programa, y la
+                usan únicamente para prestarte el Servicio. Esta obligación
+                subsiste tras el término del contrato. El cliente, a su vez,
+                mantiene en reserva los materiales, la metodología y los
+                contenidos del programa conforme a la sección 7.
+            </p>
+
+            <h3>16. Cesión y prestación por terceros</h3>
+            <p>
+                Tu contrato es personal e intransferible y no puede cederse a
+                otra persona. Somos Empleables puede prestar el Servicio a través
+                de coaches, relatores y proveedores tecnológicos externos,
+                quienes quedan sujetos a las mismas obligaciones de
+                confidencialidad y de tratamiento de datos, manteniéndose Somos
+                Empleables como único responsable frente al cliente.
+            </p>
+
+            <h3>17. Disponibilidad y fuerza mayor</h3>
+            <p>
+                Ante caso fortuito o fuerza mayor que impida temporalmente la
+                prestación del Servicio, los plazos del programa se suspenden por
+                el tiempo que dure el impedimento y se reanudan una vez superado,
+                informando al cliente. Si el impedimento se prolonga más de 30
+                días corridos, cualquiera de las partes puede poner término al
+                contrato con devolución proporcional a la parte del programa no
+                prestada a esa fecha, sin aplicar la escala de la sección 6.2,
+                que rige solo el desistimiento voluntario del cliente. Para estos
+                efectos, la devolución se calcula en proporción a los meses del
+                programa no transcurridos a la fecha del término, sobre la
+                duración máxima de 5 meses señalada en la sección 3, descontando
+                los períodos de suspensión.
+            </p>
+
+            <h3>18. Testimonios, casos y grabaciones</h3>
+            <p>
+                El uso de tu nombre, imagen, testimonio o caso con fines de
+                difusión requiere una <strong
+                    >autorización escrita, específica y revocable</strong
+                >, distinta de estos Términos, que indica el medio, el alcance y
+                la duración del uso. Negarla no afecta en nada la prestación del
+                Servicio.
+            </p>
+            <p>
+                Si una sesión se graba, se te informará previamente su finalidad
+                y su plazo de conservación, y podrás oponerte.
             </p>
         </div>
     </main>
