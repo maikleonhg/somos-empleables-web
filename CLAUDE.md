@@ -90,7 +90,7 @@ El byline, JSON-LD, RSS y sitemap se aplican solos al estar en `recursos.ts`.
 
 ## Quiz (`src/pages/quiz.astro`)
 
-Live desde 2026-07-30. Captación de leads: 8 pasos + formulario, devuelve 1 de 5 hipótesis en pantalla y dispara el webhook `quiz-lead` de n8n. Astro + JS vanilla, sin framework — el archivo es autocontenido y tiene los comentarios de diseño arriba del script; **léelos antes de tocarlo**, casi cada decisión ahí está pagada con un bug.
+Live desde 2026-07-30. Captación de leads: 9 pasos, el último es el formulario (desde el 30-oct incluye «¿Estás en condiciones de invertir…?», entró el 30-oct para segmentar la campaña: se guarda en la propiedad «Inversión» de Notion y no toca el diagnóstico), devuelve 1 de 5 hipótesis en pantalla y dispara el webhook `quiz-lead` de n8n. Astro + JS vanilla, sin framework — el archivo es autocontenido y tiene los comentarios de diseño arriba del script; **léelos antes de tocarlo**, casi cada decisión ahí está pagada con un bug.
 
 Lo que cambió después del lanzamiento y hay que tener presente:
 
