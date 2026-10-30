@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
     title="Evaluación profesional gratuita — Somos Empleables"
-    description="Responde 7 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
+    description="Responde 8 preguntas y recibe un diagnóstico personalizado de qué te está frenando en tu búsqueda laboral."
 >
     {/* aria-live va acá y no en un contenedor interno: este elemento es el
         único que NO se reemplaza (solo su innerHTML), y una región viva que
@@ -719,6 +719,27 @@ import Layout from "../layouts/Layout.astro";
                 },
             ],
         },
+        // Reunión del 15-oct con Renato: reemplaza la calificación manual de
+        // los setters. No cambia el diagnóstico en pantalla ni el correo del
+        // quiz; sólo decide qué correo de campaña le llega después (sí →
+        // setter, talvez → seguimiento, no → Autogestión). Sin montos a
+        // propósito: el precio se muestra en la reunión de venta, después de
+        // las anclas, y un rango acá lo adelantaría. Viaja en el payload por
+        // `...respuestas` y n8n lo traduce a la propiedad «Inversión».
+        {
+            id: "inversion",
+            question: "¿Estás en condiciones de invertir en apoyo para tu búsqueda?",
+            columns: 1,
+            options: [
+                { value: "si", label: "Sí, quiero apoyo personalizado", icon: "🤝" },
+                { value: "talvez", label: "Podría, pero no este mes", icon: "⏳" },
+                {
+                    value: "no",
+                    label: "No por ahora, prefiero avanzar por mi cuenta",
+                    icon: "🧭",
+                },
+            ],
+        },
         {
             id: "profesion",
             type: "texto",
@@ -1005,7 +1026,7 @@ import Layout from "../layouts/Layout.astro";
                     <div class="intro-icon">🎯</div>
                     <h1 class="intro-title">Descubre qué te está frenando en tu búsqueda laboral</h1>
                     <p class="intro-subtitle">
-                        Responde 7 preguntas y te entregamos un diagnóstico personalizado con las brechas exactas
+                        Responde 8 preguntas y te entregamos un diagnóstico personalizado con las brechas exactas
                         que están bloqueando tu próximo trabajo.
                     </p>
                     <div class="intro-pills">
